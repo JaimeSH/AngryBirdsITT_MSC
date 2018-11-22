@@ -30,7 +30,7 @@ def writeXML(individual, filename):
     if STRING_XML == "":
         STRING_XML = initXMLLevel()
 
-    f = open(filename, "w")
+    f = open(filename, "w+")
     index = STRING_XML.find('Camera')
     final_xml = []
     final_xml.append('<?xml version="1.0" encoding ="utf-8"?>')
