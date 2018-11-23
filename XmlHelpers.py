@@ -64,8 +64,8 @@ def writeXML(individual, filename):
                 #print("obj 2")
                 if len(obj) <= 2:
                     el_width = obj[0]
-                    el_height = el_height + (obj[0]/2)
-                    el_height_cont = obj[0]/2
+                    el_height = el_height + (obj[1]/2)
+                    el_height_cont = obj[1]/2
                 else: 
                     x_val = (obj[2] + base_x)/100
                     y_val = (obj[3] + base_y + el_height)/100
@@ -86,5 +86,5 @@ def writeXML(individual, filename):
     f.write(''.join(final_xml))
 
     f.close()
-    score = el_height
+    el_height = el_height + 350
     return el_height

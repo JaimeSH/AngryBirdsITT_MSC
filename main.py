@@ -78,8 +78,8 @@ BLOCK_TYPE = {
 }
 
 BLOCK_MATERIAL = {
-    0: 'wood',
-    1: 'stone',
+    1: 'wood',
+    0: 'stone',
     2: 'ice'
 }
 
@@ -201,45 +201,87 @@ BLOCKS = {
 #####################################################################
 
 class Composite:
+    
+    bl_list_x = []
+    bl_list_y = []
+    
     def __init__(self, blocks):
         # Blocks must be a list
+        self.bl_list_x = []
+        self.bl_list_y = []
         self.blocks = blocks
+        self.get_values()
         self.height = self.height()
         self.width = self.width()
         self.top_center = self.top_center()
         self.as_dictionary = self.as_dictionary()
+        
+    def get_values(self):
+        #print(self.blocks)
+        for bl in self.blocks:
+            #print(bl)
+            self.bl_list_x.append(bl['offset'][0])
+            self.bl_list_y.append(bl['offset'][1])
+        #print("1")
+        return 0
 
     def height(self):
-        #print(self.blocks['offset'])
         summ = 0
-        for bl in self.blocks:
-            #print(bl['type'])
-            #print(bl['offset'][2])
-            offrot = bl['offset'][2]
-            if offrot == 0:
-                summ = summ + abs(bl['type']['lenght'])
-        
+        if len(self.bl_list_y) == 1:
+            for bl in self.blocks:
+                offrot = bl['offset'][2]
+                if offrot == 0:
+                    summ = bl['type']['height'] # abs(bl['type']['lenght'])
+                else:
+                    summ = bl['type']['lenght'] # abs(bl['type']['height'])
+        else:
+            #print(self.blocks['offset'])
+            for i in self.bl_list_y:
+                summ = summ + abs(i)
+            #summ = sum(self.bl_list_y)
+            c = 0
+            for bl in self.blocks:
+                if self.bl_list_y[c] != 0:
+                    offrot = bl['offset'][2]
+                    if offrot == 0:
+                        summ = summ + (bl['type']['height']/2) # abs(bl['type']['lenght'])
+                    else:
+                        summ = summ + (bl['type']['lenght']/2) # abs(bl['type']['height'])
+                c = c + 1
         return summ
         #return 0.0
 
     def width(self):
         summ = 0
-        for bl in self.blocks:
-            #print(bl['offset'][2])
-            offrot = bl['offset'][2]
-            if offrot == 90:
-                summ = summ + abs(bl['type']['height'])
-        
+        if len(self.bl_list_x) == 1:
+            for bl in self.blocks:
+                offrot = bl['offset'][2]
+                if offrot == 0:
+                    summ = bl['type']['lenght'] # abs(bl['type']['lenght'])
+                else:
+                    summ = bl['type']['height'] # abs(bl['type']['height'])
+        else:
+            for i in self.bl_list_x:
+                summ = summ + abs(i)
+            c = 0
+            for bl in self.blocks:
+                if self.bl_list_x[c] != 0:
+                    offrot = bl['offset'][2]
+                    if offrot == 90:
+                        summ = summ + (bl['type']['height']/2) # abs(bl['type']['height'])
+                    else:
+                        summ = summ + (bl['type']['lenght']/2) # abs(bl['type']['lenght'])
+                c = c + 1
         return summ
 
     def top_center(self):
         height_center = self.height
         lenght_center = self.width/2
-        return [height_center, lenght_center]
+        return [lenght_center, height_center]
 
     def as_dictionary(self):
         block_list = []
-        block_list.append([self.height, self.width])
+        block_list.append([self.width, self.height])
         for piece in self.blocks:
             block_comp = []
             block_comp.append(piece['name'])
@@ -318,9 +360,12 @@ class Individual:
     def generate_xml(self, **kwargs):
         #print(self.object_list)
         #os.path.join(write_path, "level-" + str(len(evaluated)).zfill(fill) + ".xml"))
-        xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_height = xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
         #print("XML Completo")
         pass
+    
+    def ind_height(self):
+        return 0
     
     
     
@@ -401,6 +446,21 @@ while gen < max_gen and max(fits) < 100:
     for ind in pop:
         ind.generate_xml(individual = ind_c)
         ind_c = ind_c + 1
+    
+    ################################################################################
+    #############################< ELITE selection >################################
+    ################################################################################
+    
+    # Obtain the height of each individual
+    data = []
+    c = 0
+    for ind in pop:
+        data.append([int(ind.ind_height),c])
+        c = c + 1
+    
+    # Order the list
+    results = sorted(data, key=lambda x: x[0], reverse=True)
+    
     
     # Increase value of the generation for the next cycle
     gen = gen + 1

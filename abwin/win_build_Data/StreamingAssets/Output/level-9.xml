@@ -8,9 +8,8 @@
   </Birds>
   <Slingshot x="-5" y="-2.5" />
   <GameObjects>
-    <Block type="RectSmall" material="wood" x="3.15" y="-3.019386" rotation="0" id="2" aVelocity="6.046687" />
-    <Block type="RectMedium" material="wood" x="3.15" y="-3.367877" rotation="0" id="3" aVelocity="0.3828203" />
-    <Block type="SquareTiny" material="wood" x="1.26" y="-3.3" rotation="45" id="8" aVelocity="8.968957" />
-    <Block type="SquareSmall" material="wood" x="-1.240099" y="-0.9508294" rotation="45" id="9" aVelocity="116.5659" />
+    <Block type="RectMedium" material="stone" x="0" y="-3.39" rotation="0" id="0" aVelocity="0.1194126" />
+    <Block type="SquareHole" material="stone" x="0" y="-2.87" rotation="0" id="1" aVelocity="9.638635" />
+    <Block type="RectTiny" material="stone" x="-0.9" y="-0.46" rotation="90" id="7" aVelocity="301.7382" />
   </GameObjects>
 </Level>

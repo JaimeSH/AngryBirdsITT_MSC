@@ -8,9 +8,24 @@
   </Birds>
   <Slingshot x="-5" y="-2.5" />
   <GameObjects>
-    <Block type="SquareSmall" material="wood" x="4.62" y="-1.41" rotation="90" id="0" aVelocity="83.19984" />
-    <Block type="SquareSmall" material="wood" x="1.758083" y="-3.269904" rotation="135" id="6" aVelocity="12.81934" />
-    <Block type="RectTiny" material="wood" x="4.62" y="-3.09" rotation="135" id="7" aVelocity="19.32116" />
-    <Block type="SquareTiny" material="wood" x="5.488521" y="-2.88" rotation="45" id="10" aVelocity="30.9214" />
+    <Block type="RectBig" material="stone" x="0" y="-3.39" rotation="0" id="0" aVelocity="0.03722506" />
+    <Block type="SquareTiny" material="stone" x="0" y="-3.17" rotation="0" id="1" aVelocity="5.810246" />
+    <Block type="RectFat" material="stone" x="0" y="-2.85" rotation="0" id="2" aVelocity="7.456571" />
+    <Block type="RectBig" material="stone" x="0" y="-2.53" rotation="0" id="3" aVelocity="8.351068" />
+    <Block type="RectMedium" material="stone" x="-0.9" y="-1.62" rotation="90" id="4" aVelocity="11.47753" />
+    <Block type="RectMedium" material="stone" x="0.9" y="-1.62" rotation="90" id="5" aVelocity="12.65877" />
+    <Block type="RectBig" material="stone" x="0" y="-0.71" rotation="0" id="6" aVelocity="14.07874" />
+    <Block type="RectBig" material="stone" x="0" y="-0.49" rotation="0" id="7" aVelocity="13.94886" />
+    <Block type="SquareSmall" material="stone" x="0" y="-0.17" rotation="0" id="8" aVelocity="14.0855" />
+    <Block type="RectBig" material="stone" x="0" y="0.15" rotation="0" id="9" aVelocity="14.77367" />
+    <Block type="RectMedium" material="stone" x="-0.9" y="1.06" rotation="90" id="10" aVelocity="15.88083" />
+    <Block type="RectMedium" material="stone" x="0.9" y="1.06" rotation="90" id="11" aVelocity="16.11674" />
+    <Block type="RectBig" material="stone" x="0" y="1.97" rotation="0" id="12" aVelocity="16.58884" />
+    <Block type="SquareHole" material="stone" x="0" y="2.49" rotation="0" id="13" aVelocity="17.19287" />
+    <Block type="RectBig" material="stone" x="0" y="3.01" rotation="0" id="14" aVelocity="17.82488" />
+    <Block type="RectTiny" material="stone" x="-0.9" y="3.32" rotation="90" id="15" aVelocity="18.42646" />
+    <Block type="RectTiny" material="stone" x="0.9" y="3.32" rotation="90" id="16" aVelocity="18.58294" />
+    <Block type="RectBig" material="stone" x="0" y="3.63" rotation="0" id="17" aVelocity="18.7795" />
+    <Block type="RectBig" material="stone" x="0" y="3.85" rotation="0" id="18" aVelocity="19.10232" />
   </GameObjects>
 </Level>

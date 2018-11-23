@@ -8,9 +8,20 @@
   </Birds>
   <Slingshot x="-5" y="-2.5" />
   <GameObjects>
-    <Block type="SquareSmall" material="wood" x="4.62" y="-1.41" rotation="90" id="0" aVelocity="97.22475" />
-    <Block type="RectTiny" material="wood" x="2.861933" y="-1.102416" rotation="45" id="1" aVelocity="120.5303" />
-    <Block type="SquareTiny" material="wood" x="2.52" y="0.4893316" rotation="0" id="6" aVelocity="196.5434" />
-    <Block type="RectTiny" material="wood" x="3.99" y="-3.3" rotation="0" id="11" aVelocity="4.244436" />
+    <Block type="Circle" material="stone" x="0" y="-3.14" rotation="0" id="0" aVelocity="1.752355" />
+    <Block type="SquareSmall" material="stone" x="0" y="-2.57" rotation="0" id="1" aVelocity="4.979916" />
+    <Block type="RectMedium" material="stone" x="0" y="-2.03" rotation="0" id="3" aVelocity="8.105214" />
+    <Block type="Circle" material="stone" x="0" y="-1.56" rotation="0" id="4" aVelocity="7.365455" />
+    <Block type="SquareSmall" material="stone" x="0" y="-0.99" rotation="0" id="5" aVelocity="7.237254" />
+    <Block type="RectBig" material="stone" x="0" y="-0.67" rotation="0" id="6" aVelocity="7.405131" />
+    <Block type="RectTiny" material="stone" x="-0.9" y="-0.36" rotation="90" id="7" aVelocity="8.245675" />
+    <Block type="RectTiny" material="stone" x="0.9" y="-0.36" rotation="90" id="8" aVelocity="8.378737" />
+    <Block type="RectBig" material="stone" x="0" y="-0.05" rotation="0" id="9" aVelocity="7.565856" />
+    <Block type="RectMedium" material="stone" x="0" y="0.17" rotation="0" id="10" aVelocity="7.858657" />
+    <Block type="RectBig" material="stone" x="0" y="0.39" rotation="0" id="11" aVelocity="8.370729" />
+    <Block type="RectTiny" material="stone" x="-0.9" y="0.7" rotation="90" id="12" aVelocity="9.831001" />
+    <Block type="RectTiny" material="stone" x="0.9" y="0.7" rotation="90" id="13" aVelocity="9.961535" />
+    <Block type="RectBig" material="stone" x="0" y="1.01" rotation="0" id="14" aVelocity="10.07443" />
+    <Block type="RectBig" material="stone" x="0" y="1.23" rotation="0" id="15" aVelocity="10.67284" />
   </GameObjects>
 </Level>
