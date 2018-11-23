@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 from AngryBirdsGA import *
 
 def initXMLLevel():
@@ -88,3 +89,20 @@ def writeXML(individual, filename):
     f.close()
     el_height = el_height + 350
     return el_height
+
+def readXML(filename):
+    # Reads the entire file
+    xmldoc = minidom.parse(filename)
+
+    # Gets all the elements in the file that have the BLOCK tag
+    item_list = xmldoc.getElementsByTagName('Block')
+    
+    # Prints the lenght of the array of pieces
+    #print(len(item_list))
+
+    # Prints the type of each piece in the file
+    for s in item_list:
+        pass
+        #print(s.attributes['type'].value)
+
+    return len(item_list)

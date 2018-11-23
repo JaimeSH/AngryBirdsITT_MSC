@@ -32,7 +32,7 @@ __status__ = "Development"
 
 ## Values used for the genetic algorithm
 population = 10     # For now it can only be below 10
-max_gen = 100       # Max number of generations
+max_gen = 5       # Max number of generations
 fits = [0]           # Variable to save the fitness of each generation
 gen = 1             # Generation 1
 per_cross = 0.5     # Percentage of cross-over (cross-over operator)
@@ -364,7 +364,14 @@ class Individual:
         #print("XML Completo")
         pass
     
+    def read_xml(self, **kwargs):
+        self.ind_piece_count = xml.readXML(os.path.join(project_root, read_path + "/level-"+ str(kwargs.get('individual')) +".xml"))
+        pass
+    
     def ind_height(self):
+        return 0
+    
+    def ind_piece_count(self):
         return 0
     
     
@@ -379,8 +386,8 @@ for ind in pop:
 """    
     
 
-while gen < max_gen and max(fits) < 100:
-    fits = [0]
+while gen < max_gen: #and max(fits) < 100:
+    #fits = [0]
     # If the current generation is not the first one generate a new population
     if gen != 1:
         # Determine via a random number which pieces to assign
@@ -447,10 +454,21 @@ while gen < max_gen and max(fits) < 100:
         ind.generate_xml(individual = ind_c)
         ind_c = ind_c + 1
     
+    time.sleep(1)
+    # Runs and instance of the game
+    os.system('"' + os.path.join(project_root, game_path) + '"')
+
+    time.sleep(1)
     ################################################################################
     #############################< ELITE selection >################################
     ################################################################################
     
+    # Read the xml files and get the data
+    ind_c = 0
+    for ind in pop:
+        ind.read_xml(individual = ind_c)
+        ind_c = ind_c + 1
+
     # Obtain the height of each individual
     data = []
     c = 0
@@ -464,3 +482,5 @@ while gen < max_gen and max(fits) < 100:
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
+
+
