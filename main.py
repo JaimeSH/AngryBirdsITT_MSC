@@ -32,7 +32,7 @@ __status__ = "Development"
 
 ## Values used for the genetic algorithm
 population = 10     # For now it can only be below 10
-max_gen = 5       # Max number of generations
+max_gen = 2       # Max number of generations
 fits = [0]           # Variable to save the fitness of each generation
 gen = 1             # Generation 1
 per_cross = 0.5     # Percentage of cross-over (cross-over operator)
@@ -66,9 +66,9 @@ os.makedirs(os.path.join(project_root, log_path), exist_ok=True)
 BLOCK_TYPE = {
     'Circle': {'height': 72, 'lenght': 72},
     'RectTiny': {'height': 22, 'lenght': 42},
-    'RectSmall': {'height': 22, 'lenght': 42},
-    'RectBig': {'height': 22, 'lenght': 42},
-    'RectMedium': {'height': 22, 'lenght': 42},
+    'RectSmall': {'height': 22, 'lenght': 82},
+    'RectBig': {'height': 22, 'lenght': 182},
+    'RectMedium': {'height': 22, 'lenght': 162},
     'RectFat': {'height': 42, 'lenght': 82},
     'SquareTiny': {'height': 22, 'lenght': 22},
     'SquareSmall': {'height': 42, 'lenght': 42},
@@ -78,8 +78,8 @@ BLOCK_TYPE = {
 }
 
 BLOCK_MATERIAL = {
-    1: 'wood',
-    0: 'stone',
+    0: 'wood',
+    1: 'stone',
     2: 'ice'
 }
 
@@ -360,7 +360,10 @@ class Individual:
     def generate_xml(self, **kwargs):
         #print(self.object_list)
         #os.path.join(write_path, "level-" + str(len(evaluated)).zfill(fill) + ".xml"))
-        self.ind_height = xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        res_list = []
+        res_list = xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_height = res_list[0]
+        self.ind_piece = res_list[1]
         #print("XML Completo")
         pass
     
@@ -369,6 +372,9 @@ class Individual:
         pass
     
     def ind_height(self):
+        return 0
+    
+    def ind_piece(self):
         return 0
     
     def ind_piece_count(self):
@@ -473,12 +479,13 @@ while gen < max_gen: #and max(fits) < 100:
     data = []
     c = 0
     for ind in pop:
-        data.append([int(ind.ind_height),c])
+        data.append([int(ind.ind_height), ind.ind_piece, ind.ind_piece_count, abs(ind.ind_piece - ind.ind_piece_count), c])
         c = c + 1
     
     # Order the list
-    results = sorted(data, key=lambda x: x[0], reverse=True)
+    results = sorted(data, key=lambda x: x[3], reverse=True)
     
+    # Obtain the minor difference from each individual
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
