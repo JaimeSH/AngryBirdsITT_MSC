@@ -88,7 +88,7 @@ def writeXML(individual, filename):
 
     f.close()
     el_height = el_height + 350
-    return el_height
+    return [el_height, i+1]
 
 def readXML(filename):
     # Reads the entire file

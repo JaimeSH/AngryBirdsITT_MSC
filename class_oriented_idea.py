@@ -82,47 +82,12 @@ def Rotate2D(pts,cnt,ang=pi/4):
     return dot(pts-cnt,ar([[cos(ang),sin(ang)],[-sin(ang),cos(ang)]]))+cnt
 
 
-class Circle:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "Circle"
+class Piece:
+    def __init__(self, x, y, r):
         self.Height = 72
         self.Width = 72
         self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-class RectTiny:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "RectTiny"
-        self.Height = 22
-        self.Width = 42
-        self.Material = "wood"
+        self.Dict = []
         self.X = x
         self.Y = y
         self.R = r
@@ -138,335 +103,7 @@ class RectTiny:
     def get_points(self, r):
         ang = self.R * pi / 180
         ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-    
-
-class RectSmall:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "RectSmall"
-        self.Height = 22
-        self.Width = 82
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class RectMedium:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "RectMedium"
-        self.Height = 22
-        self.Width = 162
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class RectBig:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "RectBig"
-        self.Height = 22
-        self.Width = 182
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class RectFat:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "RectFat"
-        self.Height = 42
-        self.Width = 82
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class SquareTiny:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "SquareTiny"
-        self.Height = 42
-        self.Width = 22
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class SquareSmall:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "SquareSmall"
-        self.Height = 42
-        self.Width = 22
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class Triangle:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "Triangle"
-        self.Height = 72
-        self.Width = 72
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class TriangleHole:
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "TriangleHole"
-        self.Height = 82
-        self.Width = 82
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
-
-    def change_material(self, m):
-        self.Material = m
-
-    def as_dictionary(self):
-        self_list = []
-        self_list.append(self.Name)
-        self_list.append(self.Material)
-        self_list.append(self.X)
-        self_list.append(self.Y)
-        self_list.append(self.R)
-        self.Dict = self_list
-
-
-class SquareHole:
-    Name=""
-    Height=0
-    Width=0
-    Material=""
-    def __init__(self, x=0, y=0, r=0):
-        self.Name = "SquareHole"
-        self.Height = 82
-        self.Width = 82
-        self.Material = "wood"
-        self.X = x
-        self.Y = y
-        self.R = r
-    
-    def get_edges(self):
-        ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
-        self.Edges = ed_lis
-
-    def get_points(self, r):
-        ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
-        self.Points = ost.tolist()
+        self.Points = ots.tolist()
 
     def change_material(self, m):
         self.Material = m
@@ -480,7 +117,154 @@ class SquareHole:
         self_list.append(self.R)
         self.Dict = self_list
         
+    def update_values(self):
+        self.get_edges()
+        self.get_points(self.R)
+        self.as_dictionary()
 
-x = SquareHole(10,10,90)
-x.get_edges()
-x.X
+class Circle(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "Circle"
+        self.Height = 72
+        self.Width = 72
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+class RectTiny(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "RectTiny"
+        self.Height = 22
+        self.Width = 42
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+    
+
+class RectSmall(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "RectSmall"
+        self.Height = 22
+        self.Width = 82
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class RectMedium(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "RectMedium"
+        self.Height = 22
+        self.Width = 162
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class RectBig(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "RectBig"
+        self.Height = 22
+        self.Width = 182
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class RectFat(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "RectFat"
+        self.Height = 42
+        self.Width = 82
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class SquareTiny(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "SquareTiny"
+        self.Height = 22
+        self.Width = 22
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class SquareSmall(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "SquareSmall"
+        self.Height = 42
+        self.Width = 42
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class Triangle(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "Triangle"
+        self.Height = 72
+        self.Width = 72
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class TriangleHole(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "TriangleHole"
+        self.Height = 82
+        self.Width = 82
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+
+
+class SquareHole(Piece):
+    def __init__(self, x=0, y=0, r=0):
+        self.Name = "SquareHole"
+        self.Height = 82
+        self.Width = 82
+        Piece.__init__(self, x, y, r)
+        self.update_values()
+        
+
+
+clases = {
+        "Circle":Circle,
+        "RectTiny":RectTiny,
+        "RectSmall":RectSmall,
+        "RectMedium":RectMedium,
+        "RectBig":RectBig,
+        "RectFat":RectFat,
+        "SquareTiny":SquareTiny,
+        "SquareSmall":SquareSmall,
+        "SquareHole":SquareHole,
+        "Triangle":Triangle,
+        "TriangleHole":TriangleHole }
+
+clases1 = {
+        "Circle":Circle
+        }
+
+
+Blockes = [("SquareHole", 22, 22, 80),("SquareHole", 22, 22, 80),("TriangleHole", 22, 22, 80)]
+
+objetos = [clases[clase](x,y,r) for (clase,x,y,r) in Blockes]
+
+
+Bloque1 = [("Circle", 22,22,90),("SquareHole", 25, 30, 0)]
+objetos = [clases[clase](x,y,r) for (clase,x,y,r) in Bloque1]
+
+
+BLOCKS = {
+0: [
+    SquareHole(22,22,80),
+    TriangleHole(12,23,90),
+    RectBig(10,10,80),
+    RectTiny(20,20,50)
+]
+}
+
+for bl in BLOCKS[0]:
+    bl.update_values()
+    print(bl.Dict)
+    print(bl.X)
+    
+    
+clases = {
+        '1':SquareHole, 
+        '2':TriangleHole,
+        }
+clases["1"](22,22,80)
