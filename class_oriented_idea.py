@@ -84,8 +84,8 @@ def Rotate2D(pts,cnt,ang=pi/4):
 
 class Piece:
     def __init__(self, x, y, r):
-        self.Height = 72
-        self.Width = 72
+        #self.Height = 72
+        #self.Width = 72
         self.Material = "wood"
         self.Dict = []
         self.X = x
@@ -94,15 +94,15 @@ class Piece:
     
     def get_edges(self):
         ed_lis = []
-        ed_lis.append([     self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +   self.Y,     self.Width/2 + self.X])
-        ed_lis.append([0 -  self.Height/2 +  self.Y, 0 - self.Width/2 + self.X])
-        ed_lis.append([     self.Height/2 +   self.Y, 0 - self.Width/2 + self.X])
+        ed_lis.append([self.Width/2 +       self.X,         self.Height/2 +     self.Y])
+        ed_lis.append([self.Width/2 +       self.X, 0 -     self.Height/2 +     self.Y])
+        ed_lis.append([0 - self.Width/2 +   self.X, 0 -     self.Height/2 +     self.Y])
+        ed_lis.append([0 - self.Width/2 +   self.X,         self.Height/2 +     self.Y])
         self.Edges = ed_lis
 
     def get_points(self, r):
         ang = self.R * pi / 180
-        ots = Rotate2D(self.Edges, ar([0, 0]), ang)
+        ots = Rotate2D(self.Edges, ar([0 + self.X, 0 + self.Y]), ang)
         self.Points = ots.tolist()
 
     def change_material(self, m):
@@ -125,16 +125,16 @@ class Piece:
 class Circle(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "Circle"
-        self.Height = 72
-        self.Width = 72
+        self.Height = 75
+        self.Width = 75
         Piece.__init__(self, x, y, r)
         self.update_values()
 
 class RectTiny(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "RectTiny"
-        self.Height = 22
-        self.Width = 42
+        self.Height = 25
+        self.Width = 45
         Piece.__init__(self, x, y, r)
         self.update_values()
     
@@ -142,8 +142,8 @@ class RectTiny(Piece):
 class RectSmall(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "RectSmall"
-        self.Height = 22
-        self.Width = 82
+        self.Height = 25
+        self.Width = 85
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -151,8 +151,8 @@ class RectSmall(Piece):
 class RectMedium(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "RectMedium"
-        self.Height = 22
-        self.Width = 162
+        self.Height = 25
+        self.Width = 165
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -160,8 +160,8 @@ class RectMedium(Piece):
 class RectBig(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "RectBig"
-        self.Height = 22
-        self.Width = 182
+        self.Height = 25
+        self.Width = 185
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -169,8 +169,8 @@ class RectBig(Piece):
 class RectFat(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "RectFat"
-        self.Height = 42
-        self.Width = 82
+        self.Height = 45
+        self.Width = 85
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -178,8 +178,8 @@ class RectFat(Piece):
 class SquareTiny(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "SquareTiny"
-        self.Height = 22
-        self.Width = 22
+        self.Height = 25
+        self.Width = 25
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -187,8 +187,8 @@ class SquareTiny(Piece):
 class SquareSmall(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "SquareSmall"
-        self.Height = 42
-        self.Width = 42
+        self.Height = 45
+        self.Width = 45
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -196,8 +196,8 @@ class SquareSmall(Piece):
 class Triangle(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "Triangle"
-        self.Height = 72
-        self.Width = 72
+        self.Height = 75
+        self.Width = 75
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -205,8 +205,8 @@ class Triangle(Piece):
 class TriangleHole(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "TriangleHole"
-        self.Height = 82
-        self.Width = 82
+        self.Height = 85
+        self.Width = 85
         Piece.__init__(self, x, y, r)
         self.update_values()
 
@@ -214,12 +214,73 @@ class TriangleHole(Piece):
 class SquareHole(Piece):
     def __init__(self, x=0, y=0, r=0):
         self.Name = "SquareHole"
-        self.Height = 82
-        self.Width = 82
+        self.Height = 85
+        self.Width = 85
         Piece.__init__(self, x, y, r)
         self.update_values()
-        
 
+
+class Composite:
+    
+    bl_list_x = []
+    bl_list_y = []
+    
+    def __init__(self, blocks):
+        # Blocks must be a list
+        self.bl_list_x = []
+        self.bl_list_y = []
+        self.blocks = blocks
+        self.Objetos = [clases[clase](x,y,r) for (clase,x,y,r) in self.blocks]
+        self.get_values()
+        self.height = self.height()
+        self.width = self.width()
+        self.top_center = self.top_center()
+        self.as_dictionary = self.as_dictionary()
+        
+    def get_values(self):
+        self.Borders = [[(x,y) for (x,y) in Obj.Points] for Obj in self.Objetos]
+        self.Borders = sum(self.Borders, [])
+        print(self.Borders)
+        #for Border in self.Borders
+        print(min(self.Borders)[1], max(self.Borders)[1])
+        self.Width = abs(min(self.Borders, key=lambda t:t[0])[0] - max(self.Borders, key=lambda t:t[0])[0])
+        self.Height = abs(min(self.Borders, key=lambda t:t[1])[1] - max(self.Borders, key=lambda t:t[1])[1])
+        return 0
+
+    def height(self):
+        return 0.0
+
+    def width(self):
+        return 0.0
+    
+    def set_borders(self):
+        
+        return 0.0
+
+    def top_center(self):
+        height_center = self.Height
+        lenght_center = self.Width/2
+        return [lenght_center, height_center]
+
+    def as_dictionary(self):
+        block_list = []
+        block_list.append([self.Width, self.Height])
+        for piece in self.Objetos:
+            block_comp = []
+            block_comp.append(piece.Dict[0])
+            block_comp.append(piece.Dict[1])
+            block_comp.append(piece.Dict[2])
+            block_comp.append(piece.Dict[3])
+            block_comp.append(piece.Dict[4])
+            #block_comp.append([piece['name'], piece['material'], piece['offset'][0], piece['offset'][1], piece['offset'][2]])
+            block_list.append(block_comp)
+        #block_list.append(block_comp)
+        #print(block_list)
+        return block_list
+    
+    def as_json(self):
+        return {}
+   
 
 clases = {
         "Circle":Circle,
@@ -238,7 +299,23 @@ clases1 = {
         "Circle":Circle
         }
 
+Composites = {
+    0: Composite([("Circle", 0, 0, 0)]),
+    1: Composite([("RectTiny", 0, 0, 0)]),
+    2: Composite([("RectSmall", 0, 0, 0)]),
+    3: Composite([("RectMedium", 0, 0, 0)]),
+    4: Composite([("RectBig", 0, 0, 0)]),
+    5: Composite([("RectFat", 0, 0, 0)]),
+    6: Composite([("SquareTiny", 0, 0, 0)]),
+    7: Composite([("SquareSmall", 0, 0, 0)]),
+    8: Composite([("SquareHole", 0, 0, 0)]),
+    9: Composite([("Triangle", 0, 0, 0)]),
+    10: Composite([("TriangleHole", 0, 0, 0)]),
+    11: Composite([("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
+    12: Composite([("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)])
+}
 
+BLOCK_LIST = [[]]
 Blockes = [("SquareHole", 22, 22, 80),("SquareHole", 22, 22, 80),("TriangleHole", 22, 22, 80)]
 
 objetos = [clases[clase](x,y,r) for (clase,x,y,r) in Blockes]
@@ -268,3 +345,180 @@ clases = {
         '2':TriangleHole,
         }
 clases["1"](22,22,80)
+
+
+################################################################################
+#############################< Code Adaptation >################################
+################################################################################
+
+
+#####################################################################
+########################< Class Definitions >########################
+#####################################################################
+
+ 
+    
+    
+class Individual:
+    def __init__(self, **kwargs):
+        #self.id = kwargs['id']
+        #self.fitness = kwargs.get('fitness', {})
+        self.chromosome = kwargs.get('chromosome', [])
+        self.__dict__.update(kwargs)
+        self.chromosome_objects = [Composites[composite] for composite in self.chromosome]
+        #self.chromosome_coordinates = self.chromosome_coordinates()
+        self.object_list = self.object_list()
+
+    def position_chromosome(self):
+        #To do
+        # Here you can use the chromosome objects etc.
+        pass
+    
+    def chromosome_coordinates(self):
+        
+        return [0, 0]
+    
+    def object_list(self):
+        final_list = []
+        #final_list.append(self.chromosome_coordinates)
+        for com in self.chromosome_objects:
+            obj_list =[]
+            obj_list.append(com.as_dictionary)
+            #obj_list.append([self.chromosome_coordinates[0], self.chromosome_coordinates[1]])
+            final_list.append(obj_list)
+        return final_list
+    
+    def generate_xml(self, **kwargs):
+        #print(self.object_list)
+        #os.path.join(write_path, "level-" + str(len(evaluated)).zfill(fill) + ".xml"))
+        res_list = []
+        res_list = xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_height = res_list[0]
+        self.ind_piece = res_list[1]
+        #print("XML Completo")
+        pass
+    
+    def read_xml(self, **kwargs):
+        self.Remaining_Pieces = xml.readXML(os.path.join(project_root, read_path + "/level-"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_piece_count = len(self.Remaining_Pieces)
+        pass
+    
+    def ind_height(self):
+        return 0
+    
+    def ind_piece(self):
+        return 0
+    
+    def ind_piece_count(self):
+        return 0
+    
+    
+    
+pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+"""
+for ind in pop:
+    for gen in ind.chromosome_objects:
+        #print(gen.blocks)
+        #print('')
+        pass
+"""    
+    
+
+while gen < max_gen: #and max(fits) < 100:
+    #fits = [0]
+    # If the current generation is not the first one generate a new population
+    if gen != 1:
+        # Determine via a random number which pieces to assign
+        pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+            
+    # Outside IF statement
+    
+    # Check if the current number of population multiplied by the cross-over percentage
+    # is an even or odd number, in the later case remove 1 from the value
+    many = len(pop) * per_cross
+    if many % 2 == 0:
+        pass
+    else:
+        many = many - 1
+    
+    # Obtain the "parents" of the generation
+    parents = []
+    pr = 1
+    while pr <= many:
+        r = random.randint(1, population)
+        if r not in parents: 
+            parents.append(r)
+            pr = pr + 1
+            
+    # Generate the cross-over operation (one-point crossover)
+    for cross_parent in range(0, len(parents), 2):
+        # Generate a copy of each parent for the cross-over operation
+        father = pop[parents[cross_parent] -1 ].chromosome
+        mother = pop[parents[cross_parent + 1] - 1].chromosome
+        
+        # "Divide" the parents chromosomes for the operation
+        father11 = father[0:math.floor(ind_pieces/2)]
+        father12 = father[math.floor(ind_pieces/2):]
+        
+        mother11 = mother[0:math.floor(ind_pieces/2)]
+        mother12 = mother[math.floor(ind_pieces/2):]
+        
+        # Generate the childs of both parents
+        son = father11 + mother12
+        daughter = mother11 + father12
+        
+        # Mutate the childs (by chance like throwing a 100 side dice)
+        # If greater than the treshold then mutate
+        chance = random.randint(1, 100)
+        threshold = 100 - (100 * per_mut)
+        if chance > threshold:
+            var=0
+            #print("Mutate")
+        else:
+            var=1
+            #print("Not Mutate")
+        
+        
+        # Replace the parents in the generation
+        pop[parents[cross_parent] - 1].chromosome = son
+        pop[parents[cross_parent + 1] - 1].chromosome = daughter
+        
+        pop[parents[cross_parent] - 1] = Individual(chromosome = son)
+        pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter)
+        
+    ind_c = 0
+    # After the cross-over
+    for ind in pop:
+        ind.generate_xml(individual = ind_c)
+        ind_c = ind_c + 1
+    
+    time.sleep(1)
+    # Runs and instance of the game
+    os.system('"' + os.path.join(project_root, game_path) + '"')
+
+    time.sleep(1)
+    ################################################################################
+    #############################< ELITE selection >################################
+    ################################################################################
+    
+    # Read the xml files and get the data
+    ind_c = 0
+    for ind in pop:
+        ind.read_xml(individual = ind_c)
+        ind_c = ind_c + 1
+
+    # Obtain the height of each individual
+    data = []
+    c = 0
+    for ind in pop:
+        data.append([int(ind.ind_height), ind.ind_piece, ind.ind_piece_count, abs(ind.ind_piece - ind.ind_piece_count), c])
+        c = c + 1
+    
+    # Order the list
+    results = sorted(data, key=lambda x: x[3], reverse=True)
+    
+    # Obtain the minor difference from each individual
+    
+    # Increase value of the generation for the next cycle
+    gen = gen + 1
+

@@ -96,7 +96,10 @@ def readXML(filename):
 
     # Gets all the elements in the file that have the BLOCK tag
     item_list = xmldoc.getElementsByTagName('Block')
+
+    final_list = [[Objeto.getAttribute('type'), Objeto.getAttribute('material'), Objeto.getAttribute('x'), Objeto.getAttribute('y'), Objeto.getAttribute('rotation')] for Objeto in item_list]
     
+    #final_list = [Dic.type.value, Dic.material.value, Dic.x.value, Dic.y.value, Dic.rotation.value] in Dic for Piece.__attrs  in item_list
     # Prints the lenght of the array of pieces
     #print(len(item_list))
 
@@ -105,4 +108,4 @@ def readXML(filename):
         pass
         #print(s.attributes['type'].value)
 
-    return len(item_list)
+    return final_list
