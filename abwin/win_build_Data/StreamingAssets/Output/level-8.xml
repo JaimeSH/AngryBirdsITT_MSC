@@ -7,5 +7,12 @@
     <Bird type="BirdWhite" />
   </Birds>
   <Slingshot x="-5" y="-2.5" />
-  <GameObjects />
+  <GameObjects>
+    <Block type="SquareTiny" material="wood" x="0.005307559" y="-3.351118" rotation="-16.32409" id="0" aVelocity="7.506322" />
+    <Block type="RectMedium" material="wood" x="0.09216169" y="-3.133555" rotation="-16.80531" id="1" aVelocity="15.1629" />
+    <Block type="RectBig" material="wood" x="0.1601322" y="-2.908536" rotation="-16.80634" id="2" aVelocity="21.97311" />
+    <Block type="RectMedium" material="wood" x="0.3008984" y="-2.703669" rotation="-16.92728" id="3" aVelocity="95.72483" />
+    <Block type="SquareHole" material="wood" x="2.312344" y="-3.062484" rotation="-0.1020137" id="6" aVelocity="207.168" />
+    <Block type="TriangleHole" material="wood" x="2.353477" y="-2.207564" rotation="-0.1019135" id="7" aVelocity="216.8851" />
+  </GameObjects>
 </Level>

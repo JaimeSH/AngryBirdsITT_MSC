@@ -8,12 +8,10 @@
   </Birds>
   <Slingshot x="-5" y="-2.5" />
   <GameObjects>
-    <Block type="SquareHole" material="stone" x="0" y="-3.09" rotation="0" id="0" aVelocity="2.200237" />
-    <Block type="RectBig" material="stone" x="0" y="-2.57" rotation="0" id="1" aVelocity="7.351397" />
-    <Block type="RectTiny" material="stone" x="-0.9" y="-2.26" rotation="90" id="2" aVelocity="18.60352" />
-    <Block type="RectTiny" material="stone" x="0.9" y="-2.26" rotation="90" id="3" aVelocity="16.01362" />
-    <Block type="SquareTiny" material="stone" x="0" y="-1.73" rotation="0" id="5" aVelocity="46.06267" />
-    <Block type="RectSmall" material="stone" x="0" y="0.53" rotation="0" id="10" aVelocity="273.7924" />
-    <Block type="Triangle" material="stone" x="0" y="1.22" rotation="0" id="12" aVelocity="312.6068" />
+    <Block type="RectBig" material="wood" x="0.001339459" y="-3.374754" rotation="0.01367328" id="0" aVelocity="0.03124138" />
+    <Block type="RectMedium" material="wood" x="-0.9002261" y="-2.404996" rotation="90.01566" id="1" aVelocity="7.477676" />
+    <Block type="RectMedium" material="wood" x="0.8972793" y="-2.406688" rotation="90.06138" id="2" aVelocity="7.549207" />
+    <Block type="RectBig" material="wood" x="0.0001588538" y="-1.436089" rotation="-0.07773586" id="3" aVelocity="14.87782" />
+    <Block type="Triangle" material="wood" x="-0.008925453" y="-0.9001618" rotation="-0.02698374" id="4" aVelocity="14.39378" />
   </GameObjects>
 </Level>
