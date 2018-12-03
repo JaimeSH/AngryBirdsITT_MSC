@@ -1,18 +1,19 @@
 from __future__ import division                 #to avoid integer devision problem
 import scipy
 import pylab
-
 #
 import random
 import math
-
 #
 import datetime
 import time
 import os
 import json
 import sys
+
+# Local files
 import XmlHelpers as xml
+import Evaluation as Eval
 #--import AngryBirdsGA.XmlHelpers_mod as xml
 
 author = "Salinas Hernandez Jaime"
@@ -395,6 +396,7 @@ class Individual:
         res_list = xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
         self.ind_height = res_list[0]
         self.ind_piece = res_list[1]
+        self.Pieces = res_list[2]
         #print("XML Completo")
         pass
     
@@ -410,6 +412,10 @@ class Individual:
         return 0
     
     def ind_piece_count(self):
+        return 0
+    
+    def get_fitness(self):
+        self.Fitness = Eval.fitness(self.Pieces, self.Remaining_Pieces)
         return 0
     
     
@@ -503,9 +509,15 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Read the xml files and get the data
     ind_c = 0
+    final_ind_list = []
     for ind in pop:
-        ind.read_xml(individual = ind_c)
+        value = ind.read_xml(individual = ind_c)
+        final_ind_list.append(value)
+        print(value)
         ind_c = ind_c + 1
+
+    # Calculate the fitness for each individual
+    pop_fitness = [Eval.fitness(ind) for ind in final_ind_list]
 
     # Obtain the height of each individual
     data = []

@@ -34,6 +34,7 @@ def writeXML(individual, filename):
     f = open(filename, "w+")
     index = STRING_XML.find('Camera')
     final_xml = []
+    final_list = []
     final_xml.append('<?xml version="1.0" encoding ="utf-8"?>')
     final_xml.append(STRING_XML[:index + len('Camera')])
     final_xml.append(' x="0" y="0" minWidth="20" maxWidth="25" ')
@@ -77,6 +78,7 @@ def writeXML(individual, filename):
                                     ' y="' + str(y_val) + '"' +
                                     ' rotation="' + str(obj[4]) + '"' +
                                     ' id="' + str(i) + '"/>\n')
+                    final_list.append([obj[0], obj[1], str(x_val), str(y_val), str(obj[4]), str(i)])
                     i+=1
             # End if
         el_height = el_height + el_height_cont
@@ -88,7 +90,7 @@ def writeXML(individual, filename):
 
     f.close()
     el_height = el_height + 350
-    return [el_height, i+1]
+    return [el_height, i+1, final_list]
 
 def readXML(filename):
     # Reads the entire file
@@ -97,7 +99,7 @@ def readXML(filename):
     # Gets all the elements in the file that have the BLOCK tag
     item_list = xmldoc.getElementsByTagName('Block')
 
-    final_list = [[Objeto.getAttribute('type'), Objeto.getAttribute('material'), Objeto.getAttribute('x'), Objeto.getAttribute('y'), Objeto.getAttribute('rotation')] for Objeto in item_list]
+    final_list = [[Objeto.getAttribute('type'), Objeto.getAttribute('material'), Objeto.getAttribute('x'), Objeto.getAttribute('y'), Objeto.getAttribute('rotation'), Objeto.getAttribute('id')] for Objeto in item_list]
     
     #final_list = [Dic.type.value, Dic.material.value, Dic.x.value, Dic.y.value, Dic.rotation.value] in Dic for Piece.__attrs  in item_list
     # Prints the lenght of the array of pieces
