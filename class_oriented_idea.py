@@ -30,7 +30,7 @@ status = "Development"
 
 ## Values used for the genetic algorithm
 population = 10     # For now it can only be below 10
-max_gen = 2       # Max number of generations
+max_gen = 10       # Max number of generations
 fits = [0]           # Variable to save the fitness of each generation
 gen = 1             # Generation 1
 per_cross = 0.5     # Percentage of cross-over (cross-over operator)
@@ -38,7 +38,9 @@ per_comb = 0.3      # Percentage of combination (combination operator)
 per_mut = 0.4       # Percentage of mutation
 cross_type = 0      # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
 ind_pieces = 10     # Number of pieces that define an individual
-
+all_fit = []        # Average fitness for all generations
+max_elite = 5       # Maximum number of elite members in the generation
+elite = []
 
 ## Data required to create the xml files
 
@@ -438,7 +440,13 @@ while gen < max_gen: #and max(fits) < 100:
         pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
             
     # Outside IF statement
-    
+    # Reintegrate ELITE members if there are
+    if len(elite) != 0:
+        for member in elite:
+            pop.insert(0, member)
+            pop[0] = Individual(chromosome = member[1])
+            pop = pop[:population]
+
     # Check if the current number of population multiplied by the cross-over percentage
     # is an even or odd number, in the later case remove 1 from the value
     many = len(pop) * per_cross
@@ -530,9 +538,32 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Order the list
     results = sorted(data, key=lambda x: x[3], reverse=True)
+
+
+    # Add the best individuals to the elite group
     
-    # Obtain the minor difference from each individual
+
+    # Obtain the average fitness of the generation
+    gen_fit = 0
+    fit_pop = []
+    c = 0
+    for ind in pop:
+        fit_pop.append([c, ind.Fitness])
+        gen_fit = gen_fit + ind.Fitness
+        c=c+1
+    
+    fit_pop.sort(key=lambda x:x[1], reverse=True)
+    fit_pop = fit_pop[:5]
+
+    for e in fit_pop:
+        elite.append([e[1], pop[e[0]].chromosome])
+
+    elite.sort(key=lambda x:x[0], reverse=True)
+    elite = elite[:max_elite]
+
+    all_fit.append((gen_fit/len(pop)))
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
 
+plot(all_fit)

@@ -28,13 +28,13 @@ import math
 
 
 def fitness(ind_orig, ind_fin):
-    print("Fitness = 100%")
+    #print("Fitness = 100%")
     total_fit = 100
     size_pen = size_dif(ind_orig, ind_fin)
     pos_pen = position_error(ind_orig, ind_fin)
     total_fit = 100 - size_pen - pos_pen
-    print(size_pen)
-    print(pos_pen)
+    #print(size_pen)
+    #print(pos_pen)
     return total_fit
 
 def size_dif(a, b):
