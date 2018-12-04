@@ -517,7 +517,9 @@ while gen < max_gen: #and max(fits) < 100:
         ind_c = ind_c + 1
 
     # Calculate the fitness for each individual
-    pop_fitness = [Eval.fitness(ind) for ind in final_ind_list]
+    for ind in pop:
+        ind.get_fitness()
+        pass
 
     # Obtain the height of each individual
     data = []
