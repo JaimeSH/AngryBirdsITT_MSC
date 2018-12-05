@@ -30,7 +30,7 @@ status = "Development"
 
 ## Values used for the genetic algorithm
 population = 10     # For now it can only be below 10
-max_gen = 10       # Max number of generations
+max_gen = 3       # Max number of generations
 fits = [0]           # Variable to save the fitness of each generation
 gen = 1             # Generation 1
 per_cross = 0.5     # Percentage of cross-over (cross-over operator)
@@ -435,13 +435,13 @@ for ind in pop:
 while gen < max_gen: #and max(fits) < 100:
     #fits = [0]
     # If the current generation is not the first one generate a new population
-    if gen != 1:
+    #if gen != 1:
         # Determine via a random number which pieces to assign
-        pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+     #   pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
             
     # Outside IF statement
     # Reintegrate ELITE members if there are
-    if len(elite) != 0:
+    if len(elite):
         for member in elite:
             pop.insert(0, member)
             pop[0] = Individual(chromosome = member[1])
@@ -521,7 +521,7 @@ while gen < max_gen: #and max(fits) < 100:
     for ind in pop:
         value = ind.read_xml(individual = ind_c)
         final_ind_list.append(value)
-        print(value)
+        #print(value)
         ind_c = ind_c + 1
 
     # Calculate the fitness for each individual
@@ -546,11 +546,9 @@ while gen < max_gen: #and max(fits) < 100:
     # Obtain the average fitness of the generation
     gen_fit = 0
     fit_pop = []
-    c = 0
-    for ind in pop:
+    for c, ind in enumerate(pop):
         fit_pop.append([c, ind.Fitness])
         gen_fit = gen_fit + ind.Fitness
-        c=c+1
     
     fit_pop.sort(key=lambda x:x[1], reverse=True)
     fit_pop = fit_pop[:5]
