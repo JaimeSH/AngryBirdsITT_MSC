@@ -460,6 +460,8 @@ while gen < max_gen: #and max(fits) < 100:
         ind.generate_xml(individual = ind_c)
         ind_c = ind_c + 1
     
+
+    
     time.sleep(1)
     # Runs and instance of the game
     os.system('"' + os.path.join(project_root, game_path) + '"')
