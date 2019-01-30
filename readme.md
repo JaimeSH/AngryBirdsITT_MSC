@@ -5,17 +5,14 @@ This project consisted in the generation of an evolutionary computation-based sy
 •	The complexity of said structure
 
 The current main values of the genetic algorithm are:
-|    Element    |     Value     |
-| ------------- | ------------- |
-|   Population    |      10       |
-|  Max. Gen Num   |      5        |
-|   Ind. Pieces   |      10       |
-| Selection type  |      5        |
-| Mex. Gen Num  |      5        |
-|  Population   |      10       |
 
-| First Header  | Second Header |
+| Element  | Value |
 | ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| Population  | 10  |
+| Max number of generations  | 5  |
+| Pieces by individual *  | 10  |
+| Selection type  |  Single-point, double-point and Uniform crossover  |
+| Mutation percentage  | 40%  |
+| Mutation type  | Random mutation, add value mutation, remove value mutation  |
+| Selection type  | Ordered - top to bottom  |
 
