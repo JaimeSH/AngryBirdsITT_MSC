@@ -14,3 +14,8 @@ The current main values of the genetic algorithm are:
 | Mex. Gen Num  |      5        |
 |  Population   |      10       |
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
