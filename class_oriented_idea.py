@@ -85,6 +85,36 @@ def Rotate2D(pts,cnt,ang=pi/4):
     return dot(pts-cnt,ar([[cos(ang),sin(ang)],[-sin(ang),cos(ang)]]))+cnt
 
 
+# Generation masks
+type_small_l = [[0,0,0,0,0,0],
+                [0,0,1,0,0,0],
+                [0,0,1,1,0,0]]
+type_large_l = [[0,0,1,0,0,0],
+                [0,0,1,0,0,0],
+                [0,0,1,1,0,0]]
+type_small_cube = [[0,0,0,0,0,0],
+                   [0,0,1,1,0,0],
+                   [0,0,1,1,0,0]]
+type_large_cube = [[0,1,1,1,0,0],
+                   [0,1,1,1,0,0],
+                   [0,1,1,1,0,0]]
+type_small_floor = [[0,0,0,0,0,0],
+                    [0,0,0,0,0,0],
+                    [0,1,1,1,1,0]]
+type_large_floor = [[0,0,0,0,0,0],
+                    [0,0,0,0,0,0],
+                    [1,1,1,1,1,1]]
+type_castle = [[0,0,1,1,0,0],
+               [1,0,1,1,0,1],
+               [1,1,1,1,1,1]]
+type_house = [[0,0,1,1,0,0],
+              [0,1,1,1,1,0],
+              [0,1,1,1,1,0]]
+type_towers = [[1,0,1,0,1,0],
+               [1,0,1,0,1,0],
+               [1,0,1,0,1,0]]
+
+# Global Piece class and a class for each piece in the game
 class Piece:
     def __init__(self, x, y, r):
         #self.Height = 72
@@ -223,6 +253,7 @@ class SquareHole(Piece):
         self.update_values()
 
 
+# Composite class to control the generation of the individuals
 class Composite:
     
     bl_list_x = []
@@ -315,7 +346,8 @@ Composites = {
     9: Composite([("Triangle", 0, 0, 0)]),
     10: Composite([("TriangleHole", 0, 0, 0)]),
     11: Composite([("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
-    12: Composite([("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)])
+    12: Composite([("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)]),
+    13: Composite([("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectTiny", 0, 0, 90)])
 }
 
 BLOCK_LIST = [[]]
