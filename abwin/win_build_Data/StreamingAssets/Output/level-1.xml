@@ -7,7 +7,5 @@
     <Bird type="BirdWhite" />
   </Birds>
   <Slingshot x="-5" y="-2.5" />
-  <GameObjects>
-    <Block type="RectTiny" material="wood" x="-1.737079" y="-3.269587" rotation="90.23227" id="8" aVelocity="250.3605" />
-  </GameObjects>
+  <GameObjects />
 </Level>

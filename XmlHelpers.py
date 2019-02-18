@@ -27,7 +27,8 @@ def initXMLLevel():
 def writeXML(individual, filename):
     """ Writes the XML level representation of individual to the filename"""
     #filename = "file:/home/itt-mcc/Pictures/Untitled-2.png"
-    global STRING_XML
+    STRING_XML = ""
+
     if STRING_XML == "":
         STRING_XML = initXMLLevel()
 
@@ -53,10 +54,11 @@ def writeXML(individual, filename):
     for item in individual:
         #print(item)
         #print("item 0")
-        base_x = item[0][0]
-        base_x = 0
-        base_y = item[0][1]
-        base_y = 0
+        base_x = item[0][0][0]
+        #base_x = 0
+        print(item[0][0][0])
+        base_y = item[0][0][1]
+        #base_y = 0
         #print(item[1])
         for element in item:
             #print(element)
@@ -111,3 +113,82 @@ def readXML(filename):
         #print(s.attributes['type'].value)
 
     return final_list
+
+def calculate_mask(individual, mask):
+    # 
+    # First
+    temp_individual = individual.copy()
+    height_list = []
+    new_x_list = []
+    x = 750
+    el_height = -350
+    el_height_cont = 0
+    cumulative_height = 0
+    print(individual)
+    for item in individual:
+        for element in item:
+            for obj in element:
+                if len(obj) <= 2:
+                    height_list.append(obj[1])
+
+    print(height_list)
+
+    for j in range(6, -1, -1):
+        for i in range(2, -1, -1):
+            print(mask[i][j])
+            # set x value to the column value
+            # get a piece and place it
+            
+            while cumulative_height <= (mask[i][j] * 150):
+                # while the height of the current column is less than an estimated value continue adding pieces
+                print(height_list[0])
+                print(height_list)
+                cumulative_height += height_list[0]
+                new_x_list.append(x)
+                el_height = el_height + (height_list[0]/2)
+                el_height_cont = height_list[0]/2
+                height_list.pop(0)
+            
+            #print("Line break")
+            
+            # Check if the next line requires adding pieces
+            if mask[i-1][j] == 0 or (i-1)==-1:
+                # reset the height value
+                x += -250
+                print(cumulative_height)
+                print(height_list[0])
+                cumulative_height = 0
+                print("-----< Column break >-----")
+                # Exit current iteration
+                break
+    for r in range(0, len(height_list)):
+        new_x_list.append(9999)
+    print("----< Re-Write Individual >----")
+
+    print(new_x_list)   
+    c = 0         
+
+    for i in range(len(new_x_list)):
+        temp_individual[i][0][0][0] = new_x_list[i]
+        #new_x_list.pop(0)
+    #print(temp_individual[0])
+    """
+    for x in new_x_list:
+        temp_individual[c][0][0][0] = x
+        print(temp_individual[c][0][0][0])
+        print("--------Fin")
+        c += 1
+    """
+    #print(temp_individual)
+    """
+    for item in individual:
+        for element in item:
+            for obj in element:
+                if len(obj) <= 2:
+                    obj[0] = new_x_list[0]
+                    height_list.append(obj[1])
+                    new_x_list.pop(0)
+                    print(obj[0])
+    """
+    #print(individual)
+    return temp_individual

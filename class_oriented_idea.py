@@ -29,8 +29,8 @@ status = "Development"
 
 
 ## Values used for the genetic algorithm
-population = 10     # For now it can only be below 10
-max_gen = 3       # Max number of generations
+population = 2     # For now it can only be below 10
+max_gen = 2       # Max number of generations
 fits = [0]           # Variable to save the fitness of each generation
 gen = 1             # Generation 1
 per_cross = 0.5     # Percentage of cross-over (cross-over operator)
@@ -104,9 +104,9 @@ type_small_floor = [[0,0,0,0,0,0],
 type_large_floor = [[0,0,0,0,0,0],
                     [0,0,0,0,0,0],
                     [1,1,1,1,1,1]]
-type_castle = [[0,0,1,1,0,0],
-               [1,0,1,1,0,1],
-               [1,1,1,1,1,1]]
+type_castle = [[0,0,0,3,0,0,0],
+               [2,0,2,2,2,0,2],
+               [1,1,1,1,1,1,1]]
 type_house = [[0,0,1,1,0,0],
               [0,1,1,1,1,0],
               [0,1,1,1,1,0]]
@@ -261,10 +261,11 @@ class Composite:
     
     def __init__(self, blocks):
         # Blocks must be a list
+        self.Objetos2 = []
         self.bl_list_x = []
         self.bl_list_y = []
-        self.blocks = blocks
-        self.Objetos = [clases[clase](x,y,r) for (clase,x,y,r) in self.blocks]
+        self.blocks = blocks.copy()
+        self.Objetos = [clases[clase](x,y,r) for (clase,x,y,r) in self.blocks.copy()]
         self.get_values()
         self.height = self.height()
         self.width = self.width()
@@ -312,6 +313,10 @@ class Composite:
         #print(block_list)
         return block_list
     
+    def move_xy(self, n_x, n_y):
+        self.Objetos = [clases[clase](x + n_x, y + n_y, r) for (clase,x,y,r) in self.blocks.copy()]
+        return 0
+    
     def as_json(self):
         return {}
    
@@ -332,24 +337,40 @@ clases = {
 clases1 = {
         "Circle":Circle
         }
-
+"""
 Composites = {
-    0: Composite([("Circle", 0, 0, 0)]),
-    1: Composite([("RectTiny", 0, 0, 0)]),
-    2: Composite([("RectSmall", 0, 0, 0)]),
-    3: Composite([("RectMedium", 0, 0, 0)]),
-    4: Composite([("RectBig", 0, 0, 0)]),
-    5: Composite([("RectFat", 0, 0, 0)]),
+    0: Composite([("Circle", 0, 0, 90)]),
+    1: Composite([("RectTiny", 0, 0, 90)]),
+    2: Composite([("RectSmall", 0, 0, 90)]),
+    3: Composite([("RectMedium", 0, 0, 90)]),
+    4: Composite([("RectBig", 0, 0, 90)]),
+    5: Composite([("RectFat", 0, 0, 90)]),
     6: Composite([("SquareTiny", 0, 0, 0)]),
     7: Composite([("SquareSmall", 0, 0, 0)]),
     8: Composite([("SquareHole", 0, 0, 0)]),
-    9: Composite([("Triangle", 0, 0, 0)]),
+    9: Composite([("Triangle", 0, 0, -135)]),
     10: Composite([("TriangleHole", 0, 0, 0)]),
     11: Composite([("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
     12: Composite([("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)]),
-    13: Composite([("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectTiny", 0, 0, 90)])
+    13: Composite([("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectTiny", 0, 0, 90)]),
+    14: Composite([("RectBig", 100, 5, -27), ("RectTiny", 0, 0, 90)]),
+    15: Composite([("RectBig", -100, 5, 27), ("RectTiny", 0, 0, 90)]),
+    16: Composite([("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
+    17: Composite([("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
+    18: Composite([])
+}
+"""
+Composites = {
+    0: Composite([("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
+    1: Composite([("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)]),
+    2: Composite([("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)]),
+    3: Composite([("RectBig", 100, 5, -27), ("RectSmall", 0, 0, 90)]),
+    4: Composite([("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)]),
+    5: Composite([("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
+    6: Composite([("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)])
 }
 
+"""
 BLOCK_LIST = [[]]
 Blockes = [("SquareHole", 22, 22, 80),("SquareHole", 22, 22, 80),("TriangleHole", 22, 22, 80)]
 
@@ -374,13 +395,13 @@ for bl in BLOCKS[0]:
     print(bl.Dict)
     print(bl.X)
     
-    
-clases = {
-        '1':SquareHole, 
-        '2':TriangleHole,
-        }
-clases["1"](22,22,80)
-
+    ***/
+#clases = {
+#        '1':SquareHole, 
+#        '2':TriangleHole,
+#        }
+#clases["1"](22,22,80)
+"""
 
 ################################################################################
 #############################< Code Adaptation >################################
@@ -450,6 +471,10 @@ class Individual:
     
     def get_fitness(self):
         self.Fitness = Eval.fitness(self.Pieces, self.Remaining_Pieces)
+        return 0
+    
+    def combine_mask(self):
+        self.object_list = xml.calculate_mask(self.object_list, type_castle)
         return 0
     
     
@@ -595,5 +620,7 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
+    pop[0] = Individual(chromosome = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).copy()
+    pop[0].combine_mask()
 
 plot(all_fit)

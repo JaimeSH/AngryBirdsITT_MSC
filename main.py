@@ -221,6 +221,22 @@ BLOCKS = {
         'type': BLOCK_TYPE['RectBig'],
         'material': BLOCK_MATERIAL[0],
         'offset': [0, 31, 0] # x, y, z - Calculated from the center of the figure
+        }],
+    13:[
+        {'name':'RectBig',
+        'type': BLOCK_TYPE['RectBig'],
+        'material': BLOCK_MATERIAL[0],
+        'offset': [100,5,-27]
+        },
+        {'name':'RectBig',
+        'type': BLOCK_TYPE['RectBig'],
+        'material': BLOCK_MATERIAL[0],
+        'offset': [-100,5,27]
+        },
+        {'name':'RectSmall',
+        'type': BLOCK_TYPE['RectTiny'],
+        'material': BLOCK_MATERIAL[0],
+        'offset': [0,0,90]
         }]
 }
 
@@ -340,7 +356,8 @@ Composites = {
     9: Composite(BLOCKS[9]),
     10: Composite(BLOCKS[10]),
     11: Composite(BLOCKS[11]),
-    12: Composite(BLOCKS[12])
+    12: Composite(BLOCKS[12]),
+    13: Composite(BLOCKS[13])
 }
 
 ## Example of a basic chromosome (a list of connected composites)
@@ -419,7 +436,8 @@ for ind in pop:
         #print('')
         pass
 """    
-    
+#pop = [Individual(chromosome = [13 for p in range(ind_pieces)]) for i in range(population)]
+pop = [Individual(chromosome = [13]) for i in range(population)]
 
 while gen < max_gen: #and max(fits) < 100:
     #fits = [0]

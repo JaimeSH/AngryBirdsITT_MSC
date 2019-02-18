@@ -19,7 +19,7 @@ type_castle = [[0,0,0,3,0,0,0],
 # y = composite height
 
 
-def calculate_mask(individual):
+def calculate_mask(individual, mask):
     # 
     # First
     height_list = []
@@ -38,11 +38,11 @@ def calculate_mask(individual):
 
     for j in range(6, -1, -1):
         for i in range(2, -1, -1):
-            print(type_castle[i][j])
+            print(mask[i][j])
             # set x value to the column value
             # get a piece and place it
             
-            while cumulative_height <= (type_castle[i][j] * 150):
+            while cumulative_height <= (mask[i][j] * 150):
                 # while the height of the current column is less than an estimated value continue adding pieces
                 print(height_list[0])
                 print(height_list)
@@ -55,7 +55,7 @@ def calculate_mask(individual):
             #print("Line break")
             
             # Check if the next line requires adding pieces
-            if type_castle[i-1][j] == 0 or (i-1)==-1:
+            if mask[i-1][j] == 0 or (i-1)==-1:
                 # reset the height value
                 x += -250
                 print(cumulative_height)
@@ -75,4 +75,4 @@ def calculate_mask(individual):
                     obj[0] = new_x_list[0]
                     height_list.append(obj[1])
                     new_x_list.pop(0)
-    return 0
+    return individual
