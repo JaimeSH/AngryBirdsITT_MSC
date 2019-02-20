@@ -163,7 +163,7 @@ def calculate_mask(individual, mask):
                 break
     for r in range(0, len(height_list)):
         new_x_list.append(9999)
-    print("----< Re-Write Individual >----")
+    #print("----< Re-Write Individual >----")
 
     #print(new_x_list)   
     c = 0         
