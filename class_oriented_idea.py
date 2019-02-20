@@ -10,6 +10,7 @@ import time
 import os
 import json
 import sys
+import subprocess
 
 # Local files
 import XmlHelpers as xml
@@ -20,7 +21,7 @@ author = "Salinas Hernandez Jaime"
 copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
-version = "1.0.3"
+version = "1.1.5"
 date = "October 29, 2018 12:38"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
@@ -29,15 +30,15 @@ status = "Development"
 
 
 ## Values used for the genetic algorithm
-population = 2     # For now it can only be below 10
-max_gen = 2       # Max number of generations
+population = 10     # For now it can only be below 10
+max_gen = 10       # Max number of generations
 fits = [0]           # Variable to save the fitness of each generation
 gen = 1             # Generation 1
 per_cross = 0.5     # Percentage of cross-over (cross-over operator)
 per_comb = 0.3      # Percentage of combination (combination operator)
 per_mut = 0.4       # Percentage of mutation
 cross_type = 0      # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
-ind_pieces = 10     # Number of pieces that define an individual
+ind_pieces = 30     # Number of pieces that define an individual
 all_fit = []        # Average fitness for all generations
 max_elite = 5       # Maximum number of elite members in the generation
 elite = []
@@ -53,6 +54,7 @@ config_param = json.loads(open("ga_parameters.json","r").read())
 
 game_path = config_param['game_path']
 write_path = config_param['write_path']
+elite_path = config_param['elite_path']
 read_path = config_param['read_path']
 log_path = config_param['log_dir']
 log_base_name = config_param['log_base_name']
@@ -63,7 +65,10 @@ os.makedirs(os.path.join(project_root, log_path), exist_ok=True)
 
 ## "Dictionary" to save the base pieces and structures
 
-
+SW_HIDE = 0
+info = subprocess.STARTUPINFO()
+info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+info.wShowWindow = SW_HIDE
 #just for fun making further development easier and with joy
 pi     = scipy.pi
 dot    = scipy.dot
@@ -275,9 +280,9 @@ class Composite:
     def get_values(self):
         self.Borders = [[(x,y) for (x,y) in Obj.Points] for Obj in self.Objetos]
         self.Borders = sum(self.Borders, [])
-        print(self.Borders)
+        #print(self.Borders)
         #for Border in self.Borders
-        print(min(self.Borders)[1], max(self.Borders)[1])
+        #print(min(self.Borders)[1], max(self.Borders)[1])
         self.Width = abs(min(self.Borders, key=lambda t:t[0])[0] - max(self.Borders, key=lambda t:t[0])[0])
         self.Height = abs(min(self.Borders, key=lambda t:t[1])[1] - max(self.Borders, key=lambda t:t[1])[1])
         return 0
@@ -359,15 +364,22 @@ Composites = {
     17: Composite([("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
     18: Composite([])
 }
+
+Composites = {
+    0: [("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
+    1: [("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)],
+    2: [("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)],
+    3: [("RectBig", 100, 5, -27), ("RectSmall", 0, 0, 90)],
+    4: [("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)],
+    5: [("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
+    6: [("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]
+}
 """
 Composites = {
-    0: Composite([("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
-    1: Composite([("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)]),
-    2: Composite([("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)]),
-    3: Composite([("RectBig", 100, 5, -27), ("RectSmall", 0, 0, 90)]),
-    4: Composite([("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)]),
-    5: Composite([("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]),
-    6: Composite([("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)])
+    0: [("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
+    1: [("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)],
+    2: [("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
+    3: [("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]
 }
 
 """
@@ -421,9 +433,10 @@ class Individual:
         #self.fitness = kwargs.get('fitness', {})
         self.chromosome = kwargs.get('chromosome', [])
         self.__dict__.update(kwargs)
-        self.chromosome_objects = [Composites[composite] for composite in self.chromosome]
+        self.chromosome_objects = [Composite(Composites[composite]) for composite in self.chromosome]
         #self.chromosome_coordinates = self.chromosome_coordinates()
         self.object_list = self.object_list()
+        self.object_masked = []
 
     def position_chromosome(self):
         #To do
@@ -474,8 +487,25 @@ class Individual:
         return 0
     
     def combine_mask(self):
-        self.object_list = xml.calculate_mask(self.object_list, type_castle)
+        self.object_masked = xml.calculate_mask(self.object_list, type_castle)
+        #self.object_list = xml.calculate_mask(self.object_list, type_castle)
         return 0
+    def generate_xml_masked(self, **kwargs):
+        res_list = []
+        res_list = xml.writeXML_masked(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_height = res_list[0]
+        self.ind_piece = res_list[1]
+        self.Pieces = res_list[2]
+        #print("XML Completo")
+        pass
+
+    def generate_xml_elite(self, **kwargs):
+        res_list = []
+        res_list = xml.writeXML_masked(self.object_list, os.path.join(project_root, elite_path + "/level-" + str(kwargs.get('gen')) + "0" + str(kwargs.get('individual'))  + ".xml"))
+        self.ind_height = res_list[0]
+        self.ind_piece = res_list[1]
+        self.Pieces = res_list[2]
+        pass
     
     
     
@@ -556,16 +586,25 @@ while gen < max_gen: #and max(fits) < 100:
         
         pop[parents[cross_parent] - 1] = Individual(chromosome = son)
         pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter)
-        
-    ind_c = 0
+    
+    # Legacy Method    
+    #ind_c = 0
     # After the cross-over
+    #for ind in pop:
+    #    ind.generate_xml(individual = ind_c)
+    #    ind_c = ind_c + 1
+
+    ind_c = 0
     for ind in pop:
-        ind.generate_xml(individual = ind_c)
+        ind.combine_mask()
+        ind.generate_xml_masked(individual = ind_c)
         ind_c = ind_c + 1
     
     time.sleep(1)
     # Runs and instance of the game
-    os.system('"' + os.path.join(project_root, game_path) + '"')
+    subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+    #os.spawnl(os.P_WAIT, '"' + os.path.join(project_root, game_path) + '"')
+    #os.system('"' + os.path.join(project_root, game_path) + '"')
 
     time.sleep(1)
     ################################################################################
@@ -612,6 +651,7 @@ while gen < max_gen: #and max(fits) < 100:
 
     for e in fit_pop:
         elite.append([e[1], pop[e[0]].chromosome])
+        pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
 
     elite.sort(key=lambda x:x[0], reverse=True)
     elite = elite[:max_elite]
@@ -620,7 +660,18 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
-    pop[0] = Individual(chromosome = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]).copy()
-    pop[0].combine_mask()
+    #pop[0] = Individual(chromosome = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+    #pop[0].combine_mask()
+    #ind_c = 0
+    #for ind in pop:
+    #    ind.combine_mask()
+    #    ind.generate_xml_masked(individual = ind_c)
+    #    ind_c = ind_c + 1
+        
+    #time.sleep(1)
+    # Runs and instance of the game
+    #os.system('"' + os.path.join(project_root, game_path) + '"')
+
+    #time.sleep(1)
 
 plot(all_fit)

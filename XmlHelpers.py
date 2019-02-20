@@ -6,7 +6,7 @@ def initXMLLevel():
     """ Returns a list of strings containing the structure of the XML Level definition """
     root = ET.Element("Level")
     tree = ET.ElementTree(root)
-    root.set('width', '2')
+    root.set('width', '3')
 
     camera = ET.SubElement(root, 'Camera')
 
@@ -16,7 +16,7 @@ def initXMLLevel():
     ET.SubElement(birds, 'Bird').set('type', 'BirdWhite')
 
     slingshot = ET.SubElement(root, 'Slingshot')
-    slingshot.set('x', '-5')
+    slingshot.set('x', '-15')
     slingshot.set('y', '-2.5')
 
     gameObject = ET.SubElement(root, 'GameObjects')
@@ -124,25 +124,25 @@ def calculate_mask(individual, mask):
     el_height = -350
     el_height_cont = 0
     cumulative_height = 0
-    print(individual)
+    #print(individual)
     for item in individual:
         for element in item:
             for obj in element:
                 if len(obj) <= 2:
                     height_list.append(obj[1])
 
-    print(height_list)
+    #print(height_list)
 
     for j in range(6, -1, -1):
         for i in range(2, -1, -1):
-            print(mask[i][j])
+            #print(mask[i][j])
             # set x value to the column value
             # get a piece and place it
             
             while cumulative_height <= (mask[i][j] * 150):
                 # while the height of the current column is less than an estimated value continue adding pieces
-                print(height_list[0])
-                print(height_list)
+                #print(height_list[0])
+                #print(height_list)
                 cumulative_height += height_list[0]
                 new_x_list.append(x)
                 el_height = el_height + (height_list[0]/2)
@@ -155,17 +155,17 @@ def calculate_mask(individual, mask):
             if mask[i-1][j] == 0 or (i-1)==-1:
                 # reset the height value
                 x += -250
-                print(cumulative_height)
-                print(height_list[0])
+                #print(cumulative_height)
+                #print(height_list[0])
                 cumulative_height = 0
-                print("-----< Column break >-----")
+                #print("-----< Column break >-----")
                 # Exit current iteration
                 break
     for r in range(0, len(height_list)):
         new_x_list.append(9999)
     print("----< Re-Write Individual >----")
 
-    print(new_x_list)   
+    #print(new_x_list)   
     c = 0         
 
     for i in range(len(new_x_list)):
@@ -192,3 +192,77 @@ def calculate_mask(individual, mask):
     """
     #print(individual)
     return temp_individual
+
+def writeXML_masked(individual, filename):
+    """ Writes the XML level representation of individual to the filename"""
+    #filename = "file:/home/itt-mcc/Pictures/Untitled-2.png"
+    STRING_XML = ""
+
+    if STRING_XML == "":
+        STRING_XML = initXMLLevel()
+
+    f = open(filename, "w+")
+    index = STRING_XML.find('Camera')
+    final_xml = []
+    final_list = []
+    final_xml.append('<?xml version="1.0" encoding ="utf-8"?>')
+    final_xml.append(STRING_XML[:index + len('Camera')])
+    final_xml.append(' x="0" y="5" minWidth="20" maxWidth="40" ')
+    prev_index = index + len('Camera')
+    index = STRING_XML.find('GameObjects')
+    final_xml.append(STRING_XML[prev_index:index + len('GameObjects')])
+    final_xml.append('>\n')
+    i = 0
+    el_width = 0
+    el_height = -350
+    el_height_cont = 0
+    current_x = 750
+    # From this point it generates the XML string by reading the
+    # values for each individual
+    #print(individual)
+    #print(individual)
+    for item in individual:
+        #print(item)
+        #print("item 0")
+        base_x = item[0][0][0]
+        if base_x != current_x:
+            el_height = -350
+            current_x += -250
+        #base_x = 0
+        #print(item[0][0][0])
+        #base_y = item[0][0][1]
+        base_y = 0
+        #print(item[1])
+        for element in item:
+            #print(element)
+            #print("elemrnt 1")
+            for obj in element:
+                #print(obj)
+                #print("obj 2")
+                if len(obj) <= 2:
+                    el_width = obj[0]
+                    el_height = el_height + (obj[1]/2)
+                    el_height_cont = obj[1]/2
+                else: 
+                    x_val = (obj[2] + base_x)/100
+                    y_val = (obj[3] + base_y + el_height)/100
+                    final_xml.append('<Block' + 
+                                    ' type="' + obj[0] + '"' +
+                                    ' material="' + obj[1] + '"' +
+                                    ' x="' + str(x_val) + '"' +
+                                    ' y="' + str(y_val) + '"' +
+                                    ' rotation="' + str(obj[4]) + '"' +
+                                    ' id="' + str(i) + '"/>\n')
+                    final_list.append([obj[0], obj[1], str(x_val), str(y_val), str(obj[4]), str(i)])
+                    i+=1
+            # End if
+        el_height = el_height + el_height_cont
+    
+    final_xml.append('</GameObjects>\n')
+    final_xml.append(STRING_XML[index + len('<GameObjects\>'):])
+
+    f.write(''.join(final_xml))
+
+    f.close()
+    el_height = el_height + 350
+    return [el_height, i+1, final_list]
