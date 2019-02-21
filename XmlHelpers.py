@@ -161,8 +161,21 @@ def calculate_mask(individual, mask):
                 #print("-----< Column break >-----")
                 # Exit current iteration
                 break
-    for r in range(0, len(height_list)):
-        new_x_list.append(9999)
+
+    x = 750
+    if len(height_list) >= 1:
+        for j in range(6, -1, -1):
+            if mask[2][j] == 1:
+                new_x_list.append(x)
+                height_list.pop(0)
+                x += -250
+                if x == -1000:
+                    x == 1000
+                if len(height_list) == 0:
+                    break
+
+    #for r in range(0, len(height_list)):
+    #    new_x_list.append(9999)
     #print("----< Re-Write Individual >----")
 
     #print(new_x_list)   
@@ -194,6 +207,82 @@ def calculate_mask(individual, mask):
     return temp_individual
 
 def writeXML_masked(individual, filename):
+    """ Writes the XML level representation of individual to the filename"""
+    #filename = "file:/home/itt-mcc/Pictures/Untitled-2.png"
+    STRING_XML = ""
+
+    if STRING_XML == "":
+        STRING_XML = initXMLLevel()
+
+    f = open(filename, "w+")
+    index = STRING_XML.find('Camera')
+    final_xml = []
+    final_list = []
+    final_xml.append('<?xml version="1.0" encoding ="utf-8"?>')
+    final_xml.append(STRING_XML[:index + len('Camera')])
+    final_xml.append(' x="0" y="5" minWidth="20" maxWidth="40" ')
+    prev_index = index + len('Camera')
+    index = STRING_XML.find('GameObjects')
+    final_xml.append(STRING_XML[prev_index:index + len('GameObjects')])
+    final_xml.append('>\n')
+    i = 0
+    el_width = 0
+    el_height = [-350, -350, -350, -350, -350, -350, -350]
+    #el_height = -350
+    el_height_cont = 0
+    current_x = 750
+    
+    # For controlling the working column [750 | 500 | 250 | 0 | -250 | -500 | -750]
+    c = 0       
+    
+    # From this point it generates the XML string by reading the
+    # values for each individual
+    for item in individual:
+        # Obtain the first value on the first Composite of the individual
+        base_x = item[0][0][0]
+        if base_x != current_x:
+            current_x += -250
+            c += 1
+            if current_x == -1000 or c == 7:
+                current_x = 750
+                c = 0
+        base_y = 0
+
+        for element in item:
+            for obj in element:
+                if len(obj) <= 2:
+                    el_width = obj[0]
+                    el_height[c] = el_height[c] + (obj[1]/2)
+                    el_height_cont = obj[1]/2
+                else: 
+                    x_val = (obj[2] + base_x)/100
+                    y_val = (obj[3] + base_y + el_height[c])/100
+                    final_xml.append('<Block' + 
+                                    ' type="' + obj[0] + '"' +              # The block to be used
+                                    ' material="' + obj[1] + '"' +          # The material that is made of
+                                    ' x="' + str(x_val) + '"' +             # Its position on the x axis
+                                    ' y="' + str(y_val) + '"' +             # Its position on the y axis
+                                    ' rotation="' + str(obj[4]) + '"' +     # It rotation
+                                    ' id="' + str(i) + '"/>\n')             # An ID for identification
+                    final_list.append([obj[0], obj[1], str(x_val), str(y_val), str(obj[4]), str(i)])
+                    i+=1
+                # End if
+            # End for
+        # End for
+        el_height[c] = el_height[c] + el_height_cont
+    
+    final_xml.append('</GameObjects>\n')
+    final_xml.append(STRING_XML[index + len('<GameObjects\>'):])
+
+    f.write(''.join(final_xml))
+
+    f.close()
+    return_height = max(el_height) + 350
+    #el_height = el_height + 350
+    return [return_height, i+1, final_list]
+
+# Legacy Method
+def writeXML_masked_old(individual, filename):
     """ Writes the XML level representation of individual to the filename"""
     #filename = "file:/home/itt-mcc/Pictures/Untitled-2.png"
     STRING_XML = ""
