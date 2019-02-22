@@ -246,6 +246,7 @@ def writeXML_masked(individual, filename):
             if current_x == -1000 or c == 7:
                 current_x = 750
                 c = 0
+            base_x = current_x
         base_y = 0
 
         for element in item:

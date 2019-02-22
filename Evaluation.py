@@ -33,9 +33,11 @@ def fitness(ind_orig, ind_fin):
     size_pen = size_dif(ind_orig, ind_fin)
     pos_pen = position_error(ind_orig, ind_fin)
     total_fit = 100 - size_pen - pos_pen
+    size_fit = 100 - size_pen
+    pos_fit = 100 - pos_pen
     #print(size_pen)
     #print(pos_pen)
-    return total_fit
+    return [total_fit, size_fit, pos_fit]
 
 def size_dif(a, b):
     val_a = len(a)                      # Original amount
@@ -52,8 +54,16 @@ def position_error(a, b):
         # 3 = y   
         # 4 = r   
         # 5 = id
-        orig = a[int(piece[5])]
-        error_xy = 0 if 0.08 > math.hypot((float(piece[2])) - (float(orig[2])), (float(orig[3])) - (float(orig[3]))) else ((100/len(b)) * 0.5)
-        error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(b)) * 0.5)
-        total_error = total_error + error_xy + error_z
+        try:
+            orig = a[int(piece[5])]
+            error_xy = 0 if 0.08 > math.hypot((float(piece[2])) - (float(orig[2])), (float(orig[3])) - (float(orig[3]))) else ((100/len(b)) * 0.5)
+            error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(b)) * 0.5)
+            total_error = total_error + error_xy + error_z
+        except IndexError:
+            #error_xy
+            text = "Missing values - Pieces destroyed or something?..."
+        #orig = a[int(piece[5])]
+        #error_xy = 0 if 0.08 > math.hypot((float(piece[2])) - (float(orig[2])), (float(orig[3])) - (float(orig[3]))) else ((100/len(b)) * 0.5)
+        #error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(b)) * 0.5)
+        #total_error = total_error + error_xy + error_z
     return total_error

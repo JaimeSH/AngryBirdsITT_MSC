@@ -40,6 +40,8 @@ per_mut = 0.4       # Percentage of mutation
 cross_type = 0      # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
 ind_pieces = 30     # Number of pieces that define an individual
 all_fit = []        # Average fitness for all generations
+fit_Alen = []        # Average piece length fitness for all generations
+fit_Amov = []        # Average movement fitness for all generations
 max_elite = 5       # Maximum number of elite members in the generation
 elite = []
 
@@ -91,33 +93,45 @@ def Rotate2D(pts,cnt,ang=pi/4):
 
 
 # Generation masks
-type_small_l = [[0,0,0,0,0,0],
-                [0,0,1,0,0,0],
-                [0,0,1,1,0,0]]
-type_large_l = [[0,0,1,0,0,0],
-                [0,0,1,0,0,0],
-                [0,0,1,1,0,0]]
-type_small_cube = [[0,0,0,0,0,0],
-                   [0,0,1,1,0,0],
-                   [0,0,1,1,0,0]]
-type_large_cube = [[0,1,1,1,0,0],
-                   [0,1,1,1,0,0],
-                   [0,1,1,1,0,0]]
-type_small_floor = [[0,0,0,0,0,0],
-                    [0,0,0,0,0,0],
-                    [0,1,1,1,1,0]]
-type_large_floor = [[0,0,0,0,0,0],
-                    [0,0,0,0,0,0],
-                    [1,1,1,1,1,1]]
+type_small_l = [[0,0,0,0,0,0,0],
+                [0,0,2,0,0,0,0],
+                [0,0,1,1,0,0,0]]
+type_large_l = [[0,0,3,0,0,0,0],
+                [0,0,2,0,0,0,0],
+                [0,0,1,1,0,0,0]]
+type_small_cube = [[0,0,0,0,0,0,0],
+                   [0,0,2,2,0,0,0],
+                   [0,0,1,1,0,0,0]]
+type_large_cube = [[0,3,3,3,0,0,0],
+                   [0,2,2,2,0,0,0],
+                   [0,1,1,1,0,0,0]]
+type_small_floor = [[0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [0,1,1,1,1,1,0]]
+type_large_floor = [[0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0],
+                    [1,1,1,1,1,1,1]]
 type_castle = [[0,0,0,3,0,0,0],
                [2,0,2,2,2,0,2],
                [1,1,1,1,1,1,1]]
-type_house = [[0,0,1,1,0,0],
-              [0,1,1,1,1,0],
-              [0,1,1,1,1,0]]
-type_towers = [[1,0,1,0,1,0],
-               [1,0,1,0,1,0],
-               [1,0,1,0,1,0]]
+type_house = [[0,0,3,3,0,0,0],
+              [0,2,2,2,2,0,0],
+              [0,1,1,1,1,0,0]]
+type_towers = [[3,0,3,0,3,0,0],
+               [2,0,2,0,2,0,0],
+               [1,0,1,0,1,0,0]]
+
+Mask_List = [
+    type_small_l,
+    type_large_l,
+    type_small_cube,
+    type_large_cube,
+    type_small_floor,
+    type_large_floor,
+    type_castle,
+    type_house,
+    type_towers
+]
 
 # Global Piece class and a class for each piece in the game
 class Piece:
@@ -432,6 +446,7 @@ class Individual:
         #self.id = kwargs['id']
         #self.fitness = kwargs.get('fitness', {})
         self.chromosome = kwargs.get('chromosome', [])
+        self.mask = kwargs.get('mask') #self.assign_mask(Mask_List[kwargs.get('mask')])
         self.__dict__.update(kwargs)
         self.chromosome_objects = [Composite(Composites[composite]) for composite in self.chromosome]
         #self.chromosome_coordinates = self.chromosome_coordinates()
@@ -481,13 +496,19 @@ class Individual:
     
     def ind_piece_count(self):
         return 0
+
+    def assign_mask(self, mask_class):
+        masked = mask_class
+        print(masked)
+        #self.mask = mask_class
+        return masked
     
     def get_fitness(self):
-        self.Fitness = Eval.fitness(self.Pieces, self.Remaining_Pieces)
+        self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces)
         return 0
     
     def combine_mask(self):
-        self.object_masked = xml.calculate_mask(self.object_list, type_castle)
+        self.object_masked = xml.calculate_mask(self.object_list, self.mask)
         #self.object_list = xml.calculate_mask(self.object_list, type_castle)
         return 0
     def generate_xml_masked(self, **kwargs):
@@ -508,8 +529,11 @@ class Individual:
         pass
     
     
-    
-pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+#pop_mask = [random.randint(0,len(Mask_List)-1) for i in range(population)]
+pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = Mask_List[random.randint(0,len(Mask_List)-1)]) for i in range(population)]
+
+#for c, ind in enumerate(pop):
+#    ind.assign_mask(mask=pop_mask[c])
 """
 for ind in pop:
     for gen in ind.chromosome_objects:
@@ -531,7 +555,7 @@ while gen < max_gen: #and max(fits) < 100:
     if len(elite):
         for member in elite:
             pop.insert(0, member)
-            pop[0] = Individual(chromosome = member[1])
+            pop[0] = Individual(chromosome = member[1], mask = member[2])
             pop = pop[:population]
 
     # Check if the current number of population multiplied by the cross-over percentage
@@ -579,13 +603,14 @@ while gen < max_gen: #and max(fits) < 100:
             var=1
             #print("Not Mutate")
         
-        
+        mask_son = Mask_List[random.randint(0,len(Mask_List)-1)]
+        mask_daughter = Mask_List[random.randint(0,len(Mask_List)-1)]
         # Replace the parents in the generation
         pop[parents[cross_parent] - 1].chromosome = son
         pop[parents[cross_parent + 1] - 1].chromosome = daughter
         
-        pop[parents[cross_parent] - 1] = Individual(chromosome = son)
-        pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter)
+        pop[parents[cross_parent] - 1] = Individual(chromosome = son, mask = mask_son)
+        pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter, mask = mask_daughter)
     
     # Legacy Method    
     #ind_c = 0
@@ -641,37 +666,33 @@ while gen < max_gen: #and max(fits) < 100:
 
     # Obtain the average fitness of the generation
     gen_fit = 0
+    len_fit = 0
+    mov_fit = 0
     fit_pop = []
     for c, ind in enumerate(pop):
         fit_pop.append([c, ind.Fitness])
         gen_fit = gen_fit + ind.Fitness
+        len_fit += ind.Fit_Size
+        mov_fit += ind.Fit_Pos
     
     fit_pop.sort(key=lambda x:x[1], reverse=True)
     fit_pop = fit_pop[:5]
 
     for e in fit_pop:
-        elite.append([e[1], pop[e[0]].chromosome])
+        elite.append([e[1], pop[e[0]].chromosome, pop[e[0]].mask])
         pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
 
     elite.sort(key=lambda x:x[0], reverse=True)
     elite = elite[:max_elite]
 
     all_fit.append((gen_fit/len(pop)))
+    fit_Alen.append((len_fit/len(pop)))
+    fit_Amov.append((mov_fit/len(pop)))
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
-    #pop[0] = Individual(chromosome = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
-    #pop[0].combine_mask()
-    #ind_c = 0
-    #for ind in pop:
-    #    ind.combine_mask()
-    #    ind.generate_xml_masked(individual = ind_c)
-    #    ind_c = ind_c + 1
-        
-    #time.sleep(1)
-    # Runs and instance of the game
-    #os.system('"' + os.path.join(project_root, game_path) + '"')
 
-    #time.sleep(1)
-
-plot(all_fit)
+plot(all_fit, '-.b', label='General Fitness')
+plot(fit_Alen, '-g', label='Fitness by pieces')
+plot(fit_Amov, '.r', label='Fitness by movement')
+pylab.legend(loc='upper left')

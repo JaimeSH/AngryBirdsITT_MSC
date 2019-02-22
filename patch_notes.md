@@ -1,9 +1,23 @@
+# Version 1.2.8 (2/22/2019 14:01)
+    # Implemented
+        - Added graphic with the results of the individuals on each generarion depending on the remaining of pieces and the movement of their original positions
+        - Modified the xml generation code to prevent pieces to be placed on the same place creating a great dissaragement
+        - Modified the evaluation methods to prevent errors when comparing the position of pieces that no longer exist after a simulation
+        - Integration of the different masks based on the rule of thirds for placement of the composites
+    
+    # Pending
+        - Integrate the use of different composites and pieces in the generation of individuals
+        - Integrate mutation and different cross-over evaluations to the individuals
+        - Implement a way to create and adapt the mask on different generations
+
 # Version 1.2.7 (2/20/2019 18:38)
     # Implemented
         - Modified existing code to acomodate the remaining pieces on the structure when the pieces exceeds a certain number
 
     # Pending
-        Analize the code to solve a problem where the remainig pieces added disarrange themselves
+        - Analize the code to solve a problem where the remainig pieces added disarrange themselves
+        - Integrate the use of different composites and pieces in the generation of individuals
+        - Integrate mutation and different cross-over evaluations to the individuals
 
 # Version 1.2.5 (2/20/2019 13:53)
     # Implemented
