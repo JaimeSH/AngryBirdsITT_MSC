@@ -32,9 +32,9 @@ def fitness(ind_orig, ind_fin):
     total_fit = 100
     size_pen = size_dif(ind_orig, ind_fin)
     pos_pen = position_error(ind_orig, ind_fin)
-    total_fit = 100 - size_pen - pos_pen
-    size_fit = 100 - size_pen
-    pos_fit = 100 - pos_pen
+    total_fit = size_pen - pos_pen
+    size_fit = size_pen
+    pos_fit = pos_pen
     #print(size_pen)
     #print(pos_pen)
     return [total_fit, size_fit, pos_fit]
@@ -42,7 +42,7 @@ def fitness(ind_orig, ind_fin):
 def size_dif(a, b):
     val_a = len(a)                      # Original amount
     val_b = len(b)                      # Remaining amount 
-    percentage = 100 - (val_b * 100)/val_a    # Percentage to remove from total
+    percentage = (val_b * 100)/val_a    # Percentage to remove from total
     return percentage
 
 def position_error(a, b):
@@ -56,8 +56,8 @@ def position_error(a, b):
         # 5 = id
         try:
             orig = a[int(piece[5])]
-            error_xy = 0 if 0.08 > math.hypot((float(piece[2])) - (float(orig[2])), (float(orig[3])) - (float(orig[3]))) else ((100/len(b)) * 0.5)
-            error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(b)) * 0.5)
+            error_xy = 0 if 1.0 > math.hypot((float(piece[2])) - (float(orig[2])), (float(piece[3])) - (float(orig[3]))) else ((100/len(a)) * 0.5)
+            error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(a)) * 0.5)
             total_error = total_error + error_xy + error_z
         except IndexError:
             #error_xy

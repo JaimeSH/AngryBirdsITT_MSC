@@ -21,8 +21,8 @@ author = "Salinas Hernandez Jaime"
 copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
-version = "1.2.7"
-date = "February 20, 2019 18:43"
+version = "1.2.9"
+date = "February 27, 2019 18:27"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
 status = "Development"
@@ -625,13 +625,16 @@ while gen < max_gen: #and max(fits) < 100:
         ind.generate_xml_masked(individual = ind_c)
         ind_c = ind_c + 1
     
-    time.sleep(1)
+    #time.sleep(1)
     # Runs and instance of the game
-    subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+    #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+    subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
     #os.spawnl(os.P_WAIT, '"' + os.path.join(project_root, game_path) + '"')
     #os.system('"' + os.path.join(project_root, game_path) + '"')
 
-    time.sleep(1)
+    #rad = subprocess.CompletedProcess(None, 0)
+    #rad.check_returncode()
+    #time.sleep(5)
     ################################################################################
     #############################< ELITE selection >################################
     ################################################################################
@@ -694,5 +697,5 @@ while gen < max_gen: #and max(fits) < 100:
 
 plot(all_fit, '-.b', label='General Fitness')
 plot(fit_Alen, '-g', label='Fitness by pieces')
-plot(fit_Amov, '.r', label='Fitness by movement')
-pylab.legend(loc='upper left')
+plot(fit_Amov, '.r', label='Error by movement')
+pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))

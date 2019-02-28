@@ -1,3 +1,13 @@
+# Version 1.2.9 (2/27/2019 18:27)
+    # Implemented
+        - Solved an error with the evaluation/generation code that caused an evaluation between a current gen individual with an individual form another generation
+        - Modified the generation of the average fitness values of the individuals to reflect the error of movement and fitness by number of pieces
+    
+    # Pending
+        - Integrate the use of different composites and pieces in the generation of individuals
+        - Integrate mutation and different cross-over evaluations to the individuals
+        - Implement a way to create and adapt the mask on different generations
+
 # Version 1.2.8 (2/22/2019 14:01)
     # Implemented
         - Added graphic with the results of the individuals on each generarion depending on the remaining of pieces and the movement of their original positions

@@ -1,11 +1,9 @@
 -------< Latest Patch notes below >-------- 
 
-# Version 1.2.6 (2/21/2019 17:15)
+# Version 1.2.9 (2/27/2019 18:27)
     # Implemented
-        - Added graphic with the results of the individuals on each generarion depending on the remaining of pieces and the movement of their original positions
-        - Modified the xml generation code to prevent pieces to be placed on the same place creating a great dissaragement
-        - Modified the evaluation methods to prevent errors when comparing the position of pieces that no longer exist after a simulation
-        - Integration of the different masks based on the rule of thirds for placement of the composites
+        - Solved an error with the evaluation/generation code that caused an evaluation between a current gen individual with an individual form another generation
+        - Modified the generation of the average fitness values of the individuals to reflect the error of movement and fitness by number of pieces
     
     # Pending
         - Integrate the use of different composites and pieces in the generation of individuals
