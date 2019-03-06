@@ -1,4 +1,5 @@
-from __future__ import division                 #to avoid integer devision problem
+from __future__ import division, absolute_import                 #to avoid integer devision problem
+import datetime
 import scipy
 import pylab
 #
@@ -15,34 +16,36 @@ import subprocess
 # Local files
 import XmlHelpers as xml
 import Evaluation as Eval
-#--import AngryBirdsGA.XmlHelpers_mod as xml
+from Selection import Selection
+
 
 author = "Salinas Hernandez Jaime"
 copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
-version = "1.2.9"
-date = "February 27, 2019 18:27"
+version = "1.3.0"
+date = "March 05, 2019 18:20"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
 status = "Development"
-
+t_begin = datetime.datetime.now()
 
 
 ## Values used for the genetic algorithm
-population = 10     # For now it can only be below 10
-max_gen = 10       # Max number of generations
-fits = [0]           # Variable to save the fitness of each generation
-gen = 1             # Generation 1
-per_cross = 0.5     # Percentage of cross-over (cross-over operator)
-per_comb = 0.3      # Percentage of combination (combination operator)
-per_mut = 0.4       # Percentage of mutation
-cross_type = 0      # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
-ind_pieces = 30     # Number of pieces that define an individual
-all_fit = []        # Average fitness for all generations
-fit_Alen = []        # Average piece length fitness for all generations
-fit_Amov = []        # Average movement fitness for all generations
-max_elite = 5       # Maximum number of elite members in the generation
+population = 10         # For now it can only be below 10
+max_gen = 10            # Max number of generations
+fits = [0]              # Variable to save the fitness of each generation
+gen = 1                 # Generation 1
+per_cross = 0.5         # Percentage of cross-over (cross-over operator)
+per_comb = 0.3          # Percentage of combination (combination operator)
+per_mut = 0.4           # Percentage of mutation
+sel_type = 1            # Selection (for crossover) type [ 0: Random - 1: Tournament - TBD]
+cross_type = 0          # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
+ind_pieces = 30         # Number of pieces that define an individual
+all_fit = []            # Average fitness for all generations
+fit_Alen = []           # Average piece length fitness for all generations
+fit_Amov = []           # Average movement fitness for all generations
+max_elite = 5           # Maximum number of elite members in the generation
 elite = []
 
 ## Data required to create the xml files
@@ -62,15 +65,17 @@ log_path = config_param['log_dir']
 log_base_name = config_param['log_base_name']
 os.makedirs(os.path.join(project_root, log_path), exist_ok=True)
 
-#os.system(game_path)
-
+# For tournament
+game_path_tourney = config_param['game_path_tourney']
+write_path_tourney = config_param['write_path_tourney']
+read_path_tourney = config_param['read_path_tourney']
 
 ## "Dictionary" to save the base pieces and structures
-
 SW_HIDE = 0
 info = subprocess.STARTUPINFO()
 info.dwFlags = subprocess.STARTF_USESHOWWINDOW
 info.wShowWindow = SW_HIDE
+
 #just for fun making further development easier and with joy
 pi     = scipy.pi
 dot    = scipy.dot
@@ -85,6 +90,7 @@ axis   = pylab.axis
 grid   = pylab.grid
 title  = pylab.title
 rad    = lambda ang: ang*pi/180                 #lovely lambda: degree to radian
+sel_operator = Selection(project_root, game_path_tourney, info)
 
 # Function to rotate points
 def Rotate2D(pts,cnt,ang=pi/4):
@@ -294,9 +300,6 @@ class Composite:
     def get_values(self):
         self.Borders = [[(x,y) for (x,y) in Obj.Points] for Obj in self.Objetos]
         self.Borders = sum(self.Borders, [])
-        #print(self.Borders)
-        #for Border in self.Borders
-        #print(min(self.Borders)[1], max(self.Borders)[1])
         self.Width = abs(min(self.Borders, key=lambda t:t[0])[0] - max(self.Borders, key=lambda t:t[0])[0])
         self.Height = abs(min(self.Borders, key=lambda t:t[1])[1] - max(self.Borders, key=lambda t:t[1])[1])
         return 0
@@ -326,7 +329,6 @@ class Composite:
             block_comp.append(piece.Dict[2])
             block_comp.append(piece.Dict[3])
             block_comp.append(piece.Dict[4])
-            #block_comp.append([piece['name'], piece['material'], piece['offset'][0], piece['offset'][1], piece['offset'][2]])
             block_list.append(block_comp)
         #block_list.append(block_comp)
         #print(block_list)
@@ -443,13 +445,10 @@ for bl in BLOCKS[0]:
     
 class Individual:
     def __init__(self, **kwargs):
-        #self.id = kwargs['id']
-        #self.fitness = kwargs.get('fitness', {})
         self.chromosome = kwargs.get('chromosome', [])
         self.mask = kwargs.get('mask') #self.assign_mask(Mask_List[kwargs.get('mask')])
         self.__dict__.update(kwargs)
         self.chromosome_objects = [Composite(Composites[composite]) for composite in self.chromosome]
-        #self.chromosome_coordinates = self.chromosome_coordinates()
         self.object_list = self.object_list()
         self.object_masked = []
 
@@ -464,28 +463,28 @@ class Individual:
     
     def object_list(self):
         final_list = []
-        #final_list.append(self.chromosome_coordinates)
         for com in self.chromosome_objects:
             obj_list =[]
             obj_list.append(com.as_dictionary)
-            #obj_list.append([self.chromosome_coordinates[0], self.chromosome_coordinates[1]])
             final_list.append(obj_list)
         return final_list
     
     def generate_xml(self, **kwargs):
-        #print(self.object_list)
-        #os.path.join(write_path, "level-" + str(len(evaluated)).zfill(fill) + ".xml"))
         res_list = []
         res_list = xml.writeXML(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
         self.ind_height = res_list[0]
         self.ind_piece = res_list[1]
         self.Pieces = res_list[2]
-        #print("XML Completo")
         pass
     
     def read_xml(self, **kwargs):
         self.Remaining_Pieces = xml.readXML(os.path.join(project_root, read_path + "/level-"+ str(kwargs.get('individual')) +".xml"))
         self.ind_piece_count = len(self.Remaining_Pieces)
+        pass
+    
+    def read_xml_tourney(self, **kwargs):
+        self.Remaining_Pieces_tourney = xml.readXML(os.path.join(project_root, read_path_tourney + "/level-"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_piece_count_tourney = len(self.Remaining_Pieces_tourney)
         pass
     
     def ind_height(self):
@@ -519,6 +518,14 @@ class Individual:
         self.Pieces = res_list[2]
         #print("XML Completo")
         pass
+    
+    def generate_xml_tourney(self, **kwargs):
+        res_list = []
+        res_list = xml.writeXML_masked(self.object_list, os.path.join(project_root, write_path_tourney + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_height_tourney = res_list[0]
+        self.ind_piece_tourney = res_list[1]
+        self.Pieces = res_list[2]
+        pass
 
     def generate_xml_elite(self, **kwargs):
         res_list = []
@@ -546,9 +553,10 @@ for ind in pop:
 while gen < max_gen: #and max(fits) < 100:
     #fits = [0]
     # If the current generation is not the first one generate a new population
-    #if gen != 1:
-        # Determine via a random number which pieces to assign
-     #   pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+    ###if gen != 1:
+    #    Determine via a random number which pieces to assign
+    #   pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+    ###
             
     # Outside IF statement
     # Reintegrate ELITE members if there are
@@ -569,11 +577,16 @@ while gen < max_gen: #and max(fits) < 100:
     # Obtain the "parents" of the generation
     parents = []
     pr = 1
-    while pr <= many:
-        r = random.randint(1, population)
-        if r not in parents: 
-            parents.append(r)
-            pr = pr + 1
+    parents = sel_operator.Selection_Base(pop, many, sel_type)
+    ### Discontinued since ver. 1.3.0
+    #while pr <= many:
+    #    parents.append(sel_operator.Selection_Base(pop, sel_type))
+    #    Selection_Base(pop,1)
+    #    r = random.randint(1, population)
+    #    if r not in parents: 
+    #        parents.append(r)
+    #        pr = pr + 1
+    ###
             
     # Generate the cross-over operation (one-point crossover)
     for cross_parent in range(0, len(parents), 2):
@@ -612,12 +625,13 @@ while gen < max_gen: #and max(fits) < 100:
         pop[parents[cross_parent] - 1] = Individual(chromosome = son, mask = mask_son)
         pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter, mask = mask_daughter)
     
-    # Legacy Method    
+    ### After the cross-ver
+    ### Legacy Method    
     #ind_c = 0
-    # After the cross-over
     #for ind in pop:
     #    ind.generate_xml(individual = ind_c)
     #    ind_c = ind_c + 1
+    ###
 
     ind_c = 0
     for ind in pop:
@@ -625,16 +639,10 @@ while gen < max_gen: #and max(fits) < 100:
         ind.generate_xml_masked(individual = ind_c)
         ind_c = ind_c + 1
     
-    #time.sleep(1)
     # Runs and instance of the game
     #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
     subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
-    #os.spawnl(os.P_WAIT, '"' + os.path.join(project_root, game_path) + '"')
-    #os.system('"' + os.path.join(project_root, game_path) + '"')
 
-    #rad = subprocess.CompletedProcess(None, 0)
-    #rad.check_returncode()
-    #time.sleep(5)
     ################################################################################
     #############################< ELITE selection >################################
     ################################################################################
@@ -645,7 +653,6 @@ while gen < max_gen: #and max(fits) < 100:
     for ind in pop:
         value = ind.read_xml(individual = ind_c)
         final_ind_list.append(value)
-        #print(value)
         ind_c = ind_c + 1
 
     # Calculate the fitness for each individual
@@ -662,7 +669,6 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Order the list
     results = sorted(data, key=lambda x: x[3], reverse=True)
-
 
     # Add the best individuals to the elite group
     
@@ -695,6 +701,8 @@ while gen < max_gen: #and max(fits) < 100:
     # Increase value of the generation for the next cycle
     gen = gen + 1
 
+t_finish = datetime.datetime.now()
+print("Total time is: " + str(t_finish-t_begin))
 plot(all_fit, '-.b', label='General Fitness')
 plot(fit_Alen, '-g', label='Fitness by pieces')
 plot(fit_Amov, '.r', label='Error by movement')

@@ -17,58 +17,56 @@ Platform assembly: D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_buil
 Loading D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_build_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_build_Data\Managed\websocket-sharp.dll (this message is harmless)
 Loading D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_build_Data\Managed\websocket-sharp.dll into Unity Child Domain
-- Completed reload, in  0.016 seconds
+- Completed reload, in  0.062 seconds
 Platform assembly: D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_build_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_build_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 0.859824 ms
+UnloadTime: 1.560116 ms
 Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.516866 ms
+UnloadTime: 6.348988 ms
 
 Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 285.
-Total: 0.170202 ms (FindLiveObjects: 0.013449 ms CreateObjectMapping: 0.010202 ms MarkObjects: 0.141912 ms  DeleteObjects: 0.003710 ms)
+Total: 0.264347 ms (FindLiveObjects: 0.023652 ms CreateObjectMapping: 0.018086 ms MarkObjects: 0.215188 ms  DeleteObjects: 0.005565 ms)
+
+Internal: JobTempAlloc has allocations that are more than 4 frames old - this is not allowed and likely a leak
+ 
+(Filename:  Line: 371)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.138549 ms
+UnloadTime: 2.991769 ms
 
 Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 326.
-Total: 0.164173 ms (FindLiveObjects: 0.011594 ms CreateObjectMapping: 0.010666 ms MarkObjects: 0.134028 ms  DeleteObjects: 0.007884 ms)
+Total: 0.430377 ms (FindLiveObjects: 0.062608 ms CreateObjectMapping: 0.030144 ms MarkObjects: 0.317681 ms  DeleteObjects: 0.018086 ms)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.447999 ms
+UnloadTime: 3.460639 ms
 
 Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 320.
-Total: 0.204057 ms (FindLiveObjects: 0.015304 ms CreateObjectMapping: 0.010666 ms MarkObjects: 0.157217 ms  DeleteObjects: 0.019942 ms)
+Total: 0.569971 ms (FindLiveObjects: 0.036637 ms CreateObjectMapping: 0.027826 ms MarkObjects: 0.460521 ms  DeleteObjects: 0.044057 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.234202 ms
+UnloadTime: 0.359420 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 367.
-Total: 0.200811 ms (FindLiveObjects: 0.012521 ms CreateObjectMapping: 0.011130 ms MarkObjects: 0.173912 ms  DeleteObjects: 0.003246 ms)
+Total: 0.471188 ms (FindLiveObjects: 0.036173 ms CreateObjectMapping: 0.027362 ms MarkObjects: 0.397913 ms  DeleteObjects: 0.007884 ms)
 
 Platform assembly: D:\Documents\GitHub Projects\AngryBirdsITT_MSC\abwin\win_build_Data\Managed\System.Xml.dll (this message is harmless)
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.631651 ms
+UnloadTime: 1.491942 ms
 
 Unloading 24 unused Assets to reduce memory usage. Loaded Objects now: 323.
-Total: 0.315361 ms (FindLiveObjects: 0.013449 ms CreateObjectMapping: 0.010666 ms MarkObjects: 0.268521 ms  DeleteObjects: 0.022724 ms)
+Total: 0.889971 ms (FindLiveObjects: 0.040347 ms CreateObjectMapping: 0.030608 ms MarkObjects: 0.760116 ms  DeleteObjects: 0.057507 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.204521 ms
+UnloadTime: 1.023536 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 439.
-Total: 0.399303 ms (FindLiveObjects: 0.015768 ms CreateObjectMapping: 0.011130 ms MarkObjects: 0.368231 ms  DeleteObjects: 0.003710 ms)
+Total: 0.998029 ms (FindLiveObjects: 0.044985 ms CreateObjectMapping: 0.031072 ms MarkObjects: 0.912696 ms  DeleteObjects: 0.007884 ms)
 
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.157904 ms
-
-Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.645100 ms (FindLiveObjects: 0.093681 ms CreateObjectMapping: 0.025970 ms MarkObjects: 0.499941 ms  DeleteObjects: 0.025507 ms)
-
-2/27/2019 6:21:17 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+3/5/2019 12:25:33 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
                            
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
@@ -79,36 +77,30 @@ Error: An exception has occurred while connecting.
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.246260 ms
-
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.562086 ms (FindLiveObjects: 0.028753 ms CreateObjectMapping: 0.025970 ms MarkObjects: 0.503187 ms  DeleteObjects: 0.004173 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.553961 ms
+UnloadTime: 18.000240 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.683129 ms (FindLiveObjects: 0.124289 ms CreateObjectMapping: 0.031072 ms MarkObjects: 0.499013 ms  DeleteObjects: 0.027362 ms)
+Total: 1.528580 ms (FindLiveObjects: 0.141449 ms CreateObjectMapping: 0.098782 ms MarkObjects: 1.197449 ms  DeleteObjects: 0.090434 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.246724 ms
+UnloadTime: 1.496116 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.552810 ms (FindLiveObjects: 0.032927 ms CreateObjectMapping: 0.025507 ms MarkObjects: 0.489738 ms  DeleteObjects: 0.004173 ms)
+Total: 1.768348 ms (FindLiveObjects: 0.179942 ms CreateObjectMapping: 0.135884 ms MarkObjects: 1.439073 ms  DeleteObjects: 0.011130 ms)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.728338 ms
+UnloadTime: 28.718390 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.594086 ms (FindLiveObjects: 0.094608 ms CreateObjectMapping: 0.033855 ms MarkObjects: 0.439187 ms  DeleteObjects: 0.026434 ms)
+Total: 1.305971 ms (FindLiveObjects: 0.076985 ms CreateObjectMapping: 0.078840 ms MarkObjects: 1.090319 ms  DeleteObjects: 0.057971 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.249506 ms
+UnloadTime: 0.636753 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.530549 ms (FindLiveObjects: 0.026434 ms CreateObjectMapping: 0.025970 ms MarkObjects: 0.473970 ms  DeleteObjects: 0.003710 ms)
+Total: 1.432116 ms (FindLiveObjects: 0.079304 ms CreateObjectMapping: 0.083478 ms MarkObjects: 1.259131 ms  DeleteObjects: 0.009739 ms)
 
-2/27/2019 6:21:20 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+3/5/2019 12:25:38 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
                            
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
@@ -119,18 +111,18 @@ Error: An exception has occurred while connecting.
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.371237 ms
+UnloadTime: 16.915022 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.585738 ms (FindLiveObjects: 0.099710 ms CreateObjectMapping: 0.027826 ms MarkObjects: 0.433622 ms  DeleteObjects: 0.023652 ms)
+Total: 1.644058 ms (FindLiveObjects: 0.421101 ms CreateObjectMapping: 0.117333 ms MarkObjects: 1.049507 ms  DeleteObjects: 0.055188 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.241622 ms
+UnloadTime: 0.614493 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.530549 ms (FindLiveObjects: 0.029217 ms CreateObjectMapping: 0.025043 ms MarkObjects: 0.471651 ms  DeleteObjects: 0.004173 ms)
+Total: 1.376464 ms (FindLiveObjects: 0.086260 ms CreateObjectMapping: 0.083942 ms MarkObjects: 1.195594 ms  DeleteObjects: 0.009275 ms)
 
-2/27/2019 6:21:23 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+3/5/2019 12:25:42 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
                            
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
@@ -141,30 +133,30 @@ Error: An exception has occurred while connecting.
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.773787 ms
+UnloadTime: 17.491022 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.622839 ms (FindLiveObjects: 0.095999 ms CreateObjectMapping: 0.036637 ms MarkObjects: 0.462376 ms  DeleteObjects: 0.027362 ms)
+Total: 1.505855 ms (FindLiveObjects: 0.239304 ms CreateObjectMapping: 0.102492 ms MarkObjects: 1.075942 ms  DeleteObjects: 0.087188 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.243941 ms
+UnloadTime: 0.913159 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.611245 ms (FindLiveObjects: 0.054260 ms CreateObjectMapping: 0.037101 ms MarkObjects: 0.515245 ms  DeleteObjects: 0.004173 ms)
+Total: 1.423305 ms (FindLiveObjects: 0.074666 ms CreateObjectMapping: 0.059826 ms MarkObjects: 1.278145 ms  DeleteObjects: 0.009275 ms)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.705613 ms
+UnloadTime: 71.625771 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.621448 ms (FindLiveObjects: 0.105275 ms CreateObjectMapping: 0.036173 ms MarkObjects: 0.451709 ms  DeleteObjects: 0.027362 ms)
+Total: 1.329623 ms (FindLiveObjects: 0.120579 ms CreateObjectMapping: 0.083478 ms MarkObjects: 1.069913 ms  DeleteObjects: 0.055188 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.263883 ms
+UnloadTime: 0.704464 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.531941 ms (FindLiveObjects: 0.030608 ms CreateObjectMapping: 0.025970 ms MarkObjects: 0.471651 ms  DeleteObjects: 0.003710 ms)
+Total: 1.490087 ms (FindLiveObjects: 0.084405 ms CreateObjectMapping: 0.085333 ms MarkObjects: 1.309217 ms  DeleteObjects: 0.010202 ms)
 
-2/27/2019 6:21:27 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+3/5/2019 12:25:45 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
                            
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
@@ -175,18 +167,30 @@ Error: An exception has occurred while connecting.
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 6.522425 ms
+UnloadTime: 22.432936 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.553738 ms (FindLiveObjects: 0.082550 ms CreateObjectMapping: 0.027826 ms MarkObjects: 0.419245 ms  DeleteObjects: 0.023188 ms)
+Total: 1.379247 ms (FindLiveObjects: 0.102956 ms CreateObjectMapping: 0.089043 ms MarkObjects: 1.130203 ms  DeleteObjects: 0.056115 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.243941 ms
+UnloadTime: 0.633971 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.575071 ms (FindLiveObjects: 0.026898 ms CreateObjectMapping: 0.025970 ms MarkObjects: 0.518028 ms  DeleteObjects: 0.004173 ms)
+Total: 2.363363 ms (FindLiveObjects: 0.160927 ms CreateObjectMapping: 0.108985 ms MarkObjects: 2.067479 ms  DeleteObjects: 0.023188 ms)
 
-2/27/2019 6:21:30 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 16.428064 ms
+
+Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
+Total: 1.190957 ms (FindLiveObjects: 0.325101 ms CreateObjectMapping: 0.064000 ms MarkObjects: 0.756869 ms  DeleteObjects: 0.044057 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.883014 ms
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
+Total: 2.076290 ms (FindLiveObjects: 0.175768 ms CreateObjectMapping: 0.268521 ms MarkObjects: 1.619015 ms  DeleteObjects: 0.010666 ms)
+
+3/5/2019 12:25:50 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
                            
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
@@ -197,28 +201,18 @@ Error: An exception has occurred while connecting.
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 9.194190 ms
+UnloadTime: 17.382502 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.829680 ms (FindLiveObjects: 0.118724 ms CreateObjectMapping: 0.046376 ms MarkObjects: 0.620520 ms  DeleteObjects: 0.043130 ms)
+Total: 1.581450 ms (FindLiveObjects: 0.382145 ms CreateObjectMapping: 0.108521 ms MarkObjects: 1.033275 ms  DeleteObjects: 0.056115 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-2/27/2019 6:21:33 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
-                           
-                             at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
-                             at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
-                             at System.Net.Sockets.TcpClient.Connect (System.Net.IPEndPoint remote_end_point) [0x00000] in <filename unknown>:0 
-                             at System.Net.Sockets.TcpClient.Connect (System.Net.IPAddress[] ipAddresses, Int32 port) [0x00000] in <filename unknown>:0 
-UnloadTime: 0.248579 ms
+UnloadTime: 1.917682 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.593622 ms (FindLiveObjects: 0.028753 ms CreateObjectMapping: 0.025507 ms MarkObjects: 0.534723 ms  DeleteObjects: 0.004173 ms)
+Total: 1.376000 ms (FindLiveObjects: 0.079304 ms CreateObjectMapping: 0.080231 ms MarkObjects: 1.205797 ms  DeleteObjects: 0.009739 ms)
 
-Error: An exception has occurred while connecting.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-2/27/2019 6:21:36 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
+3/5/2019 12:25:53 PM|Fatal|WebSocket.acceptException|System.Net.Sockets.SocketException: No connection could be made because the target machine actively refused it.
                            
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP, Boolean requireSocketPolicy) [0x00000] in <filename unknown>:0 
                              at System.Net.Sockets.Socket.Connect (System.Net.EndPoint remoteEP) [0x00000] in <filename unknown>:0 
@@ -229,25 +223,25 @@ Error: An exception has occurred while connecting.
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 9.727985 ms
+UnloadTime: 43.614162 ms
 
 Unloading 16 unused Assets to reduce memory usage. Loaded Objects now: 902.
-Total: 0.644173 ms (FindLiveObjects: 0.059362 ms CreateObjectMapping: 0.030144 ms MarkObjects: 0.524984 ms  DeleteObjects: 0.028289 ms)
+Total: 1.347247 ms (FindLiveObjects: 0.101565 ms CreateObjectMapping: 0.088579 ms MarkObjects: 1.100522 ms  DeleteObjects: 0.055188 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.261564 ms
+UnloadTime: 0.521739 ms
 
 Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 1016.
-Total: 0.622839 ms (FindLiveObjects: 0.045912 ms CreateObjectMapping: 0.027826 ms MarkObjects: 0.543535 ms  DeleteObjects: 0.004637 ms)
+Total: 1.453913 ms (FindLiveObjects: 0.085797 ms CreateObjectMapping: 0.087652 ms MarkObjects: 1.269797 ms  DeleteObjects: 0.009739 ms)
 
 Quitting App
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 6 worker threads for Enlighten.
-  Thread -> id: 46d4 -> priority: 1 
-  Thread -> id: 6c3c -> priority: 1 
-  Thread -> id: 6664 -> priority: 1 
-  Thread -> id: 3cf8 -> priority: 1 
-  Thread -> id: 2748 -> priority: 1 
-  Thread -> id: 6ff0 -> priority: 1 
+  Thread -> id: 23ac -> priority: 1 
+  Thread -> id: 23d4 -> priority: 1 
+  Thread -> id: 4598 -> priority: 1 
+  Thread -> id: 2470 -> priority: 1 
+  Thread -> id: 3a8c -> priority: 1 
+  Thread -> id: 2118 -> priority: 1 

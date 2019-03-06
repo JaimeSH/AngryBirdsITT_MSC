@@ -1,9 +1,11 @@
 -------< Latest Patch notes below >-------- 
 
-# Version 1.2.9 (2/27/2019 18:27)
+# Version 1.3.0 (3/05/2019 18:20)
     # Implemented
-        - Solved an error with the evaluation/generation code that caused an evaluation between a current gen individual with an individual form another generation
-        - Modified the generation of the average fitness values of the individuals to reflect the error of movement and fitness by number of pieces
+        - Integrated the selection operations:
+            - Random Selection
+            - Tournament selection
+        - Added a new instance of the AngryBirds app to use for the tournament selection
     
     # Pending
         - Integrate the use of different composites and pieces in the generation of individuals
