@@ -1,10 +1,12 @@
 # Version 1.3.1 (3/07/2019 17:40)
     # Implemented
         - Integrated the use of different composites and pieces in the generation of individuals
+        - Added support for linux distributions
     
     # Pending
         - Integrate mutation and different cross-over evaluations to the individuals
         - Implement a way to create and adapt the mask on different generations
+        - Added integration with linux distributions but a bug prevents the generation to be calculated
 
 # Version 1.3.0 (3/05/2019 18:20)
     # Implemented
