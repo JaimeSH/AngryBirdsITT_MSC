@@ -1,14 +1,10 @@
 -------< Latest Patch notes below >-------- 
 
-# Version 1.3.0 (3/05/2019 18:20)
+# Version 1.3.1 (3/07/2019 17:40)
     # Implemented
-        - Integrated the selection operations:
-            - Random Selection
-            - Tournament selection
-        - Added a new instance of the AngryBirds app to use for the tournament selection
+        - Integrated the use of different composites and pieces in the generation of individuals
     
     # Pending
-        - Integrate the use of different composites and pieces in the generation of individuals
         - Integrate mutation and different cross-over evaluations to the individuals
         - Implement a way to create and adapt the mask on different generations
 

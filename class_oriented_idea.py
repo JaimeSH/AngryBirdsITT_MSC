@@ -24,7 +24,7 @@ copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
 version = "1.3.0"
-date = "March 05, 2019 18:20"
+date = "March 07, 2019 17:40"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
 status = "Development"
@@ -395,7 +395,16 @@ Composites = {
     0: [("RectBig", 0, -91, 0), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
     1: [("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)],
     2: [("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
-    3: [("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]
+    3: [("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
+    4: [("RectTiny", 0, 0, 90)],
+    5: [("RectSmall", 0, 0, 90)],
+    6: [("RectMedium", 0, 0, 90)],
+    7: [("RectBig", 0, 0, 90)],
+    8: [("RectFat", 0, 0, 90)],
+    9: [("SquareSmall", 0, 0, 0)],
+    10: [("SquareHole", 0, 0, 0)],
+    11: [("Circle", 0, 0, 0)],
+    12: [("TriangleHole", 0, 0, 0)]
 }
 
 """

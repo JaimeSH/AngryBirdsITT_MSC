@@ -1,3 +1,11 @@
+# Version 1.3.1 (3/07/2019 17:40)
+    # Implemented
+        - Integrated the use of different composites and pieces in the generation of individuals
+    
+    # Pending
+        - Integrate mutation and different cross-over evaluations to the individuals
+        - Implement a way to create and adapt the mask on different generations
+
 # Version 1.3.0 (3/05/2019 18:20)
     # Implemented
         - Integrated the selection operations:
