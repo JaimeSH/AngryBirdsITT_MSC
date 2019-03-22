@@ -27,17 +27,26 @@ from AngryBirdsGA import *
 import math
 
 
-def fitness(ind_orig, ind_fin):
+def fitness(ind_orig, ind_fin, cromosome):
     #print("Fitness = 100%")
-    total_fit = 100
-    size_pen = size_dif(ind_orig, ind_fin)
-    pos_pen = position_error(ind_orig, ind_fin)
-    total_fit = size_pen - pos_pen
-    size_fit = size_pen
-    pos_fit = pos_pen
+    
+    
+    criteria = size_dif(ind_orig, ind_fin)
+    criteria += (dif_pieces(cromosome) * 10) # 240
+    # total_fit = 100
+    #size_pen = size_dif(ind_orig, ind_fin)
+    #pos_pen = position_error(ind_orig, ind_fin)
+    #total_fit = size_pen - pos_pen
+    #size_fit = size_pen
+    #pos_fit = pos_pen
     #print(size_pen)
     #print(pos_pen)
-    return [total_fit, size_fit, pos_fit]
+    #return [total_fit, size_fit, pos_fit]
+    return [criteria, 100, 100]
+
+def dif_pieces(b):
+    #type_list = [piece[0] for piece in b]
+    return len(set(b))
 
 def size_dif(a, b):
     val_a = len(a)                      # Original amount

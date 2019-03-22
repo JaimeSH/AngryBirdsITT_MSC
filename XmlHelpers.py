@@ -138,16 +138,16 @@ def calculate_mask(individual, mask):
             #print(mask[i][j])
             # set x value to the column value
             # get a piece and place it
-            
-            while cumulative_height <= (mask[i][j] * 150):
-                # while the height of the current column is less than an estimated value continue adding pieces
-                #print(height_list[0])
-                #print(height_list)
-                cumulative_height += height_list[0]
-                new_x_list.append(x)
-                el_height = el_height + (height_list[0]/2)
-                el_height_cont = height_list[0]/2
-                height_list.pop(0)
+            if mask[i][j] != 0:
+                while cumulative_height <= (mask[i][j] * 150):
+                    # while the height of the current column is less than an estimated value continue adding pieces
+                    #print(height_list[0])
+                    #print(height_list)
+                    cumulative_height += height_list[0]
+                    new_x_list.append(x)
+                    el_height = el_height + (height_list[0]/2)
+                    el_height_cont = height_list[0]/2
+                    height_list.pop(0)
             
             #print("Line break")
             
@@ -165,7 +165,7 @@ def calculate_mask(individual, mask):
     x = 750
     if len(height_list) >= 1:
         for j in range(6, -1, -1):
-            if mask[2][j] == 1:
+            if mask[2][j] != 0:
                 new_x_list.append(x)
                 height_list.pop(0)
                 x += -250
@@ -173,6 +173,10 @@ def calculate_mask(individual, mask):
                     x == 1000
                 if len(height_list) == 0:
                     break
+            else:
+                x += -250
+                if x == -1000:
+                    x == 1000
 
     #for r in range(0, len(height_list)):
     #    new_x_list.append(9999)
@@ -241,12 +245,13 @@ def writeXML_masked(individual, filename):
         # Obtain the first value on the first Composite of the individual
         base_x = item[0][0][0]
         if base_x != current_x:
-            current_x += -250
-            c += 1
-            if current_x == -1000 or c == 7:
-                current_x = 750
-                c = 0
-            base_x = current_x
+            while base_x != current_x:
+                current_x += -250
+                c += 1
+                if current_x == -1000 or c == 7:
+                    current_x = 750
+                    c = 0
+                base_x = current_x
         base_y = 0
 
         for element in item:

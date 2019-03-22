@@ -33,7 +33,7 @@ t_begin = datetime.datetime.now()
 
 ## Values used for the genetic algorithm
 population = 10         # For now it can only be below 10
-max_gen = 10            # Max number of generations
+max_gen = 2            # Max number of generations
 fits = [0]              # Variable to save the fitness of each generation
 gen = 1                 # Generation 1
 per_cross = 0.5         # Percentage of cross-over (cross-over operator)
@@ -41,12 +41,13 @@ per_comb = 0.3          # Percentage of combination (combination operator)
 per_mut = 0.4           # Percentage of mutation
 sel_type = 1            # Selection (for crossover) type [ 0: Random - 1: Tournament - TBD]
 cross_type = 0          # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
-ind_pieces = 30         # Number of pieces that define an individual
+ind_pieces = 20         # Number of pieces that define an individual
 all_fit = []            # Average fitness for all generations
 fit_Alen = []           # Average piece length fitness for all generations
 fit_Amov = []           # Average movement fitness for all generations
 max_elite = 5           # Maximum number of elite members in the generation
 elite = []
+best_gen = []
 
 ## Data required to create the xml files
 
@@ -128,15 +129,15 @@ type_towers = [[3,0,3,0,3,0,0],
                [1,0,1,0,1,0,0]]
 
 Mask_List = [
-    type_small_l,
-    type_large_l,
-    type_small_cube,
-    type_large_cube,
-    type_small_floor,
-    type_large_floor,
+    #type_small_l,
+    #type_large_l,
+    #type_small_cube,
+    #type_large_cube,
+    #type_small_floor,
+    #type_large_floor,
     type_castle,
-    type_house,
-    type_towers
+    type_house#,
+    #type_towers
 ]
 
 # Global Piece class and a class for each piece in the game
@@ -396,15 +397,16 @@ Composites = {
     1: [("RectBig", 0, -31, 0), ("RectTiny", -90, 0, 90), ("RectTiny", 90, 0, 90), ("RectBig", 0, 31, 0)],
     2: [("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
     3: [("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
-    4: [("RectTiny", 0, 0, 90)],
-    5: [("RectSmall", 0, 0, 90)],
-    6: [("RectMedium", 0, 0, 90)],
-    7: [("RectBig", 0, 0, 90)],
-    8: [("RectFat", 0, 0, 90)],
-    9: [("SquareSmall", 0, 0, 0)],
-    10: [("SquareHole", 0, 0, 0)],
-    11: [("Circle", 0, 0, 0)],
-    12: [("TriangleHole", 0, 0, 0)]
+    4: [("RectBig", 100, 5, -27), ("RectBig", -100, 5, 27), ("RectSmall", 0, 0, 90)]#,
+    #5: [("RectTiny", 0, 0, 0)],
+    #6: [("RectSmall", 0, 0, 0)],
+    #7: [("RectMedium", 0, 0, 0)],
+    #8: [("RectBig", 0, 0, 0)],
+    #9: [("RectFat", 0, 0, 0)],
+    #10: [("SquareSmall", 0, 0, 0)],
+    #11: [("SquareHole", 0, 0, 0)],
+    #12: [("Circle", 0, 0, 0)],
+    #5: [("TriangleHole", 0, 0, 0)]
 }
 
 """
@@ -512,7 +514,7 @@ class Individual:
         return masked
     
     def get_fitness(self):
-        self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces)
+        self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces, self.chromosome)
         return 0
     
     def combine_mask(self):
@@ -690,6 +692,8 @@ while gen < max_gen: #and max(fits) < 100:
     for c, ind in enumerate(pop):
         fit_pop.append([c, ind.Fitness])
         gen_fit = gen_fit + ind.Fitness
+        if c == 0:
+            best_gen.append(ind.Fitness)
         len_fit += ind.Fit_Size
         mov_fit += ind.Fit_Pos
     
