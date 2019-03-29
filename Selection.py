@@ -1,5 +1,5 @@
 # Selection types for the population
-#   - Random Selection
+#   - Roulette selection
 #   - Tournament Selection (best of)
 #   - Future implementations
 #
@@ -14,6 +14,7 @@
 #
 import random
 import subprocess
+import operator
 import os
 
 class Selection:
@@ -45,21 +46,46 @@ class Selection:
         # Return a randomly selected parent to add to the list
         #print("Llegue a Random")
         return tourney_members
+    
+    def Roulette_Selection(self, population, limit):
+        # Obtain the maximum value for the fitness between all members of the population
+        max_fit = sum(member.Fitness for member in population)
+        
+        selected_individuals = []
+        pr = 1
+        
+        # While the required amount of individuals as not been reaches continue selecting
+        while pr <= limit:    
+            # Then select a point in the roulette
+            pick = random.uniform(0, max_fit)
+            current = 0
+            for c, member in enumerate(population):
+                current += member.Fitness
+                if current > pick:
+                    selected_individuals.append(member)
+                    population.pop(c)
+                    max_fit = sum(member.Fitness for member in population)
+                    pr += 1
+                    break
+        return selected_individuals
 
     def Tournament_Selection(self, population, limit):
         ind_c = 0
         tourney_members = []
         tourney_members_number = []
         pr = 1
+
+        # First order the population list by the Fitness value
+        sorted_x = sorted(population, key=operator.attrgetter('Fitness'), reverse=True)
         
         # Obtain two random members of the population (with replacement) to compete
         while pr <= limit:
-            r = random.randint(0, (len(population)-1))
-            tourney_members.append(population[r])
-            tourney_members_number.append(r)
+            tourney_members.append(sorted_x[0])
+            sorted_x.pop(0)
+            tourney_members_number.append(pr)
             pr = pr + 1
                 
-
+        """
         # Generate an XML to check the fitness
         for ind in tourney_members:
             ind.combine_mask()
@@ -82,6 +108,7 @@ class Selection:
         for ind in tourney_members:
             ind.get_fitness()
             pass
+        """
         
         # Select the best of the two individuals of the tourney
         # in case both have the same fitness then chose one at random

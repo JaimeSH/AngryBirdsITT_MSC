@@ -12,18 +12,20 @@ import os
 import json
 import sys
 import subprocess
+import itertools
+import operator
 
 # Local files
 import XmlHelpers as xml
 import Evaluation as Eval
 from Selection import Selection
-
+from Mutation import Mutation
 
 author = "Salinas Hernandez Jaime"
 copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
-version = "1.3.0"
+version = "1.3.2"
 date = "March 07, 2019 17:40"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
@@ -33,9 +35,9 @@ t_begin = datetime.datetime.now()
 
 ## Values used for the genetic algorithm
 population = 10         # For now it can only be below 10
-max_gen = 2            # Max number of generations
+max_gen = 6            # Max number of generations
 fits = [0]              # Variable to save the fitness of each generation
-gen = 1                 # Generation 1
+gen = 0                 # Generation 1
 per_cross = 0.5         # Percentage of cross-over (cross-over operator)
 per_comb = 0.3          # Percentage of combination (combination operator)
 per_mut = 0.4           # Percentage of mutation
@@ -45,9 +47,11 @@ ind_pieces = 20         # Number of pieces that define an individual
 all_fit = []            # Average fitness for all generations
 fit_Alen = []           # Average piece length fitness for all generations
 fit_Amov = []           # Average movement fitness for all generations
-max_elite = 5           # Maximum number of elite members in the generation
+max_elite = 2           # Maximum number of elite members in the generation
 elite = []
 best_gen = []
+mu = 0                  # Mean for normal distribution
+sigma = 20              # SD for normal distribution
 
 ## Data required to create the xml files
 
@@ -92,6 +96,8 @@ grid   = pylab.grid
 title  = pylab.title
 rad    = lambda ang: ang*pi/180                 #lovely lambda: degree to radian
 sel_operator = Selection(project_root, game_path_tourney, info)
+mut_operator = Mutation(per_mut, mu, sigma)
+
 
 # Function to rotate points
 def Rotate2D(pts,cnt,ang=pi/4):
@@ -129,15 +135,15 @@ type_towers = [[3,0,3,0,3,0,0],
                [1,0,1,0,1,0,0]]
 
 Mask_List = [
-    #type_small_l,
-    #type_large_l,
-    #type_small_cube,
-    #type_large_cube,
-    #type_small_floor,
-    #type_large_floor,
+    type_small_l,
+    type_large_l,
+    type_small_cube,
+    type_large_cube,
+    type_small_floor,
+    type_large_floor,
     type_castle,
-    type_house#,
-    #type_towers
+    type_house,
+    type_towers
 ]
 
 # Global Piece class and a class for each piece in the game
@@ -446,7 +452,7 @@ for bl in BLOCKS[0]:
 #############################< Code Adaptation >################################
 ################################################################################
 
-
+mut_operator.UpdateComposites(Composites)
 #####################################################################
 ########################< Class Definitions >########################
 #####################################################################
@@ -460,19 +466,42 @@ class Individual:
         self.mask = kwargs.get('mask') #self.assign_mask(Mask_List[kwargs.get('mask')])
         self.__dict__.update(kwargs)
         self.chromosome_objects = [Composite(Composites[composite]) for composite in self.chromosome]
-        self.object_list = self.object_list()
+        self.object_list = self.object_list_gen()
         self.object_masked = []
+        self.Mut_Movement = [0 for value in self.chromosome]
+        self.Mut_Struct = [-1 for value in self.chromosome]
+        self.Mut_Material = [0 for value in self.chromosome]
 
     def position_chromosome(self):
         #To do
         # Here you can use the chromosome objects etc.
         pass
     
+    def UpdateMutation(self):
+        for c, struc in enumerate(self.Mut_Struct):
+            if struc != -1:
+                self.chromosome[c] = struc
+
+        self.chromosome_objects = [Composite(Composites[composite]) for composite in self.chromosome]
+
+        for mat in self.Mut_Material:
+            for objeto in self.chromosome_objects:
+                for pieza in objeto.Objetos:
+                    if mat != 0:
+                        pieza.Material = mat
+                        pieza.update_values()
+        
+        for c, mov in enumerate(self.Mut_Movement):
+            self.chromosome_objects[c].move_xy(mov, 0)
+
+        self.object_list = self.object_list_gen()
+        pass
+    
     def chromosome_coordinates(self):
         
         return [0, 0]
     
-    def object_list(self):
+    def object_list_gen(self):
         final_list = []
         for com in self.chromosome_objects:
             obj_list =[]
@@ -494,8 +523,8 @@ class Individual:
         pass
     
     def read_xml_tourney(self, **kwargs):
-        self.Remaining_Pieces_tourney = xml.readXML(os.path.join(project_root, read_path_tourney + "/level-"+ str(kwargs.get('individual')) +".xml"))
-        self.ind_piece_count_tourney = len(self.Remaining_Pieces_tourney)
+        self.Remaining_Pieces = xml.readXML(os.path.join(project_root, read_path_tourney + "/level-"+ str(kwargs.get('individual')) +".xml"))
+        self.ind_piece_count = len(self.Remaining_Pieces)
         pass
     
     def ind_height(self):
@@ -585,10 +614,7 @@ while gen < max_gen: #and max(fits) < 100:
     else:
         many = many - 1
     
-    # Obtain the "parents" of the generation
-    parents = []
-    pr = 1
-    parents = sel_operator.Selection_Base(pop, many, sel_type)
+    
     ### Discontinued since ver. 1.3.0
     #while pr <= many:
     #    parents.append(sel_operator.Selection_Base(pop, sel_type))
@@ -598,7 +624,46 @@ while gen < max_gen: #and max(fits) < 100:
     #        parents.append(r)
     #        pr = pr + 1
     ###
-            
+
+    # Combine the mask of the individual before entering the simulation
+    ind_c = 0
+    for ind in pop:
+        ind.combine_mask()
+        ind.generate_xml_masked(individual = ind_c)
+        ind_c = ind_c + 1
+    
+    # Runs and instance of the game
+    #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+    subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+
+    # After the simulation obtain the fitness value for the population
+    # Read the xml files and get the data
+    ind_c = 0
+    final_ind_list = []
+    for ind in pop:
+        value = ind.read_xml(individual = ind_c)
+        final_ind_list.append(value)
+        ind_c = ind_c + 1
+
+    # Calculate the fitness for each individual
+    for ind in pop:
+        ind.get_fitness()
+        pass
+
+    ############################################################################
+    #############################< Selection steps >############################
+    ############################################################################
+    # Obtain the "parents" of the generation
+    parents = []
+    pr = 1
+    parents = sel_operator.Selection_Base(pop, many, sel_type)
+
+    ############################################################################
+    #############################< Crossover steps >############################
+    ############################################################################
+    
+    new_members = []
+
     # Generate the cross-over operation (one-point crossover)
     for cross_parent in range(0, len(parents), 2):
         # Generate a copy of each parent for the cross-over operation
@@ -616,17 +681,6 @@ while gen < max_gen: #and max(fits) < 100:
         son = father11 + mother12
         daughter = mother11 + father12
         
-        # Mutate the childs (by chance like throwing a 100 side dice)
-        # If greater than the treshold then mutate
-        chance = random.randint(1, 100)
-        threshold = 100 - (100 * per_mut)
-        if chance > threshold:
-            var=0
-            #print("Mutate")
-        else:
-            var=1
-            #print("Not Mutate")
-        
         mask_son = Mask_List[random.randint(0,len(Mask_List)-1)]
         mask_daughter = Mask_List[random.randint(0,len(Mask_List)-1)]
         # Replace the parents in the generation
@@ -635,7 +689,45 @@ while gen < max_gen: #and max(fits) < 100:
         
         pop[parents[cross_parent] - 1] = Individual(chromosome = son, mask = mask_son)
         pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter, mask = mask_daughter)
+
+        # Mutate the childs (by chance like throwing a 100 side dice)
+        # If greater than the treshold then mutate
+        chance = random.randint(1, 100)
+        threshold = 100 - (100 * per_mut)
+        chance = 100
+        if chance > threshold:
+            var=0
+            new_chrom = mut_operator.M_Individual(pop[parents[cross_parent] - 1].chromosome)
+            pop[parents[cross_parent] - 1] = Individual(chromosome = new_chrom, mask = mask_son)
+            pop[parents[cross_parent] - 1] = mut_operator.M_Movement(pop[parents[cross_parent] - 1], 0)
+            pop[parents[cross_parent] - 1] = mut_operator.M_StructMat(pop[parents[cross_parent] - 1], 0)
+            pop[parents[cross_parent] - 1] = mut_operator.M_StrucType(pop[parents[cross_parent] - 1], 0)
+            pop[parents[cross_parent] - 1].UpdateMutation()
+            #print("Mutate")
+        else:
+            var=1
+            #print("Not Mutate")
+        
+        pop[parents[cross_parent] - 1].ind_c = parents[cross_parent] - 1
+        pop[parents[cross_parent+1] - 1].ind_c = parents[cross_parent] - 1
+        new_members.append(pop[parents[cross_parent] - 1])
+        new_members.append(pop[parents[cross_parent + 1] - 1])
     
+    # Calculate the new individuals fitness by sending them to a diferent simulation track
+    
+    # Generate an XML to check the fitness
+    for ind_c, ind in enumerate(new_members):
+        ind.combine_mask()
+        ind.generate_xml_tourney(individual = ind_c)
+    
+    # Execute the application with the two memebers
+    subprocess.call(r'"' + os.path.join(project_root, game_path_tourney) + '"', startupinfo=info)
+
+    # Then obtain the remaining fitness values
+    for ind in new_members:
+        ind.read_xml_tourney(individual = ind.ind_c)
+        ind.get_fitness()
+
     ### After the cross-ver
     ### Legacy Method    
     #ind_c = 0
@@ -644,33 +736,10 @@ while gen < max_gen: #and max(fits) < 100:
     #    ind_c = ind_c + 1
     ###
 
-    ind_c = 0
-    for ind in pop:
-        ind.combine_mask()
-        ind.generate_xml_masked(individual = ind_c)
-        ind_c = ind_c + 1
-    
-    # Runs and instance of the game
-    #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
-    subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
-
     ################################################################################
     #############################< ELITE selection >################################
     ################################################################################
-    
-    # Read the xml files and get the data
-    ind_c = 0
-    final_ind_list = []
-    for ind in pop:
-        value = ind.read_xml(individual = ind_c)
-        final_ind_list.append(value)
-        ind_c = ind_c + 1
-
-    # Calculate the fitness for each individual
-    for ind in pop:
-        ind.get_fitness()
-        pass
-
+    """
     # Obtain the height of each individual
     data = []
     c = 0
@@ -680,7 +749,7 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Order the list
     results = sorted(data, key=lambda x: x[3], reverse=True)
-
+    """
     # Add the best individuals to the elite group
     
 
@@ -717,6 +786,6 @@ while gen < max_gen: #and max(fits) < 100:
 t_finish = datetime.datetime.now()
 print("Total time is: " + str(t_finish-t_begin))
 plot(all_fit, '-.b', label='General Fitness')
-plot(fit_Alen, '-g', label='Fitness by pieces')
-plot(fit_Amov, '.r', label='Error by movement')
+#plot(fit_Alen, '-g', label='Fitness by pieces')
+#plot(fit_Amov, '.r', label='Error by movement')
 pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))

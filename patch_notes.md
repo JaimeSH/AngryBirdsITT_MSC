@@ -1,3 +1,19 @@
+# Version 1.3.2 (3/22/2019 13:40)
+    # Implemented
+        - Added mutation operation for the individual evolution
+        - Modification to the selection algorithm
+            - Removed random selection of parents
+            - Added Roulette Style Selection
+        - General modifications to the code
+            - The calculation for the fitness is obtained at the begining of each geneation
+            - A second calculation of fitness for the new individuals is obtained immediately after the integration to the population
+        - Modification to the fitness calculation
+    
+    # Pending
+        - Integrate the different cross-over evaluations to the individuals
+        - Implement a way to create and adapt the mask on different generations
+        - Clean the folders before beginning the algorithm
+
 # Version 1.3.1 (3/07/2019 17:40)
     # Implemented
         - Integrated the use of different composites and pieces in the generation of individuals
