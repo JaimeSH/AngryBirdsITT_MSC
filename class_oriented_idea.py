@@ -575,9 +575,21 @@ class Individual:
         self.Pieces = res_list[2]
         pass
     
+
+def create_new_mask(pieces):
+    div_list =[]
+    while True:
+        div_list = [random.randint(0, pieces-1) for col in range(7)]
+        if sum(div_list) == ind_pieces:
+            break
     
+    return div_list
+
+
 #pop_mask = [random.randint(0,len(Mask_List)-1) for i in range(population)]
-pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = Mask_List[random.randint(0,len(Mask_List)-1)]) for i in range(population)]
+#pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = Mask_List[random.randint(0,len(Mask_List)-1)]) for i in range(population)]
+
+pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = create_new_mask(ind_pieces) for i in range(population)]
 
 #for c, ind in enumerate(pop):
 #    ind.assign_mask(mask=pop_mask[c])
