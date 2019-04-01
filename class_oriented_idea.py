@@ -769,6 +769,7 @@ while gen < max_gen: #and max(fits) < 100:
     fit_pop.sort(key=lambda x:x[1], reverse=True)
     fit_pop = fit_pop[:5]
 
+    # Add the best value to the elite list
     for e in fit_pop:
         elite.append([e[1], pop[e[0]].chromosome, pop[e[0]].mask])
         pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
