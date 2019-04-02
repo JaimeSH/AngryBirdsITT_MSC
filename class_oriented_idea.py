@@ -580,7 +580,7 @@ def create_new_mask(pieces):
     div_list =[]
     while True:
         div_list = [random.randint(0, pieces-1) for col in range(7)]
-        if sum(div_list) == ind_pieces:
+        if sum(div_list) == pieces:
             break
     
     return div_list
@@ -589,7 +589,7 @@ def create_new_mask(pieces):
 #pop_mask = [random.randint(0,len(Mask_List)-1) for i in range(population)]
 #pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = Mask_List[random.randint(0,len(Mask_List)-1)]) for i in range(population)]
 
-pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = create_new_mask(ind_pieces) for i in range(population)]
+pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = create_new_mask(ind_pieces)) for i in range(population)]
 
 #for c, ind in enumerate(pop):
 #    ind.assign_mask(mask=pop_mask[c])
@@ -693,8 +693,8 @@ while gen < max_gen: #and max(fits) < 100:
         son = father11 + mother12
         daughter = mother11 + father12
         
-        mask_son = Mask_List[random.randint(0,len(Mask_List)-1)]
-        mask_daughter = Mask_List[random.randint(0,len(Mask_List)-1)]
+        mask_son = create_new_mask(ind_pieces)
+        mask_daughter = create_new_mask(ind_pieces)
         # Replace the parents in the generation
         pop[parents[cross_parent] - 1].chromosome = son
         pop[parents[cross_parent + 1] - 1].chromosome = daughter
@@ -710,7 +710,7 @@ while gen < max_gen: #and max(fits) < 100:
         if chance > threshold:
             var=0
             new_chrom = mut_operator.M_Individual(pop[parents[cross_parent] - 1].chromosome)
-            pop[parents[cross_parent] - 1] = Individual(chromosome = new_chrom, mask = mask_son)
+            pop[parents[cross_parent] - 1] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
             pop[parents[cross_parent] - 1] = mut_operator.M_Movement(pop[parents[cross_parent] - 1], 0)
             pop[parents[cross_parent] - 1] = mut_operator.M_StructMat(pop[parents[cross_parent] - 1], 0)
             pop[parents[cross_parent] - 1] = mut_operator.M_StrucType(pop[parents[cross_parent] - 1], 0)
