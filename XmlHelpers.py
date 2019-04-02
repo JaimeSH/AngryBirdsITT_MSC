@@ -134,6 +134,44 @@ def calculate_mask(individual, mask):
     #print(height_list)
 
     for j in range(6, -1, -1):
+        # Set the values for height and x position
+        pc = 1
+        while pc <= mask[j]:
+            cumulative_height += height_list[0]
+            new_x_list.append(x)
+            el_height += (height_list[0]/2)
+            el_height_cont = height_list[0]/2
+            height_list.pop(0)
+            pc += 1
+        x += -250
+        cumulative_height = 0
+    
+    for i in range(len(new_x_list)):
+        temp_individual[i][0][0][0] = new_x_list[i]
+    #print(individual)
+    
+    return temp_individual
+
+def calculate_mask_old(individual, mask):
+    # 
+    # First
+    temp_individual = individual.copy()
+    height_list = []
+    new_x_list = []
+    x = 750
+    el_height = -350
+    el_height_cont = 0
+    cumulative_height = 0
+    #print(individual)
+    for item in individual:
+        for element in item:
+            for obj in element:
+                if len(obj) <= 2:
+                    height_list.append(obj[1])
+
+    #print(height_list)
+
+    for j in range(6, -1, -1):
         for i in range(2, -1, -1):
             #print(mask[i][j])
             # set x value to the column value
