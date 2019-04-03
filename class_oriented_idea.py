@@ -769,17 +769,21 @@ while gen < max_gen: #and max(fits) < 100:
     gen_fit = 0
     len_fit = 0
     mov_fit = 0
+    best_ind = 0
     fit_pop = []
     for c, ind in enumerate(pop):
         fit_pop.append([c, ind.Fitness])
         gen_fit = gen_fit + ind.Fitness
-        if c == 0:
-            best_gen.append(ind.Fitness)
+        #if c == 0:
+        #    best_gen.append(ind.Fitness)
         len_fit += ind.Fit_Size
         mov_fit += ind.Fit_Pos
     
     fit_pop.sort(key=lambda x:x[1], reverse=True)
     fit_pop = fit_pop[:5]
+    
+    # 
+    best_gen.append(fit_pop[0][1])
 
     # Add the best value to the elite list
     for e in fit_pop:
@@ -795,6 +799,10 @@ while gen < max_gen: #and max(fits) < 100:
     
     # Increase value of the generation for the next cycle
     gen = gen + 1
+
+    # Print the time of the generation
+    t_gen = datetime.datetime.now()
+    print("Gen " + str(gen) + " end time: " + str(t_gen-t_begin))
 
 t_finish = datetime.datetime.now()
 print("Total time is: " + str(t_finish-t_begin))
