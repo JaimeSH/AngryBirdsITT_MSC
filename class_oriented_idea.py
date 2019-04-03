@@ -8,6 +8,7 @@ import math
 #
 import datetime
 import time
+from yaspin.yaspin import yaspin
 import os
 import json
 import sys
@@ -31,6 +32,7 @@ maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
 status = "Development"
 t_begin = datetime.datetime.now()
+t_prev = datetime.datetime.now()
 
 
 ## Values used for the genetic algorithm
@@ -600,212 +602,238 @@ for ind in pop:
         #print('')
         pass
 """    
-    
 
-while gen < max_gen: #and max(fits) < 100:
-    #fits = [0]
-    # If the current generation is not the first one generate a new population
-    ###if gen != 1:
-    #    Determine via a random number which pieces to assign
-    #   pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
-    ###
-            
-    # Outside IF statement
-    # Reintegrate ELITE members if there are
-    if len(elite):
-        for member in elite:
-            pop.insert(0, member)
-            pop[0] = Individual(chromosome = member[1], mask = member[2])
-            pop = pop[:population]
+with yaspin(text="Executing algorithm", color="cyan") as sp: 
+    while gen < max_gen: #and max(fits) < 100:
+        #fits = [0]
+        # If the current generation is not the first one generate a new population
+        ###if gen != 1:
+        #    Determine via a random number which pieces to assign
+        #   pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)]) for i in range(population)]
+        ###
+                
+        # Outside IF statement
+        # Reintegrate ELITE members if there are
+        if len(elite):
+            for member in elite:
+                pop.insert(0, member)
+                pop[0] = Individual(chromosome = member[1], mask = member[2])
+                pop = pop[:population]
 
-    # Check if the current number of population multiplied by the cross-over percentage
-    # is an even or odd number, in the later case remove 1 from the value
-    many = len(pop) * per_cross
-    if many % 2 == 0:
-        pass
-    else:
-        many = many - 1
-    
-    
-    ### Discontinued since ver. 1.3.0
-    #while pr <= many:
-    #    parents.append(sel_operator.Selection_Base(pop, sel_type))
-    #    Selection_Base(pop,1)
-    #    r = random.randint(1, population)
-    #    if r not in parents: 
-    #        parents.append(r)
-    #        pr = pr + 1
-    ###
-
-    # Combine the mask of the individual before entering the simulation
-    ind_c = 0
-    for ind in pop:
-        ind.combine_mask()
-        ind.generate_xml_masked(individual = ind_c)
-        ind_c = ind_c + 1
-    
-    # Runs and instance of the game
-    #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
-    subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
-
-    # After the simulation obtain the fitness value for the population
-    # Read the xml files and get the data
-    ind_c = 0
-    final_ind_list = []
-    for ind in pop:
-        value = ind.read_xml(individual = ind_c)
-        final_ind_list.append(value)
-        ind_c = ind_c + 1
-
-    # Calculate the fitness for each individual
-    for ind in pop:
-        ind.get_fitness()
-        pass
-
-    ############################################################################
-    #############################< Selection steps >############################
-    ############################################################################
-    # Obtain the "parents" of the generation
-    parents = []
-    pr = 1
-    parents = sel_operator.Selection_Base(pop, many, sel_type)
-
-    ############################################################################
-    #############################< Crossover steps >############################
-    ############################################################################
-    
-    new_members = []
-
-    # Generate the cross-over operation (one-point crossover)
-    for cross_parent in range(0, len(parents), 2):
-        # Generate a copy of each parent for the cross-over operation
-        father = pop[parents[cross_parent] -1 ].chromosome
-        mother = pop[parents[cross_parent + 1] - 1].chromosome
-        
-        # "Divide" the parents chromosomes for the operation
-        father11 = father[0:math.floor(ind_pieces/2)]
-        father12 = father[math.floor(ind_pieces/2):]
-        
-        mother11 = mother[0:math.floor(ind_pieces/2)]
-        mother12 = mother[math.floor(ind_pieces/2):]
-        
-        # Generate the childs of both parents
-        son = father11 + mother12
-        daughter = mother11 + father12
-        
-        mask_son = create_new_mask(ind_pieces)
-        mask_daughter = create_new_mask(ind_pieces)
-        # Replace the parents in the generation
-        pop[parents[cross_parent] - 1].chromosome = son
-        pop[parents[cross_parent + 1] - 1].chromosome = daughter
-        
-        pop[parents[cross_parent] - 1] = Individual(chromosome = son, mask = mask_son)
-        pop[parents[cross_parent + 1] - 1] = Individual(chromosome = daughter, mask = mask_daughter)
-
-        # Mutate the childs (by chance like throwing a 100 side dice)
-        # If greater than the treshold then mutate
-        chance = random.randint(1, 100)
-        threshold = 100 - (100 * per_mut)
-        chance = 100
-        if chance > threshold:
-            var=0
-            new_chrom = mut_operator.M_Individual(pop[parents[cross_parent] - 1].chromosome)
-            pop[parents[cross_parent] - 1] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
-            pop[parents[cross_parent] - 1] = mut_operator.M_Movement(pop[parents[cross_parent] - 1], 0)
-            pop[parents[cross_parent] - 1] = mut_operator.M_StructMat(pop[parents[cross_parent] - 1], 0)
-            pop[parents[cross_parent] - 1] = mut_operator.M_StrucType(pop[parents[cross_parent] - 1], 0)
-            pop[parents[cross_parent] - 1].UpdateMutation()
-            #print("Mutate")
+        # Check if the current number of population multiplied by the cross-over percentage
+        # is an even or odd number, in the later case remove 1 from the value
+        many = len(pop) * per_cross
+        if many % 2 == 0:
+            pass
         else:
-            var=1
-            #print("Not Mutate")
+            many = many - 1
         
-        pop[parents[cross_parent] - 1].ind_c = parents[cross_parent] - 1
-        pop[parents[cross_parent+1] - 1].ind_c = parents[cross_parent] - 1
-        new_members.append(pop[parents[cross_parent] - 1])
-        new_members.append(pop[parents[cross_parent + 1] - 1])
+        
+        ### Discontinued since ver. 1.3.0
+        #while pr <= many:
+        #    parents.append(sel_operator.Selection_Base(pop, sel_type))
+        #    Selection_Base(pop,1)
+        #    r = random.randint(1, population)
+        #    if r not in parents: 
+        #        parents.append(r)
+        #        pr = pr + 1
+        ###
+
+        # Combine the mask of the individual before entering the simulation
+        ind_c = 0
+        for ind in pop:
+            ind.combine_mask()
+            ind.generate_xml_masked(individual = ind_c)
+            ind_c = ind_c + 1
+        
+        # Runs and instance of the game
+        #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+        subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+
+        # After the simulation obtain the fitness value for the population
+        # Read the xml files and get the data
+        ind_c = 0
+        final_ind_list = []
+        for ind in pop:
+            value = ind.read_xml(individual = ind_c)
+            final_ind_list.append(value)
+            ind_c = ind_c + 1
+
+        # Calculate the fitness for each individual
+        for ind in pop:
+            ind.get_fitness()
+            pass
+
+        ############################################################################
+        #############################< Selection steps >############################
+        ############################################################################
+        
+        # Order the population by their fitness
+        pop.sort(key=lambda x:x.Fitness, reverse=False)
+
+        # Obtain the "parents" of the generation
+        parents = []
+        pr = 1
+        parents = sel_operator.Selection_Base(pop, many, sel_type)
+
+        ############################################################################
+        #############################< Crossover steps >############################
+        ############################################################################
+        
+        new_members = []
+
+        # Generate the cross-over operation (one-point crossover)
+        for cross_parent in range(0, len(parents), 2):
+            # Generate a copy of each parent for the cross-over operation
+            father = pop[parents[cross_parent] -1 ].chromosome
+            mother = pop[parents[cross_parent + 1] - 1].chromosome
+            
+            # "Divide" the parents chromosomes for the operation
+            father11 = father[0:math.floor(ind_pieces/2)]
+            father12 = father[math.floor(ind_pieces/2):]
+            
+            mother11 = mother[0:math.floor(ind_pieces/2)]
+            mother12 = mother[math.floor(ind_pieces/2):]
+            
+            # Generate the childs of both parents
+            son = father11 + mother12
+            daughter = mother11 + father12
+            
+            mask_son = create_new_mask(ind_pieces)
+            mask_daughter = create_new_mask(ind_pieces)
+            # Replace the parents in the generation
+            pop[0].chromosome = son
+            pop[1].chromosome = daughter
+            
+            pop[0] = Individual(chromosome = son, mask = mask_son)
+            pop[1] = Individual(chromosome = daughter, mask = mask_daughter)
+
+            # Mutate the childs (by chance like throwing a 100 side dice)
+            # If greater than the treshold then mutate
+            chance = random.randint(1, 100)
+            threshold = 100 - (100 * per_mut)
+            chance = 100
+            if chance > threshold:
+                var=0
+                new_chrom = mut_operator.M_Individual(pop[parents[cross_parent] - 1].chromosome)
+                pop[0] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
+                pop[0] = mut_operator.M_Movement(pop[parents[cross_parent] - 1], 0)
+                pop[0] = mut_operator.M_StructMat(pop[parents[cross_parent] - 1], 0)
+                pop[0] = mut_operator.M_StrucType(pop[parents[cross_parent] - 1], 0)
+                pop[0].UpdateMutation()
+                #print("Mutate")
+            else:
+                var=1
+                #print("Not Mutate")
+            
+            # The same for the second child
+            chance = random.randint(1, 100)
+            threshold = 100 - (100 * per_mut)
+            chance = 100
+            if chance > threshold:
+                var=0
+                new_chrom = mut_operator.M_Individual(pop[parents[cross_parent + 1] - 1].chromosome)
+                pop[1] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
+                pop[1] = mut_operator.M_Movement(pop[parents[cross_parent + 1] - 1], 0)
+                pop[1] = mut_operator.M_StructMat(pop[parents[cross_parent + 1] - 1], 0)
+                pop[1] = mut_operator.M_StrucType(pop[parents[cross_parent + 1] - 1], 0)
+                pop[1].UpdateMutation()
+                #print("Mutate")
+            
+            pop[parents[cross_parent] - 1].ind_c = parents[cross_parent] - 1
+            pop[parents[cross_parent + 1] - 1].ind_c = parents[cross_parent + 1] - 1
+            new_members.append(pop[parents[cross_parent] - 1])
+            new_members.append(pop[parents[cross_parent + 1] - 1])
+        
+        # Calculate the new individuals fitness by sending them to a diferent simulation track
+        
+        # Generate an XML to check the fitness
+        for ind_c, ind in enumerate(new_members):
+            ind.combine_mask()
+            ind.generate_xml_tourney(individual = ind_c)
+        
+        # Execute the application with the two memebers
+        subprocess.call(r'"' + os.path.join(project_root, game_path_tourney) + '"', startupinfo=info)
+
+        # Then obtain the remaining fitness values
+        for ind in new_members:
+            ind.read_xml_tourney(individual = ind.ind_c)
+            ind.get_fitness()
+
+        ### After the cross-ver
+        ### Legacy Method    
+        #ind_c = 0
+        #for ind in pop:
+        #    ind.generate_xml(individual = ind_c)
+        #    ind_c = ind_c + 1
+        ###
+
+        ################################################################################
+        #############################< ELITE selection >################################
+        ################################################################################
+        """
+        # Obtain the height of each individual
+        data = []
+        c = 0
+        for ind in pop:
+            data.append([int(ind.ind_height), ind.ind_piece, ind.ind_piece_count, abs(ind.ind_piece - ind.ind_piece_count), c])
+            c = c + 1
+        
+        # Order the list
+        results = sorted(data, key=lambda x: x[3], reverse=True)
+        """
+        # Add the best individuals to the elite group
+        
+
+        # Obtain the average fitness of the generation
+        gen_fit = 0
+        len_fit = 0
+        mov_fit = 0
+        best_ind = 0
+        fit_pop = []
+        for c, ind in enumerate(pop):
+            fit_pop.append([c, ind.Fitness])
+            gen_fit = gen_fit + ind.Fitness
+            #if c == 0:
+            #    best_gen.append(ind.Fitness)
+            len_fit += ind.Fit_Size
+            mov_fit += ind.Fit_Pos
+        
+        fit_pop.sort(key=lambda x:x[1], reverse=True)
+        fit_pop = fit_pop[:5]
+        
+        # 
+        best_gen.append(fit_pop[0][1])
+
+        # Add the best value to the elite list
+        for e in fit_pop:
+            elite.append([e[1], pop[e[0]].chromosome, pop[e[0]].mask])
+            pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
+
+        elite.sort(key=lambda x:x[0], reverse=True)
+        elite = elite[:max_elite]
+
+        all_fit.append((gen_fit/len(pop)))
+        fit_Alen.append((len_fit/len(pop)))
+        fit_Amov.append((mov_fit/len(pop)))
+        
+        # Increase value of the generation for the next cycle
+        gen = gen + 1
+
+        # Print the time of the generation
+        t_gen = datetime.datetime.now()
+        sp.write("> Gen " + str(gen) + " complete, gen duration: "+ str(t_gen-t_prev) + ", current time: " + str(t_gen-t_begin))
+        t_prev = datetime.datetime.now()
+        #print("Gen " + str(gen) + " end time: " + str(t_gen-t_begin))
+
+    t_finish = datetime.datetime.now()
+    #print("Total time is: " + str(t_finish-t_begin))
+    sp.write("> Total time is: " + str(t_finish-t_begin))
+
+    # Stop the spinner
+    sp.ok("✔")
     
-    # Calculate the new individuals fitness by sending them to a diferent simulation track
-    
-    # Generate an XML to check the fitness
-    for ind_c, ind in enumerate(new_members):
-        ind.combine_mask()
-        ind.generate_xml_tourney(individual = ind_c)
-    
-    # Execute the application with the two memebers
-    subprocess.call(r'"' + os.path.join(project_root, game_path_tourney) + '"', startupinfo=info)
-
-    # Then obtain the remaining fitness values
-    for ind in new_members:
-        ind.read_xml_tourney(individual = ind.ind_c)
-        ind.get_fitness()
-
-    ### After the cross-ver
-    ### Legacy Method    
-    #ind_c = 0
-    #for ind in pop:
-    #    ind.generate_xml(individual = ind_c)
-    #    ind_c = ind_c + 1
-    ###
-
-    ################################################################################
-    #############################< ELITE selection >################################
-    ################################################################################
-    """
-    # Obtain the height of each individual
-    data = []
-    c = 0
-    for ind in pop:
-        data.append([int(ind.ind_height), ind.ind_piece, ind.ind_piece_count, abs(ind.ind_piece - ind.ind_piece_count), c])
-        c = c + 1
-    
-    # Order the list
-    results = sorted(data, key=lambda x: x[3], reverse=True)
-    """
-    # Add the best individuals to the elite group
-    
-
-    # Obtain the average fitness of the generation
-    gen_fit = 0
-    len_fit = 0
-    mov_fit = 0
-    best_ind = 0
-    fit_pop = []
-    for c, ind in enumerate(pop):
-        fit_pop.append([c, ind.Fitness])
-        gen_fit = gen_fit + ind.Fitness
-        #if c == 0:
-        #    best_gen.append(ind.Fitness)
-        len_fit += ind.Fit_Size
-        mov_fit += ind.Fit_Pos
-    
-    fit_pop.sort(key=lambda x:x[1], reverse=True)
-    fit_pop = fit_pop[:5]
-    
-    # 
-    best_gen.append(fit_pop[0][1])
-
-    # Add the best value to the elite list
-    for e in fit_pop:
-        elite.append([e[1], pop[e[0]].chromosome, pop[e[0]].mask])
-        pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
-
-    elite.sort(key=lambda x:x[0], reverse=True)
-    elite = elite[:max_elite]
-
-    all_fit.append((gen_fit/len(pop)))
-    fit_Alen.append((len_fit/len(pop)))
-    fit_Amov.append((mov_fit/len(pop)))
-    
-    # Increase value of the generation for the next cycle
-    gen = gen + 1
-
-    # Print the time of the generation
-    t_gen = datetime.datetime.now()
-    print("Gen " + str(gen) + " end time: " + str(t_gen-t_begin))
-
-t_finish = datetime.datetime.now()
-print("Total time is: " + str(t_finish-t_begin))
+# Plot the results
 plot(all_fit, '-.b', label='General Fitness')
 #plot(fit_Alen, '-g', label='Fitness by pieces')
 #plot(fit_Amov, '.r', label='Error by movement')
