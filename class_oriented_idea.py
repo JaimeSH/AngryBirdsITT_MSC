@@ -37,7 +37,7 @@ t_prev = datetime.datetime.now()
 
 ## Values used for the genetic algorithm
 population = 10         # For now it can only be below 10
-max_gen = 6            # Max number of generations
+max_gen = 2            # Max number of generations
 fits = [0]              # Variable to save the fitness of each generation
 gen = 0                 # Generation 1
 per_cross = 0.5         # Percentage of cross-over (cross-over operator)
@@ -683,6 +683,7 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         new_members = []
 
         # Generate the cross-over operation (one-point crossover)
+        pos_offspring = 0
         for cross_parent in range(0, len(parents), 2):
             # Generate a copy of each parent for the cross-over operation
             father = pop[parents[cross_parent] -1 ].chromosome
@@ -699,28 +700,28 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
             son = father11 + mother12
             daughter = mother11 + father12
             
-            mask_son = create_new_mask(ind_pieces)
-            mask_daughter = create_new_mask(ind_pieces)
+            mask_son = create_new_mask(len(son))
+            mask_daughter = create_new_mask(len(daughter))
             # Replace the parents in the generation
-            pop[0].chromosome = son
-            pop[1].chromosome = daughter
+            pop[pos_offspring].chromosome = son
+            pop[pos_offspring + 1].chromosome = daughter
             
-            pop[0] = Individual(chromosome = son, mask = mask_son)
-            pop[1] = Individual(chromosome = daughter, mask = mask_daughter)
+            pop[pos_offspring] = Individual(chromosome = son, mask = mask_son)
+            pop[pos_offspring + 1] = Individual(chromosome = daughter, mask = mask_daughter)
 
             # Mutate the childs (by chance like throwing a 100 side dice)
             # If greater than the treshold then mutate
             chance = random.randint(1, 100)
             threshold = 100 - (100 * per_mut)
-            chance = 100
+            #chance = 100
             if chance > threshold:
                 var=0
-                new_chrom = mut_operator.M_Individual(pop[parents[cross_parent] - 1].chromosome)
-                pop[0] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
-                pop[0] = mut_operator.M_Movement(pop[parents[cross_parent] - 1], 0)
-                pop[0] = mut_operator.M_StructMat(pop[parents[cross_parent] - 1], 0)
-                pop[0] = mut_operator.M_StrucType(pop[parents[cross_parent] - 1], 0)
-                pop[0].UpdateMutation()
+                new_chrom = mut_operator.M_Individual(pop[pos_offspring].chromosome)
+                pop[pos_offspring] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
+                pop[pos_offspring] = mut_operator.M_Movement(pop[pos_offspring], 0)
+                pop[pos_offspring] = mut_operator.M_StructMat(pop[pos_offspring], 0)
+                pop[pos_offspring] = mut_operator.M_StrucType(pop[pos_offspring], 0)
+                pop[pos_offspring].UpdateMutation()
                 #print("Mutate")
             else:
                 var=1
@@ -729,21 +730,21 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
             # The same for the second child
             chance = random.randint(1, 100)
             threshold = 100 - (100 * per_mut)
-            chance = 100
+            #chance = 100
             if chance > threshold:
                 var=0
-                new_chrom = mut_operator.M_Individual(pop[parents[cross_parent + 1] - 1].chromosome)
-                pop[1] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
-                pop[1] = mut_operator.M_Movement(pop[parents[cross_parent + 1] - 1], 0)
-                pop[1] = mut_operator.M_StructMat(pop[parents[cross_parent + 1] - 1], 0)
-                pop[1] = mut_operator.M_StrucType(pop[parents[cross_parent + 1] - 1], 0)
-                pop[1].UpdateMutation()
+                new_chrom = mut_operator.M_Individual(pop[pos_offspring + 1].chromosome)
+                pop[pos_offspring + 1] = Individual(chromosome = new_chrom, mask = create_new_mask(len(new_chrom)))
+                pop[pos_offspring + 1] = mut_operator.M_Movement(pop[pos_offspring + 1], 0)
+                pop[pos_offspring + 1] = mut_operator.M_StructMat(pop[pos_offspring + 1], 0)
+                pop[pos_offspring + 1] = mut_operator.M_StrucType(pop[pos_offspring + 1], 0)
+                pop[pos_offspring + 1].UpdateMutation()
                 #print("Mutate")
             
-            pop[parents[cross_parent] - 1].ind_c = parents[cross_parent] - 1
-            pop[parents[cross_parent + 1] - 1].ind_c = parents[cross_parent + 1] - 1
-            new_members.append(pop[parents[cross_parent] - 1])
-            new_members.append(pop[parents[cross_parent + 1] - 1])
+            pop[pos_offspring].ind_c = pos_offspring
+            pop[pos_offspring + 1].ind_c = pos_offspring + 1
+            new_members.append(pop[pos_offspring])
+            new_members.append(pop[pos_offspring + 1])
         
         # Calculate the new individuals fitness by sending them to a diferent simulation track
         
