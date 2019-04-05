@@ -25,14 +25,17 @@
 
 from AngryBirdsGA import *
 import math
+import hashlib
 
 
-def fitness(ind_orig, ind_fin, cromosome):
+def fitness(ind_orig, ind_fin, chromosome, pop, pos):
     #print("Fitness = 100%")
     
     
     criteria = size_dif(ind_orig, ind_fin)
-    criteria += (dif_pieces(cromosome) * 10) # 240
+    criteria += (dif_pieces(chromosome) * 10) # 240
+    criteria += calc_entropy(chromosome) * 100
+    criteria += calc_hamming(chromosome, pop, pos)
     # total_fit = 100
     #size_pen = size_dif(ind_orig, ind_fin)
     #pos_pen = position_error(ind_orig, ind_fin)
@@ -43,6 +46,32 @@ def fitness(ind_orig, ind_fin, cromosome):
     #print(pos_pen)
     #return [total_fit, size_fit, pos_fit]
     return [criteria, 100, 100]
+
+def calc_hamming(chromosome, pop, pos):
+    total = 0
+    for c, chrom in enumerate(pop):
+        if c != pos:
+            total += hamming_distance(chromosome, chrom)
+    return total
+
+
+def calc_entropy(ind):
+    # First calculate the frequency of the elements in array
+    value_list = set(ind)
+
+    freqList = []
+    for piece in value_list:
+        ctr = 0
+        for ch in ind:
+            if ch == piece:
+                ctr += 1
+        freqList.append(float(ctr) / len(ind))
+    
+    result = 0
+    for e in freqList:
+        result += (e*math.log(e,2))
+    result = -result
+    return result
 
 def dif_pieces(b):
     #type_list = [piece[0] for piece in b]
@@ -76,3 +105,8 @@ def position_error(a, b):
         #error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(b)) * 0.5)
         #total_error = total_error + error_xy + error_z
     return total_error
+
+
+def hamming_distance(a, b):
+    # Calculate and return the Hamming distance of the two sets 
+    return sum(c1 != c2 for c1, c2 in zip(a, b))
