@@ -18,7 +18,7 @@ import operator
 
 # Local files
 import XmlHelpers as xml
-import Evaluation as Eval
+import Evaluation as Eval 
 from Selection import Selection
 from Mutation import Mutation
 
@@ -541,11 +541,11 @@ class Individual:
     def assign_mask(self, mask_class):
         masked = mask_class
         print(masked)
-        #self.mask = mask_class
+        #self.mask = mask_class 
         return masked
     
-    def get_fitness(self):
-        self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces, self.chromosome)
+    def get_fitness(self, chrom_list, pos):
+        self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces, self.chromosome, chrom_list, pos)
         return 0
     
     def combine_mask(self):
@@ -659,9 +659,14 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
             final_ind_list.append(value)
             ind_c = ind_c + 1
 
-        # Calculate the fitness for each individual
+        # Generate a list with the chromosome values of all individuals (required for Hamming distance)
+        chrom_list = []
         for ind in pop:
-            ind.get_fitness()
+            chrom_list.append(ind.chromosome)
+
+        # Calculate the fitness for each individual
+        for c, ind in enumerate(pop):
+            ind.get_fitness(chrom_list, c)
             pass
 
         ############################################################################
@@ -756,10 +761,15 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         # Execute the application with the two memebers
         subprocess.call(r'"' + os.path.join(project_root, game_path_tourney) + '"', startupinfo=info)
 
+        # Generate a list with the chromosome values of all individuals (required for Hamming distance)
+        chrom_list = []
+        for ind in pop:
+            chrom_list.append(ind.chromosome)
+
         # Then obtain the remaining fitness values
-        for ind in new_members:
+        for c, ind in enumerate(new_members):
             ind.read_xml_tourney(individual = ind.ind_c)
-            ind.get_fitness()
+            ind.get_fitness(chrom_list, c)
 
         ### After the cross-ver
         ### Legacy Method    
