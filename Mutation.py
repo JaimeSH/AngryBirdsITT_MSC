@@ -78,10 +78,11 @@ class Mutation:
     
     # Structure TYPE Mutation Group
     def M_StrucType(self, individual, selection = 0):
+        #M_Event = self.Material_list[selection]
         M_Event = self.Structure_list[selection]
         return M_Event(individual)
 
-    def Mate_Rand(self, individual):
+    def Struc_Rand(self, individual):
         # Define how many elements to modify
         value = random.randint(0,len(individual.chromosome)-1)
 
@@ -100,7 +101,7 @@ class Mutation:
         M_Event = self.Material_list[selection]
         return M_Event(individual)
 
-    def Struc_Rand(self, individual):
+    def Mate_Rand(self, individual):
         # Define how many elements to modify
         value = random.randint(0,len(individual.chromosome)-1)
 
