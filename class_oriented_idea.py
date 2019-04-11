@@ -15,6 +15,8 @@ import sys
 import subprocess
 import itertools
 import operator
+import shutil
+from copy import deepcopy
 
 # Local files
 import XmlHelpers as xml
@@ -62,6 +64,7 @@ sigma = 20              # SD for normal distribution
 #####################################################################
 
 project_root = os.getcwd()
+ruleset = open("Ruleset/parameters.txt", "r")
 config_param = json.loads(open("ga_parameters.json","r").read())
 
 game_path = config_param['game_path']
@@ -70,12 +73,44 @@ elite_path = config_param['elite_path']
 read_path = config_param['read_path']
 log_path = config_param['log_dir']
 log_base_name = config_param['log_base_name']
-os.makedirs(os.path.join(project_root, log_path), exist_ok=True)
 
 # For tournament
 game_path_tourney = config_param['game_path_tourney']
 write_path_tourney = config_param['write_path_tourney']
 read_path_tourney = config_param['read_path_tourney']
+
+# To have a copy of the generations
+level_files_path = config_param['level_files']
+current_gen_folder = config_param['generation']
+sourcefolder = os.path.join(project_root, level_files_path + "/Levels")
+experimentsource = os.path.join(project_root, level_files_path)
+foldername = ''.join(e for e in str(datetime.datetime.now()) if e.isalnum())
+experimentdest = config_param['experiment_results'] + "/" + foldername
+experimentdestination = os.path.join(project_root, experimentdest)
+
+# Data for the competition
+req_levels = int(deepcopy(ruleset.readline()))
+req_np_combinations = ruleset.readline().split(',')
+for i, e in enumerate(req_np_combinations):
+    req_np_combinations[i] = req_np_combinations[i].split()
+req_pigs = ruleset.readline().split(',')
+
+max_elite = req_levels
+
+# Clean previous experiment
+#shutil.rmtree(os.path.join(project_root, write_path))
+#shutil.rmtree(os.path.join(project_root, elite_path))
+shutil.rmtree(os.path.join(project_root, level_files_path))
+
+os.makedirs(os.path.join(project_root, level_files_path), exist_ok=True)
+
+os.makedirs(os.path.join(project_root, write_path), exist_ok=True)
+os.makedirs(os.path.join(project_root, elite_path), exist_ok=True)
+os.makedirs(os.path.join(project_root, read_path), exist_ok=True)
+
+os.makedirs(os.path.join(project_root, log_path), exist_ok=True)
+
+
 
 ## "Dictionary" to save the base pieces and structures
 SW_HIDE = 0
@@ -406,7 +441,6 @@ Composites = {
     5: [("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)],
     6: [("RectMedium", 0, 0, 90), ("RectMedium", -90, 0, 90), ("RectMedium", 90, 0, 90), ("RectBig", 0, 91, 0)]
 }
-"""
 Composites = {
     0: [("RectBig", 0, -91, 0, "wood"), ("RectMedium", -90, 0, 90, "wood"), ("RectMedium", 90, 0, 90, "wood"), ("RectBig", 0, 91, 0, "wood")],
     1: [("RectBig", 0, -31, 0, "wood"), ("RectTiny", -90, 0, 90, "wood"), ("RectTiny", 90, 0, 90, "wood"), ("RectBig", 0, 31, 0, "wood")],
@@ -422,6 +456,19 @@ Composites = {
     #11: [("SquareHole", 0, 0, 0)],
     #12: [("Circle", 0, 0, 0)],
     #5: [("TriangleHole", 0, 0, 0)]
+}
+"""
+
+Composites = {
+    0: [("RectTiny", 0, 0, 0, "wood")],
+    1: [("RectSmall", 0, 0, 0, "wood")],
+    2: [("RectMedium", 0, 0, 0, "wood")],
+    3: [("RectBig", 0, 0, 0, "wood")],
+    4: [("RectFat", 0, 0, 0, "wood")],
+    5: [("SquareSmall", 0, 0, 0, "wood")],
+    6: [("SquareHole", 0, 0, 0, "wood")],
+    7: [("Circle", 0, 0, 0, "wood")],
+    8: [("TriangleHole", 0, 0, 0, "wood")]
 }
 
 """
@@ -853,6 +900,12 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         t_prev = datetime.datetime.now()
         #print("Gen " + str(gen) + " end time: " + str(t_gen-t_begin))
 
+        # Copy the resulting files to a folder with the number of generation
+        destination = os.path.join(project_root, level_files_path + "/generation-" + str(current_gen_folder))
+        #destination = "generation-" + str(current_gen_folder)
+        shutil.copytree(sourcefolder, destination)
+        current_gen_folder += 1
+
     t_finish = datetime.datetime.now()
     #print("Total time is: " + str(t_finish-t_begin))
     sp.write("> Total time is: " + str(t_finish-t_begin))
@@ -865,3 +918,6 @@ plot(all_fit, '-.b', label='General Fitness')
 #plot(fit_Alen, '-g', label='Fitness by pieces')
 #plot(fit_Amov, '.r', label='Error by movement')
 pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+# Clean the workspace
+shutil.copytree(experimentsource, experimentdestination)
