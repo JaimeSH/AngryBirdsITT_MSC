@@ -132,8 +132,7 @@ axis   = pylab.axis
 grid   = pylab.grid
 title  = pylab.title
 rad    = lambda ang: ang*pi/180                 #lovely lambda: degree to radian
-sel_operator = Selection(project_root, game_path_tourney, info)
-mut_operator = Mutation(per_mut, mu, sigma)
+
 
 
 # Function to rotate points
@@ -190,9 +189,15 @@ class Piece:
         #self.Width = 72
         self.Material = mat
         self.Dict = []
+        self.Valid = True
         self.X = x
         self.Y = y
         self.R = r
+        if self.Materials[0] == 0:
+            self.Material = "stone"
+        if self.Materials[1] == 0:
+            self.Material = "ice"
+        
     
     def get_edges(self):
         ed_lis = []
@@ -471,13 +476,71 @@ Composites = {
     8: [("TriangleHole", 0, 0, 0, "wood")]
 }
 
+Composites_res = {
+    0: [("RectTiny", 0, 0, 0, "wood", True)],
+    1: [("RectSmall", 0, 0, 0, "wood", True)],
+    2: [("RectMedium", 0, 0, 0, "wood", True)],
+    3: [("RectBig", 0, 0, 0, "wood", True)],
+    4: [("RectFat", 0, 0, 0, "wood", True)],
+    5: [("SquareSmall", 0, 0, 0, "wood", True)],
+    6: [("SquareHole", 0, 0, 0, "wood", True)],
+    7: [("Circle", 0, 0, 0, "wood", True)],
+    8: [("TriangleHole", 0, 0, 0, "wood", True)]
+}
+
+materials = {
+        "wood": 0,
+        "stone": 1,
+        "ice": 2}
+
+restrictions = {
+        "Circle": [1,1,1],
+        "CircleSmall": [1,1,1],
+        "RectTiny": [1,1,1],
+        "RectSmall": [1,1,1],
+        "RectMedium": [1,1,1],
+        "RectBig": [1,1,1],
+        "RectFat": [1,1,1],
+        "SquareTiny": [1,1,1],
+        "SquareSmall": [1,1,1],
+        "SquareHole": [1,1,1],
+        "Triangle": [1,1,1],
+        "TriangleHole": [1,1,1] }
+
+for element in req_np_combinations:
+    restrictions[element[1]][materials[element[0]]] = 0
+    
+for piece in Composites_res:
+    clases[Composites_res[piece][0][0]].Materials = restrictions[Composites_res[piece][0][0]]
+    
+for piece in Composites_res:
+    if sum(clases[Composites_res[piece][0][0]].Materials) == 0:
+        clases[Composites_res[piece][0][0]].Valid = False
+    else:
+        clases[Composites_res[piece][0][0]].Valid = True
+        #if clases[Composites_res[piece][0][0]].Materials[0] == 0:
+            
+    #if sum(piece.Materials) == 0:
+        #piece.Valid = False
+def get_random_chrom(sl):
+    asl = 0
+    chrom = []
+    while asl < sl:
+        prop = random.randint(0, len(Composites)-1)
+        if clases[Composites[prop][0][0]].Valid == True:
+            chrom.append(prop)
+            asl += 1
+    #random.randint(0,len(Composites)-1) for p in range(ind_pieces)
+    return chrom
+    
+
 """
 BLOCK_LIST = [[]]
 Blockes = [("SquareHole", 22, 22, 80),("SquareHole", 22, 22, 80),("TriangleHole", 22, 22, 80)]
 
 objetos = [clases[clase](x,y,r) for (clase,x,y,r) in Blockes]
 
-
+ 
 Bloque1 = [("Circle", 22,22,90),("SquareHole", 25, 30, 0)]
 objetos = [clases[clase](x,y,r) for (clase,x,y,r) in Bloque1]
 
@@ -507,7 +570,8 @@ for bl in BLOCKS[0]:
 ################################################################################
 #############################< Code Adaptation >################################
 ################################################################################
-
+sel_operator = Selection(project_root, game_path_tourney, info)
+mut_operator = Mutation(per_mut, mu, sigma, clases)
 mut_operator.UpdateComposites(Composites)
 #####################################################################
 ########################< Class Definitions >########################
@@ -654,7 +718,8 @@ def create_new_mask(pieces):
 #pop_mask = [random.randint(0,len(Mask_List)-1) for i in range(population)]
 #pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = Mask_List[random.randint(0,len(Mask_List)-1)]) for i in range(population)]
 
-pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = create_new_mask(ind_pieces)) for i in range(population)]
+#pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = create_new_mask(ind_pieces)) for i in range(population)]
+pop = [ Individual(chromosome = get_random_chrom(ind_pieces), mask = create_new_mask(ind_pieces)) for i in range(population)]
 
 #for c, ind in enumerate(pop):
 #    ind.assign_mask(mask=pop_mask[c])
@@ -734,7 +799,7 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
 
         ############################################################################
         #############################< Selection steps >############################
-        ############################################################################
+        ############################################################################ 
         
         # Order the population by their fitness
         pop.sort(key=lambda x:x.Fitness, reverse=False)

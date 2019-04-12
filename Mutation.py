@@ -20,10 +20,11 @@ import math
 import numpy as np
 
 class Mutation:
-    def __init__(self, percentage, mu, sigma):
+    def __init__(self, percentage, mu, sigma, restrictions):
         self.M_Per = percentage
         self.mu = mu
         self.sigma = sigma
+        self.Restricted = restrictions
         self.Material = ["wood", "ice", "stone"]
         self.Individual_list = [self.Add_Rand, self.Del_Rand]
         self.Movement_list = [self.Move_Gauss, self.Move_Fixed]
@@ -90,11 +91,15 @@ class Mutation:
         pr = 0
         while pr <= value:
             r = random.randint(0, len(individual.chromosome)-1)
-            if r not in mod_list: 
-                individual.Mut_Struct[r] = random.randint(0, len(self.Composites)-1)
-                mod_list.append(r)
-                pr = pr + 1
+            if r not in mod_list:
+                prop = random.randint(0, len(self.Composites)-1)
+                if self.Restricted[self.Composites[prop][0][0]].Valid == True:
+                    individual.Mut_Struct[r] = prop
+                    #individual.Mut_Struct[r] = random.randint(0, len(self.Composites)-1)
+                    mod_list.append(r)
+                    pr = pr + 1
         return individual
+            
     
     # Structure MATERIAL Mutation Group
     def M_StructMat(self, individual, selection = 0):
