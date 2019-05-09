@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding ="utf-8"?><Level width="3">
+<Camera x="0" y="5" minWidth="20" maxWidth="40"  />
+<Birds>
+<Bird type="BirdRed" />
+<Bird type="BirdBlack" />
+<Bird type="BirdWhite" />
+</Birds>
+<Slingshot x="-15" y="-2.5" />
+<GameObjects>
+<Block type="RectBig" material="ice" x="7.820569616977888" y="-3.375" rotation="0" id="0"/>
+<Block type="RectSmall" material="wood" x="7.673855332577618" y="-3.125" rotation="0" id="1"/>
+<Block type="RectBig" material="stone" x="7.353823211402081" y="-2.875" rotation="0" id="2"/>
+<Block type="RectMedium" material="stone" x="7.613593667984848" y="-2.625" rotation="0" id="3"/>
+<Block type="RectBig" material="wood" x="7.66360522120913" y="-2.375" rotation="0" id="4"/>
+<Block type="SquareSmall" material="wood" x="7.617321051560762" y="-2.025" rotation="0" id="5"/>
+<Block type="RectBig" material="wood" x="7.395094117572879" y="-1.675" rotation="0" id="6"/>
+<Block type="RectMedium" material="stone" x="7.38820466950067" y="-1.425" rotation="0" id="7"/>
+<Block type="Circle" material="wood" x="7.583395718939742" y="-0.925" rotation="0" id="8"/>
+<Block type="Circle" material="stone" x="5.109228487626521" y="-3.125" rotation="0" id="9"/>
+<Block type="RectTiny" material="stone" x="2.5" y="-3.375" rotation="0" id="10"/>
+<Block type="SquareHole" material="ice" x="0.0" y="-3.075" rotation="0" id="11"/>
+<Block type="RectTiny" material="stone" x="-2.464724980885794" y="-3.375" rotation="0" id="12"/>
+<Block type="RectBig" material="ice" x="-2.5" y="-3.125" rotation="0" id="13"/>
+<Block type="RectMedium" material="stone" x="-2.2521372280701315" y="-2.875" rotation="0" id="14"/>
+<Block type="TriangleHole" material="stone" x="-5.041766212252829" y="-3.075" rotation="0" id="15"/>
+<Block type="RectFat" material="stone" x="-4.894823330071417" y="-2.425" rotation="0" id="16"/>
+<Block type="RectBig" material="wood" x="-7.5" y="-3.375" rotation="0" id="17"/>
+<Block type="RectFat" material="stone" x="-7.5" y="-3.025" rotation="0" id="18"/>
+<Block type="RectSmall" material="stone" x="-7.830214295634618" y="-2.675" rotation="0" id="19"/>
+</GameObjects>
+
+</Level>

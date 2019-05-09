@@ -30,6 +30,7 @@ class Mutation:
         self.Movement_list = [self.Move_Gauss, self.Move_Fixed]
         self.Material_list = [self.Mate_Rand]
         self.Structure_list = [self.Struc_Rand]
+        self.Pig_list = [self.Set_Pigs]
         pass
 
     def UpdateComposites(self, Composites):
@@ -154,3 +155,27 @@ class Mutation:
                 break
 
         return individual
+
+    def Set_Pigs(self, individual, pigs, mask, Composites_Centers):
+        #print(individual[0].Pig)
+        #print(pigs)
+        center_list = Composites_Centers
+        t_pigs = random.randint(int(pigs[0]),int(pigs[len(pigs)-1]))
+        # Counter for the asigned pigs in level
+        cp = 0
+        pig_xy_list = []
+
+        c = 0
+        # Loop while the total pigs has not been reached
+        while cp < t_pigs:
+            # Check the locations inside or between pieces to place a pig
+            for e, Composite in enumerate(individual):
+                if Composite.Pig == True:
+                    pig_xy_list.append([center_list[e][0]-Composite.low_center[0], (-350 + center_list[e][1]-Composite.low_center[1] + 10)/100])
+                    c += 1
+                    cp += 1  
+                    if cp >= t_pigs:
+                        break
+        
+        return pig_xy_list
+            

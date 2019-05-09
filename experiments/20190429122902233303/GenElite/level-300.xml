@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding ="utf-8"?><Level width="3">
+<Camera x="0" y="5" minWidth="20" maxWidth="40"  />
+<Birds>
+<Bird type="BirdRed" />
+<Bird type="BirdBlack" />
+<Bird type="BirdWhite" />
+</Birds>
+<Slingshot x="-15" y="-2.5" />
+<GameObjects>
+<Block type="RectTiny" material="wood" x="7.5" y="-3.375" rotation="0" id="0"/>
+<Block type="RectSmall" material="stone" x="7.723675370067605" y="-3.125" rotation="0" id="1"/>
+<Block type="SquareHole" material="wood" x="4.829521105652249" y="-3.075" rotation="0" id="2"/>
+<Block type="SquareHole" material="wood" x="4.992504334822518" y="-2.225" rotation="0" id="3"/>
+<Block type="SquareSmall" material="wood" x="5.076065674277141" y="-1.575" rotation="0" id="4"/>
+<Block type="RectTiny" material="stone" x="5.0" y="-1.225" rotation="0" id="5"/>
+<Block type="RectMedium" material="stone" x="5.127404813640595" y="-0.975" rotation="0" id="6"/>
+<Block type="RectSmall" material="stone" x="5.0" y="-0.725" rotation="0" id="7"/>
+<Block type="RectSmall" material="stone" x="5.045715890242665" y="-0.475" rotation="0" id="8"/>
+<Block type="TriangleHole" material="stone" x="4.730576368428678" y="0.075" rotation="0" id="9"/>
+<Block type="RectFat" material="wood" x="2.4001380996126693" y="-3.275" rotation="0" id="10"/>
+<Block type="RectMedium" material="stone" x="-0.041652690084661714" y="-3.375" rotation="0" id="11"/>
+<Block type="SquareHole" material="wood" x="-0.1037694409577426" y="-2.825" rotation="0" id="12"/>
+<Block type="RectTiny" material="wood" x="0.18864646274272334" y="-2.275" rotation="0" id="13"/>
+<Block type="RectSmall" material="wood" x="-0.06841514098929413" y="-2.025" rotation="0" id="14"/>
+<Block type="RectTiny" material="stone" x="0.5282675128924302" y="-1.775" rotation="0" id="15"/>
+<Block type="TriangleHole" material="wood" x="0.0" y="-1.225" rotation="0" id="16"/>
+<Block type="RectFat" material="wood" x="-2.451807320239791" y="-3.275" rotation="0" id="17"/>
+<Block type="RectSmall" material="wood" x="-5.0" y="-3.375" rotation="0" id="18"/>
+</GameObjects>
+
+</Level>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level width="3">
+  <Camera x="0" y="5" minWidth="20" maxWidth="40" />
+  <Birds>
+    <Bird type="BirdRed" />
+    <Bird type="BirdBlack" />
+    <Bird type="BirdWhite" />
+  </Birds>
+  <Slingshot x="-15" y="-2.5" />
+  <GameObjects>
+    <Block type="TriangleHole" material="wood" x="7.499522" y="-3.064969" rotation="-0.004339444" id="0" aVelocity="0.001576128" />
+    <Block type="SquareSmall" material="wood" x="8.15525" y="-3.268303" rotation="-179.5439" id="1" aVelocity="64.42271" />
+    <Block type="SquareHole" material="wood" x="5" y="-3.065097" rotation="0.0007985253" id="2" aVelocity="1.436036E-07" />
+    <Block type="RectSmall" material="wood" x="2.420917" y="-3.375" rotation="-6.611561E-07" id="3" aVelocity="0.008469118" />
+    <Block type="SquareSmall" material="wood" x="3.12143" y="-3.180914" rotation="-37.18182" id="4" aVelocity="11.80036" />
+    <Block type="RectTiny" material="ice" x="2.860924" y="-2.96083" rotation="52.95769" id="5" aVelocity="21.10489" />
+    <Block type="SquareSmall" material="wood" x="-0.2349937" y="-3.266092" rotation="-0.2175177" id="7" aVelocity="0.9050974" />
+    <Block type="RectBig" material="wood" x="-0.4664989" y="-2.924347" rotation="-0.3282923" id="8" aVelocity="2.493516" />
+    <Block type="TriangleHole" material="wood" x="0.005500459" y="-2.382044" rotation="-0.3282094" id="10" aVelocity="17.59103" />
+    <Block type="RectTiny" material="wood" x="-2.546612" y="-3.37328" rotation="-0.4916723" id="11" aVelocity="0.2207535" />
+    <Block type="RectBig" material="wood" x="-2.284522" y="-3.141127" rotation="-1.073115" id="12" aVelocity="1.475641" />
+    <Block type="TriangleHole" material="stone" x="-2.521961" y="-2.591568" rotation="-1.069628" id="13" aVelocity="3.9432" />
+    <Block type="RectMedium" material="stone" x="-5.026583" y="-3.375" rotation="1.798988E-07" id="17" aVelocity="3.718945E-06" />
+    <Block type="RectMedium" material="stone" x="-5.124275" y="-3.136391" rotation="6.591203E-08" id="18" aVelocity="0.6657323" />
+  </GameObjects>
+</Level>

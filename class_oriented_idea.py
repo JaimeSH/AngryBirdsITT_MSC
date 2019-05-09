@@ -16,6 +16,7 @@ import subprocess
 import itertools
 import operator
 import shutil
+import numpy as np
 from copy import deepcopy
 
 # Local files
@@ -28,8 +29,8 @@ author = "Salinas Hernandez Jaime"
 copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
-version = "1.3.2"
-date = "March 07, 2019 17:40"
+version = "1.4.0"
+date = "May 08, 2019 18:30"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
 status = "Development"
@@ -39,7 +40,7 @@ t_prev = datetime.datetime.now()
 
 ## Values used for the genetic algorithm
 population = 10         # For now it can only be below 10
-max_gen = 1            # Max number of generations
+max_gen = 5            # Max number of generations
 fits = [0]              # Variable to save the fitness of each generation
 gen = 0                 # Generation 1
 per_cross = 0.5         # Percentage of cross-over (cross-over operator)
@@ -48,7 +49,7 @@ per_mut = 0.8           # Percentage of mutation
 sel_type = 1            # Selection (for crossover) type [ 0: Random - 1: Tournament - TBD]
 cross_type = 0          # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
 ind_pieces = 20         # Number of pieces that define an individual
-all_fit = []            # Average fitness for all generations
+all_fit = [0]            # Average fitness for all generations
 fit_Alen = []           # Average piece length fitness for all generations
 fit_Amov = []           # Average movement fitness for all generations
 max_elite = 2           # Maximum number of elite members in the generation
@@ -211,6 +212,7 @@ class Piece:
         ang = self.R * pi / 180
         ots = Rotate2D(self.Edges, ar([0 + self.X, 0 + self.Y]), ang)
         self.Points = ots.tolist()
+        #print(self.Points)
 
     def change_material(self, m):
         self.Material = m
@@ -290,8 +292,8 @@ class RectFat(Piece):
 class SquareTiny(Piece):
     def __init__(self, mat, x=0, y=0, r=0):
         self.Name = "SquareTiny"
-        self.Height = 25
-        self.Width = 25
+        self.Height = 22
+        self.Width = 22
         Piece.__init__(self, x, y, r, mat)
         self.update_values()
 
@@ -350,8 +352,14 @@ class Composite:
         self.width = self.width()
         self.top_center = self.gen_top_center()
         self.as_dictionary = self.gen_dictionary()
+        self.low_center = self.get_low_center()
+        self.overtop_center = self.get_overtop()
         
     def get_values(self):
+        if len(self.blocks) > 2:
+            self.Pig = True
+        else:
+            self.Pig = False
         self.Borders = [[(x,y) for (x,y) in Obj.Points] for Obj in self.Objetos]
         self.Borders = sum(self.Borders, [])
         self.Width = abs(min(self.Borders, key=lambda t:t[0])[0] - max(self.Borders, key=lambda t:t[0])[0])
@@ -369,9 +377,15 @@ class Composite:
         return 0.0
 
     def gen_top_center(self):
-        height_center = self.Height
-        lenght_center = self.Width/2
+        height_center = self.Height/2
+        lenght_center = 0
         return [lenght_center, height_center]
+    
+    def get_low_center(self):
+        return [0, self.Height/2]
+    
+    def get_overtop(self):
+        return [0, self.Height]
 
     def gen_dictionary(self):
         block_list = []
@@ -388,10 +402,10 @@ class Composite:
         #print(block_list)
         return block_list
     
-    def move_xy(self, n_x, n_y, mat_f):
+    def move_xy(self, n_x, n_y, mat_f, el_r):
         #self.X = n_x
         #self.Y = n_y
-        self.Objetos = [clases[clase](mat_f, x + n_x, y + n_y, r) for (clase,x,y,r, mat) in self.blocks.copy()]
+        self.Objetos = [clases[clase](mat_f, x + n_x, y + n_y, el_r) for (clase,x,y,r, mat) in self.blocks.copy()]
         return 0
     
     def as_json(self):
@@ -532,6 +546,259 @@ def get_random_chrom(sl):
             asl += 1
     #random.randint(0,len(Composites)-1) for p in range(ind_pieces)
     return chrom
+
+def combine_pieces():
+    piece1 = random.randint(0, len(Composites)-1)
+    piece2 = random.randint(0, len(Composites)-1)
+    new_value = len(Composites)
+    prop1 = Composite(Composites[piece1])
+    prop2 = Composite(Composites[piece2])
+    final_group = []
+    if piece1 == piece2:
+        initial = random.randint(0,1)
+        
+        if initial == 0: # Estaran pegados
+            # Checar si los bordes coinciden
+            #print("Igual pegados")
+            prop1.move_xy(prop1.Width/2,0,prop1.Objetos[0].Material, 0)
+            prop2.move_xy((0-(prop2.Width/2)),0,prop2.Objetos[0].Material, 0)
+            prop1.get_values()
+            prop2.get_values()
+            list1 = prop1.Borders
+            list2 = prop2.Borders
+            # Calculate center point of each piece and add to list
+            test=Composites[piece1].copy()
+            for comp in test:
+                temp = []
+                temp.append(comp[0])
+                temp.append(int(comp[1]) + (prop1.Width/2))
+                temp.append(int(comp[2]))
+                temp.append(int(comp[3]))
+                temp.append(comp[4])
+                fin = tuple(temp)
+                final_group.append(fin)
+            test = Composites[piece2].copy()
+            for comp in test:
+                temp = []
+                temp.append(comp[0])
+                temp.append(int(comp[1]) - (prop2.Width/2))
+                temp.append(int(comp[2]))
+                temp.append(int(comp[3]))
+                temp.append(comp[4])
+                fin = tuple(temp)
+                final_group.append(fin)
+        else:
+            mov_rand = random.randint(math.ceil(prop1.Width/2),90)
+            #print("Igual separados")
+            prop1.move_xy((prop1.Width/2) + mov_rand,0,prop1.Objetos[0].Material, 0)
+            prop2.move_xy((0-((prop2.Width/2) + mov_rand)),0,prop2.Objetos[0].Material, 0)
+
+            prop1.get_values()
+            prop2.get_values()
+            prop3 = Composite(Composites[3])
+            
+            prop3.move_xy(0,(prop1.Height/2)+(prop3.Height/2), prop3.Objetos[0].Material, 0)
+            prop3.get_values()
+
+            points = [[(prop1.Width/2) + mov_rand,0], [(0-((prop2.Width/2) + mov_rand)),0], [0,(prop1.Height/2)+(prop3.Height/2)]]
+            com = np.mean(points, axis=0)
+            delta = np.array((0,0)) - com
+            shifted_points = points + delta
+
+            list1 = prop1.Borders
+            list2 = prop2.Borders
+            list3 = prop3.Borders
+            #final_group.extend(Composites[piece1])
+            #final_group.extend(Composites[piece2])
+            #final_group.extend(Composites[3])
+            #print(list3)
+            test=Composites[3].copy()
+            for comp in test:
+                temp = []
+                temp.append(comp[0])
+                #temp.append(int(comp[1]))
+                #temp.append(int(comp[2]) + (prop1.Height/2)+(prop3.Height/2) + 1)
+                temp.append(shifted_points[2][0])
+                temp.append(shifted_points[2][1])
+                temp.append(int(comp[3]))
+                temp.append(comp[4])
+                fin = tuple(temp)
+                final_group.append(fin)
+            test = Composites[piece1].copy()
+            for comp in test:
+                temp = []
+                temp.append(comp[0])
+                #temp.append(int(comp[1]) + (prop1.Width/2) + mov_rand + 1)
+                #temp.append(int(comp[2]))
+                temp.append(shifted_points[0][0])
+                temp.append(shifted_points[0][1])
+                temp.append(int(comp[3]))
+                temp.append(comp[4])
+                fin = tuple(temp)
+                final_group.append(fin)
+            test = Composites[piece2].copy()
+            for comp in test:
+                temp = []
+                temp.append(comp[0])
+                #temp.append(int(comp[1]) + (0-((prop2.Width/2) + mov_rand)) - 1)
+                #temp.append(int(comp[2]))
+                temp.append(shifted_points[1][0])
+                temp.append(shifted_points[1][1])
+                temp.append(int(comp[3]))
+                temp.append(comp[4])
+                fin = tuple(temp)
+                final_group.append(fin)
+        Composites.update({new_value:final_group})
+    else:
+        #print("Diferente pegados")
+        ap1 = prop1.Width*prop1.Height
+        ap2 = prop2.Width*prop2.Height
+        if ap1 > ap2:
+            if prop1.Width >= 90:
+                #print("Vertical")
+                prop1.Objetos[0].R = 90
+                prop1.Objetos[0].update_values()
+                prop1.move_xy(0,(0-(prop1.Width/2)),prop1.Objetos[0].Material, 90)
+
+                prop2.move_xy(0,(prop2.Height/2),prop2.Objetos[0].Material, 0)
+
+                points = [[0,(0-(prop1.Width/2))], [0,(prop2.Height/2)]]
+                com = np.mean(points, axis=0)
+                delta = np.array((0,0)) - com
+                shifted_points = points + delta
+                test = Composites[piece1].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[2]) + (prop1.Width/2))
+                    temp.append(shifted_points[0][0])
+                    temp.append(shifted_points[0][1])
+                    temp.append(90)
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+                test = Composites[piece1].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]) + (0-((prop2.Width/2))) - 1)
+                    temp.append(shifted_points[1][0])
+                    temp.append(shifted_points[1][1])
+                    #temp.append(int(comp[2]))
+                    temp.append(int(comp[3]))
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+            else:
+                #print("Horizontal")
+                prop1.move_xy((0-(prop1.Width/2)),0,prop1.Objetos[0].Material, 0)
+                prop2.move_xy((prop2.Width/2),0,prop2.Objetos[0].Material, 0)
+                points = [[0,(0-(prop1.Width/2))], [0,(prop2.Width/2)]]
+                com = np.mean(points, axis=0)
+                delta = np.array((0,0)) - com
+                shifted_points = points + delta
+                test = Composites[piece1].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]))
+                    #temp.append(int(comp[2]) + (prop1.Width/2))
+                    temp.append(shifted_points[0][0])
+                    temp.append(shifted_points[0][1])
+                    temp.append(int(comp[3]))
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+                test = Composites[piece2].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]) + (0-((prop2.Width/2))) - 1)
+                    temp.append(shifted_points[1][0])
+                    temp.append(shifted_points[1][1])
+                    #temp.append(int(comp[2]))
+                    temp.append(int(comp[3]))
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+        else:
+            if prop2.Width >= 90:
+                #print("Vertical")
+                prop2.Objetos[0].R = 90
+                prop2.Objetos[0].update_values()
+                prop2.move_xy(0,(0-(prop2.Width/2)),prop2.Objetos[0].Material, 90)
+                prop1.move_xy(0,(prop1.Height/2),prop1.Objetos[0].Material, 0)
+                points = [[0,(0-(prop2.Width/2))], [0,(prop1.Height/2)]]
+                com = np.mean(points, axis=0)
+                delta = np.array((0,0)) - com
+                shifted_points = points + delta
+                test = Composites[piece1].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]))
+                    #temp.append(int(comp[2]) + (prop1.Width/2))
+                    temp.append(shifted_points[0][0])
+                    temp.append(shifted_points[0][1])
+                    temp.append(int(comp[3]))
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+                test = Composites[piece2].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]) + (0-((prop2.Width/2))) - 1)
+                    temp.append(shifted_points[1][0])
+                    temp.append(shifted_points[1][1])
+                    #temp.append(int(comp[2]))
+                    temp.append(90)
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+            else:
+                #print("Horizontal")
+                prop2.move_xy((0-(prop2.Width/2)),0,prop2.Objetos[0].Material, 0)
+                prop1.move_xy((prop1.Width/2),0,prop1.Objetos[0].Material, 0)
+                points = [[0,(0-(prop2.Width/2))], [0,(prop1.Width/2)]]
+                com = np.mean(points, axis=0)
+                delta = np.array((0,0)) - com
+                shifted_points = points + delta
+                test = Composites[piece1].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]))
+                    #temp.append(int(comp[2]) + (prop1.Width/2))
+                    temp.append(shifted_points[0][0])
+                    temp.append(shifted_points[0][1])
+                    temp.append(int(comp[3]))
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+                test = Composites[piece2].copy()
+                for comp in test:
+                    temp = []
+                    temp.append(comp[0])
+                    #temp.append(int(comp[1]) + (0-((prop2.Width/2))) - 1)
+                    temp.append(shifted_points[1][0])
+                    temp.append(shifted_points[1][1])
+                    #temp.append(int(comp[2]))
+                    temp.append(int(comp[3]))
+                    temp.append(comp[4])
+                    fin = tuple(temp)
+                    final_group.append(fin)
+            #prop1.move_xy(0,(prop1.Height/2),prop1.Objetos[0].Material, 0)
+            #prop2.move_xy(0,(0-(prop2.Height/2)),prop2.Objetos[0].Material, 0)
+        Composites.update({new_value:final_group})
+        prop1.get_values()
+        prop2.get_values()
+        list1 = prop1.Borders
+        list2 = prop2.Borders
+
+    #print(list1)
+    #print(list2)
+
     
 
 """
@@ -620,7 +887,7 @@ class Individual:
                         pieza.update_values()
         """
         for c, mov in enumerate(self.Mut_Movement):
-            self.chromosome_objects[c].move_xy(mov, 0, self.Mut_Material[c])
+            self.chromosome_objects[c].move_xy(mov, 0, self.Mut_Material[c], 0)
 
         self.object_list = self.object_list_gen()
         pass
@@ -670,18 +937,22 @@ class Individual:
         print(masked)
         #self.mask = mask_class 
         return masked
+
+    def locate_pigs(self):
+        self.Pig_Location = mut_operator.Set_Pigs(self.chromosome_objects, req_pigs, self.mask, self.Composites_Centers)
+        pass
     
     def get_fitness(self, chrom_list, pos):
         self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces, self.chromosome, chrom_list, pos)
         return 0
     
     def combine_mask(self):
-        self.object_masked = xml.calculate_mask(self.object_list, self.mask)
+        self.object_masked, self.Composites_Centers = xml.calculate_mask(self.object_list, self.mask, self.chromosome_objects)
         #self.object_list = xml.calculate_mask(self.object_list, type_castle)
         return 0
     def generate_xml_masked(self, **kwargs):
         res_list = []
-        res_list = xml.writeXML_masked(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        res_list = xml.writeXML_masked(self.Pig_Location, self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
         self.ind_height = res_list[0]
         self.ind_piece = res_list[1]
         self.Pieces = res_list[2]
@@ -690,7 +961,7 @@ class Individual:
     
     def generate_xml_tourney(self, **kwargs):
         res_list = []
-        res_list = xml.writeXML_masked(self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        res_list = xml.writeXML_masked(self.Pig_Location, self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
         self.ind_height_tourney = res_list[0]
         self.ind_piece_tourney = res_list[1]
         self.Pieces = res_list[2]
@@ -698,7 +969,7 @@ class Individual:
 
     def generate_xml_elite(self, **kwargs):
         res_list = []
-        res_list = xml.writeXML_masked(self.object_list, os.path.join(project_root, elite_path + "/level-" + str(kwargs.get('gen')) + "0" + str(kwargs.get('individual'))  + ".xml"))
+        res_list = xml.writeXML_masked(self.Pig_Location, self.object_list, os.path.join(project_root, elite_path + "/level-" + str(kwargs.get('gen')) + "0" + str(kwargs.get('individual'))  + ".xml"))
         self.ind_height = res_list[0]
         self.ind_piece = res_list[1]
         self.Pieces = res_list[2]
@@ -714,13 +985,17 @@ def create_new_mask(pieces):
     
     return div_list
 
+# Generate a defined number of new composites to add to the pool of selections
+for i in range(0,9):
+    combine_pieces()
 
 #pop_mask = [random.randint(0,len(Mask_List)-1) for i in range(population)]
 #pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = Mask_List[random.randint(0,len(Mask_List)-1)]) for i in range(population)]
 
 #pop = [ Individual(chromosome = [random.randint(0,len(Composites)-1) for p in range(ind_pieces)], mask = create_new_mask(ind_pieces)) for i in range(population)]
 pop = [ Individual(chromosome = get_random_chrom(ind_pieces), mask = create_new_mask(ind_pieces)) for i in range(population)]
-
+# variable for controlling that the fitness of the population is compared to at least 2 others in the same timeline (between resets)
+gen_alive = 0
 #for c, ind in enumerate(pop):
 #    ind.assign_mask(mask=pop_mask[c])
 """
@@ -771,6 +1046,7 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         ind_c = 0
         for ind in pop:
             ind.combine_mask()
+            ind.locate_pigs()
             ind.generate_xml_masked(individual = ind_c)
             ind_c = ind_c + 1
         
@@ -884,6 +1160,7 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         # Generate an XML to check the fitness
         for ind_c, ind in enumerate(new_members):
             ind.combine_mask()
+            ind.locate_pigs()
             ind.generate_xml_tourney(individual = ind_c)
         
         # Execute the application with the two memebers
@@ -955,9 +1232,58 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         all_fit.append((gen_fit/len(pop)))
         fit_Alen.append((len_fit/len(pop)))
         fit_Amov.append((mov_fit/len(pop)))
+
+        # Check if the 2 generations before were better, if so reset the population
+        if gen_alive >= 3:
+            if all_fit[gen] <= all_fit[gen-1] and all_fit[gen] <= all_fit[gen-2] and all_fit[gen] <= all_fit[gen-3]:
+                pop = [ Individual(chromosome = get_random_chrom(ind_pieces), mask = create_new_mask(ind_pieces)) for i in range(population)]
+                sp.write("> Restarted population at gen " + str(gen))
+                # Generate the new values of fitness and then order them
+
+                # Combine the mask of the individual before entering the simulation
+                ind_c = 0
+                for ind in pop:
+                    ind.combine_mask()
+                    ind.locate_pigs()
+                    ind.generate_xml_masked(individual = ind_c)
+                    ind_c = ind_c + 1
+                
+                # Runs and instance of the game
+                #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+                subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+
+                # After the simulation obtain the fitness value for the population
+                # Read the xml files and get the data
+                ind_c = 0
+                final_ind_list = []
+                for ind in pop:
+                    value = ind.read_xml(individual = ind_c)
+                    final_ind_list.append(value)
+                    ind_c = ind_c + 1
+
+                # Generate a list with the chromosome values of all individuals (required for Hamming distance)
+                chrom_list = []
+                for ind in pop:
+                    chrom_list.append(ind.chromosome)
+
+                # Calculate the fitness for each individual
+                for c, ind in enumerate(pop):
+                    ind.get_fitness(chrom_list, c)
+                    pass
+
+                ############################################################################
+                #############################< Selection steps >############################
+                ############################################################################ 
+                
+                # Order the population by their fitness
+                pop.sort(key=lambda x:x.Fitness, reverse=False)
+
+                # Reset the generation controll
+                gen_alive = 0
         
         # Increase value of the generation for the next cycle
         gen = gen + 1
+        gen_alive += 1
 
         # Print the time of the generation
         t_gen = datetime.datetime.now()

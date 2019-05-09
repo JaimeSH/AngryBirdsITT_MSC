@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding ="utf-8"?><Level width="3">
+<Camera x="0" y="5" minWidth="20" maxWidth="40"  />
+<Birds>
+<Bird type="BirdRed" />
+<Bird type="BirdBlack" />
+<Bird type="BirdWhite" />
+</Birds>
+<Slingshot x="-15" y="-2.5" />
+<GameObjects>
+<Block type="RectTiny" material="wood" x="7.431145655926615" y="-3.375" rotation="0" id="0"/>
+<Block type="TriangleHole" material="stone" x="7.038198045396907" y="-2.825" rotation="0" id="1"/>
+<Block type="RectBig" material="stone" x="5.097471103407096" y="-3.375" rotation="0" id="2"/>
+<Block type="RectSmall" material="wood" x="2.29384255673045" y="-3.375" rotation="0" id="3"/>
+<Block type="TriangleHole" material="wood" x="2.5" y="-2.825" rotation="0" id="4"/>
+<Block type="SquareHole" material="wood" x="0.18376375259476876" y="-3.075" rotation="0" id="5"/>
+<Block type="SquareHole" material="wood" x="-2.5" y="-3.075" rotation="0" id="6"/>
+<Block type="RectMedium" material="stone" x="-2.5" y="-2.525" rotation="0" id="7"/>
+<Block type="RectFat" material="wood" x="-2.7729056617414978" y="-2.175" rotation="0" id="8"/>
+<Block type="SquareHole" material="wood" x="-2.5" y="-1.525" rotation="0" id="9"/>
+<Block type="RectSmall" material="wood" x="-2.4743939898993528" y="-0.975" rotation="0" id="10"/>
+<Block type="RectFat" material="wood" x="-2.5" y="-0.625" rotation="0" id="11"/>
+<Block type="RectSmall" material="wood" x="-2.5764151768118477" y="-0.275" rotation="0" id="12"/>
+<Block type="SquareHole" material="wood" x="-5.176716649149489" y="-3.075" rotation="0" id="13"/>
+<Block type="RectMedium" material="stone" x="-7.562000795712234" y="-3.375" rotation="0" id="14"/>
+<Block type="RectMedium" material="stone" x="-7.5" y="-3.125" rotation="0" id="15"/>
+<Block type="RectTiny" material="wood" x="-7.445095868115446" y="-2.875" rotation="0" id="16"/>
+<Block type="RectTiny" material="stone" x="-8.004189402582737" y="-2.625" rotation="0" id="17"/>
+<Block type="RectTiny" material="wood" x="-7.5173836575999" y="-2.375" rotation="0" id="18"/>
+</GameObjects>
+
+</Level>

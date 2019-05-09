@@ -1,5 +1,5 @@
 5
-wood RectMedium,wood SquareTiny,ice CircleSmall
+wood RectMedium,wood SquareTiny,ice CircleSmall,wood Circle,ice Circle,stone Circle
 8,10
 30
 

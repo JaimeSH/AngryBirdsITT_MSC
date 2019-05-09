@@ -114,43 +114,54 @@ def readXML(filename):
 
     return final_list
 
-def calculate_mask(individual, mask):
+def calculate_mask(object_list, mask, chrom_objects):
     # 
     # First
-    temp_individual = individual.copy()
+    temp_object_list = object_list.copy()
     height_list = []
     new_x_list = []
+    composite_center = []
     x = 750
     el_height = -350
     el_height_cont = 0
     cumulative_height = 0
-    #print(individual)
-    for item in individual:
+    #print(object_list)
+    for item in object_list:
         for element in item:
             for obj in element:
                 if len(obj) <= 2:
                     height_list.append(obj[1])
 
     #print(height_list)
-
+    cont = 0
     for j in range(6, -1, -1):
         # Set the values for height and x position
         pc = 1
+        if mask[j] != 0:
+            if chrom_objects[cont].Pig == True:
+                chrom_objects[cont].Pig = True
         while pc <= mask[j]:
-            cumulative_height += height_list[0]
+            cumulative_height += height_list[0]/2
             new_x_list.append(x)
+            composite_center.append([x, cumulative_height])
             el_height += (height_list[0]/2)
             el_height_cont = height_list[0]/2
+            cumulative_height += height_list[0]/2
             height_list.pop(0)
+            if chrom_objects[cont].Pig == True:
+                chrom_objects[cont].Pig = False
             pc += 1
+            cont += 1
         x += -250
         cumulative_height = 0
+        if mask[j] != 0:
+            chrom_objects[cont-1].Pig = True
     
     for i in range(len(new_x_list)):
-        temp_individual[i][0][0][0] = new_x_list[i]
-    #print(individual)
+        temp_object_list[i][0][0][0] = new_x_list[i]
+    #print(object_list)
     
-    return temp_individual
+    return [temp_object_list, composite_center]
 
 def calculate_mask_old(individual, mask):
     # 
@@ -248,7 +259,7 @@ def calculate_mask_old(individual, mask):
     #print(individual)
     return temp_individual
 
-def writeXML_masked(individual, filename):
+def writeXML_masked(pigs, individual, filename):
     """ Writes the XML level representation of individual to the filename"""
     #filename = "file:/home/itt-mcc/Pictures/Untitled-2.png"
     STRING_XML = ""
@@ -314,6 +325,16 @@ def writeXML_masked(individual, filename):
             # End for
         # End for
         el_height[c] = el_height[c] + el_height_cont
+
+    if len(pigs) > 0:
+        for pig in pigs:
+            final_xml.append('<Pig' +
+                            ' type="BasicSmall"' +          # The block to be used
+                            ' material=""' +                # The material that is made of
+                            ' x="' + str(pig[0]/100) + '"' +    # Its position on the x axis
+                            ' y="' + str(pig[1]) + '"' +    # Its position on the y axis
+                            ' rotation="0"/>\n')            # Its rotation
+            final_list.append([obj[0], obj[1], str(x_val), str(y_val), str(obj[4]), str(i)])
     
     final_xml.append('</GameObjects>\n')
     final_xml.append(STRING_XML[index + len('<GameObjects\>'):])

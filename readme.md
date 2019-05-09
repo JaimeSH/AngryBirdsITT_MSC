@@ -1,20 +1,21 @@
 -------< Latest Patch notes below >-------- 
 
-# Version 1.3.2 (3/22/2019 13:40)
+# Version 1.4 (5/08/2019 18:30)
     # Implemented
-        - Added mutation operation for the individual evolution
-        - Modification to the selection algorithm
-            - Removed random selection of parents
-            - Added Roulette Style Selection
-        - General modifications to the code
-            - The calculation for the fitness is obtained at the begining of each geneation
-            - A second calculation of fitness for the new individuals is obtained immediately after the integration to the population
-        - Modification to the fitness calculation
-    
+        - Modified the composites methods to obtain the top and bottom position for placement of pigs
+        - Added a new method to create composites and add them to the pool of options at the beginning of the system
+        - Added a "Mutation" method to calculate the positions for the pigs in a level
+        - Modified the algorithm in order to restart the population once the fitness of it drops for various consecutive generations
+        - Added the control of the configurations of the algorithm (not allowed pieces/combinations and pg quantity) according to a txt file
+        - Changes to the fitness value calculation
+            - Removed penalization by position and angle errors
+            - Added criteria by calculating the shannon entroy on the composites of the chromosome
+            - Added criteria by calculating the hamming distance on the best individual compared to all the other members of the population
+        - Modifies the mask integration on the individuals to calculate the possible ending positions of the pigs on a level
+        - Modified the XML generation code to integrate the pigs on the levels
+
     # Pending
-        - Integrate the different cross-over evaluations to the individuals
-        - Implement a way to create and adapt the mask on different generations
-        - Clean the folders before beginning the algorithm
+        - Modify some individual class methods to preserve and modify the mask during generations and posibly combine it with another one
 
 
 # -------< General Information >-------- 

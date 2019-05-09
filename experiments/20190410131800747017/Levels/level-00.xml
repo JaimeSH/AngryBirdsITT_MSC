@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding ="utf-8"?><Level width="3">
+<Camera x="0" y="5" minWidth="20" maxWidth="40"  />
+<Birds>
+<Bird type="BirdRed" />
+<Bird type="BirdBlack" />
+<Bird type="BirdWhite" />
+</Birds>
+<Slingshot x="-15" y="-2.5" />
+<GameObjects>
+<Block type="SquareSmall" material="wood" x="7.314148035865355" y="-3.275" rotation="0" id="0"/>
+<Block type="SquareSmall" material="wood" x="7.694801054175718" y="-2.825" rotation="0" id="1"/>
+<Block type="RectTiny" material="wood" x="7.659857947059086" y="-2.475" rotation="0" id="2"/>
+<Block type="RectBig" material="ice" x="7.816456044125215" y="-2.225" rotation="0" id="3"/>
+<Block type="SquareSmall" material="wood" x="7.5005184783127" y="-1.875" rotation="0" id="4"/>
+<Block type="SquareSmall" material="wood" x="7.5" y="-1.425" rotation="0" id="5"/>
+<Block type="RectMedium" material="ice" x="5.159843565222745" y="-3.375" rotation="0" id="6"/>
+<Block type="RectMedium" material="wood" x="2.4132536210052193" y="-3.375" rotation="0" id="7"/>
+<Block type="RectBig" material="ice" x="2.5" y="-3.125" rotation="0" id="8"/>
+<Block type="SquareSmall" material="wood" x="0.002951448146377726" y="-3.275" rotation="0" id="9"/>
+<Block type="RectBig" material="wood" x="-0.29339493942285183" y="-2.925" rotation="0" id="10"/>
+<Block type="RectTiny" material="wood" x="-2.5" y="-3.375" rotation="0" id="11"/>
+<Block type="TriangleHole" material="wood" x="-2.391440745476198" y="-2.825" rotation="0" id="12"/>
+<Block type="SquareSmall" material="wood" x="-2.4564475420780956" y="-2.175" rotation="0" id="13"/>
+<Block type="TriangleHole" material="wood" x="-4.976194831655577" y="-3.075" rotation="0" id="14"/>
+<Block type="RectMedium" material="stone" x="-7.507361627724091" y="-3.375" rotation="0" id="15"/>
+<Block type="TriangleHole" material="ice" x="-7.315128298024207" y="-2.825" rotation="0" id="16"/>
+<Block type="RectMedium" material="stone" x="-7.5" y="-2.275" rotation="0" id="17"/>
+<Block type="Circle" material="wood" x="-7.140069418790213" y="-1.775" rotation="0" id="18"/>
+<Block type="RectTiny" material="wood" x="-7.5" y="-1.275" rotation="0" id="19"/>
+<Block type="RectSmall" material="wood" x="-7.577585711654461" y="-1.025" rotation="0" id="20"/>
+</GameObjects>
+
+</Level>

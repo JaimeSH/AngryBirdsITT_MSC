@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding ="utf-8"?><Level width="3">
+<Camera x="0" y="5" minWidth="20" maxWidth="40"  />
+<Birds>
+<Bird type="BirdRed" />
+<Bird type="BirdBlack" />
+<Bird type="BirdWhite" />
+</Birds>
+<Slingshot x="-15" y="-2.5" />
+<GameObjects>
+<Block type="RectBig" material="wood" x="7.703051200112872" y="-3.375" rotation="0" id="0"/>
+<Block type="SquareSmall" material="ice" x="7.3016852546969755" y="-3.025" rotation="0" id="1"/>
+<Block type="RectSmall" material="wood" x="7.7545141270628255" y="-2.675" rotation="0" id="2"/>
+<Block type="TriangleHole" material="wood" x="7.5" y="-2.125" rotation="0" id="3"/>
+<Block type="RectSmall" material="ice" x="7.269821405598082" y="-1.575" rotation="0" id="4"/>
+<Block type="TriangleHole" material="wood" x="7.536147302288299" y="-1.025" rotation="0" id="5"/>
+<Block type="RectSmall" material="ice" x="7.889061519617734" y="-0.475" rotation="0" id="6"/>
+<Block type="SquareSmall" material="wood" x="7.3598847273215835" y="-0.125" rotation="0" id="7"/>
+<Block type="RectTiny" material="wood" x="7.648382203899035" y="0.225" rotation="0" id="8"/>
+<Block type="TriangleHole" material="stone" x="7.310598569079953" y="0.775" rotation="0" id="9"/>
+<Block type="RectTiny" material="ice" x="4.919735919230089" y="-3.375" rotation="0" id="10"/>
+<Block type="TriangleHole" material="wood" x="5.025237108895897" y="-2.825" rotation="0" id="11"/>
+<Block type="TriangleHole" material="ice" x="2.166278675816729" y="-3.075" rotation="0" id="12"/>
+<Block type="RectBig" material="wood" x="0.0" y="-3.375" rotation="0" id="13"/>
+<Block type="TriangleHole" material="stone" x="-0.1481802247791287" y="-2.825" rotation="0" id="14"/>
+<Block type="RectTiny" material="stone" x="-2.7911097238221214" y="-3.375" rotation="0" id="15"/>
+<Block type="RectSmall" material="wood" x="-4.831580523572511" y="-3.375" rotation="0" id="16"/>
+<Block type="RectSmall" material="ice" x="-7.5" y="-3.375" rotation="0" id="17"/>
+<Block type="RectMedium" material="stone" x="-7.5730360207673515" y="-3.125" rotation="0" id="18"/>
+<Block type="RectFat" material="stone" x="-7.503271329426775" y="-2.775" rotation="0" id="19"/>
+<Block type="RectMedium" material="stone" x="-7.500512601391148" y="-2.425" rotation="0" id="20"/>
+</GameObjects>
+
+</Level>
