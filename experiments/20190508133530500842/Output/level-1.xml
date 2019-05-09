@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level width="3">
+  <Camera x="0" y="5" minWidth="20" maxWidth="40" />
+  <Birds>
+    <Bird type="BirdRed" />
+    <Bird type="BirdBlack" />
+    <Bird type="BirdWhite" />
+  </Birds>
+  <Slingshot x="-15" y="-2.5" />
+  <GameObjects>
+    <Block type="RectSmall" material="wood" x="6.789798" y="-3.375058" rotation="0.0006325354" id="5" aVelocity="196.8929" />
+    <Block type="RectSmall" material="wood" x="8.36198" y="-3.375002" rotation="-180" id="7" aVelocity="267.5092" />
+    <Block type="RectMedium" material="stone" x="5.000042" y="-3.37934" rotation="0.01945606" id="9" aVelocity="8.197403" />
+    <Block type="SquareHole" material="wood" x="4.999983" y="-2.83726" rotation="0.02368031" id="10" aVelocity="44.29726" />
+    <Block type="RectMedium" material="stone" x="2.45699" y="-2.642688" rotation="88.88527" id="11" aVelocity="1.050192" />
+    <Block type="RectMedium" material="stone" x="2.479224" y="-1.675347" rotation="0.17799" id="12" aVelocity="2.153966" />
+    <Block type="RectTiny" material="wood" x="0.000894476" y="-3.371382" rotation="-0.004954519" id="13" aVelocity="1.456086" />
+    <Block type="RectBig" material="wood" x="0.0005972908" y="-3.136435" rotation="-0.005319224" id="14" aVelocity="10.83687" />
+    <Block type="RectSmall" material="wood" x="-0.1019108" y="-2.901556" rotation="-0.01049387" id="15" aVelocity="49.07185" />
+    <Block type="TriangleHole" material="wood" x="0.008106554" y="-2.35673" rotation="-0.01916949" id="16" aVelocity="51.71629" />
+    <Block type="RectTiny" material="wood" x="-2.5" y="-3.375" rotation="-2.519867E-08" id="17" aVelocity="3.086339E-07" />
+    <Block type="RectTiny" material="wood" x="-2.5" y="-3.136391" rotation="3.178435E-07" id="18" aVelocity="0.6657291" />
+    <Block type="RectFat" material="wood" x="-4.997956" y="-3.270407" rotation="0.008526282" id="19" aVelocity="8.215165E-05" />
+    <Block type="TriangleHole" material="wood" x="-8.006661" y="-3.243598" rotation="119.4658" id="34" aVelocity="503.7995" />
+  </GameObjects>
+</Level>

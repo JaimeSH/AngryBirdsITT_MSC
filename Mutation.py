@@ -20,15 +20,17 @@ import math
 import numpy as np
 
 class Mutation:
-    def __init__(self, percentage, mu, sigma):
+    def __init__(self, percentage, mu, sigma, restrictions):
         self.M_Per = percentage
         self.mu = mu
         self.sigma = sigma
+        self.Restricted = restrictions
         self.Material = ["wood", "ice", "stone"]
         self.Individual_list = [self.Add_Rand, self.Del_Rand]
         self.Movement_list = [self.Move_Gauss, self.Move_Fixed]
         self.Material_list = [self.Mate_Rand]
         self.Structure_list = [self.Struc_Rand]
+        self.Pig_list = [self.Set_Pigs]
         pass
 
     def UpdateComposites(self, Composites):
@@ -78,10 +80,11 @@ class Mutation:
     
     # Structure TYPE Mutation Group
     def M_StrucType(self, individual, selection = 0):
+        #M_Event = self.Material_list[selection]
         M_Event = self.Structure_list[selection]
         return M_Event(individual)
 
-    def Mate_Rand(self, individual):
+    def Struc_Rand(self, individual):
         # Define how many elements to modify
         value = random.randint(0,len(individual.chromosome)-1)
 
@@ -89,18 +92,22 @@ class Mutation:
         pr = 0
         while pr <= value:
             r = random.randint(0, len(individual.chromosome)-1)
-            if r not in mod_list: 
-                individual.Mut_Struct[r] = random.randint(0, len(self.Composites)-1)
-                mod_list.append(r)
-                pr = pr + 1
+            if r not in mod_list:
+                prop = random.randint(0, len(self.Composites)-1)
+                if self.Restricted[self.Composites[prop][0][0]].Valid == True:
+                    individual.Mut_Struct[r] = prop
+                    #individual.Mut_Struct[r] = random.randint(0, len(self.Composites)-1)
+                    mod_list.append(r)
+                    pr = pr + 1
         return individual
+            
     
     # Structure MATERIAL Mutation Group
     def M_StructMat(self, individual, selection = 0):
         M_Event = self.Material_list[selection]
         return M_Event(individual)
 
-    def Struc_Rand(self, individual):
+    def Mate_Rand(self, individual):
         # Define how many elements to modify
         value = random.randint(0,len(individual.chromosome)-1)
 
@@ -148,3 +155,27 @@ class Mutation:
                 break
 
         return individual
+
+    def Set_Pigs(self, individual, pigs, mask, Composites_Centers):
+        #print(individual[0].Pig)
+        #print(pigs)
+        center_list = Composites_Centers
+        t_pigs = random.randint(int(pigs[0]),int(pigs[len(pigs)-1]))
+        # Counter for the asigned pigs in level
+        cp = 0
+        pig_xy_list = []
+
+        c = 0
+        # Loop while the total pigs has not been reached
+        while cp < t_pigs:
+            # Check the locations inside or between pieces to place a pig
+            for e, Composite in enumerate(individual):
+                if Composite.Pig == True:
+                    pig_xy_list.append([center_list[e][0]-Composite.low_center[0], (-350 + center_list[e][1]-Composite.low_center[1] + 10)/100])
+                    c += 1
+                    cp += 1  
+                    if cp >= t_pigs:
+                        break
+        
+        return pig_xy_list
+            

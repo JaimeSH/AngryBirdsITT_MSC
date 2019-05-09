@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level width="3">
+  <Camera x="0" y="5" minWidth="20" maxWidth="40" />
+  <Birds>
+    <Bird type="BirdRed" />
+    <Bird type="BirdBlack" />
+    <Bird type="BirdWhite" />
+  </Birds>
+  <Slingshot x="-15" y="-2.5" />
+  <GameObjects>
+    <Block type="SquareHole" material="wood" x="5" y="-3.065098" rotation="0.00040328" id="0" aVelocity="4.71389E-05" />
+    <Block type="RectTiny" material="wood" x="4.999999" y="-2.52107" rotation="0.01228766" id="1" aVelocity="0.01516566" />
+    <Block type="RectSmall" material="wood" x="4.999999" y="-2.287117" rotation="0.001505557" id="2" aVelocity="0.7937325" />
+    <Block type="RectBig" material="wood" x="5" y="-2.05246" rotation="-0.000411769" id="3" aVelocity="1.686682" />
+    <Block type="TriangleHole" material="wood" x="5.000061" y="-1.506621" rotation="-0.02711672" id="4" aVelocity="1.709557" />
+    <Block type="SquareHole" material="wood" x="5.000018" y="-0.6515975" rotation="0.007088179" id="5" aVelocity="1.731292" />
+    <Block type="RectFat" material="wood" x="5.000026" y="-0.001630937" rotation="0.007542546" id="6" aVelocity="1.742619" />
+    <Block type="RectFat" material="wood" x="5.000033" y="0.446613" rotation="0.0002166023" id="7" aVelocity="1.757811" />
+    <Block type="RectBig" material="wood" x="5.000037" y="0.7865788" rotation="-0.0001252141" id="8" aVelocity="2.235821" />
+    <Block type="Circle" material="wood" x="5.000046" y="1.28657" rotation="-0.001372545" id="9" aVelocity="2.242395" />
+    <Block type="RectFat" material="wood" x="5.000058" y="1.891558" rotation="-0.004556241" id="10" aVelocity="2.246467" />
+    <Block type="SquareHole" material="wood" x="2.5" y="-3.065682" rotation="0.003078874" id="11" aVelocity="2.565064E-07" />
+    <Block type="RectFat" material="wood" x="2.5" y="-2.417642" rotation="0.01526486" id="12" aVelocity="5.951416E-07" />
+    <Block type="RectSmall" material="wood" x="2.5" y="-2.079341" rotation="0.02644032" id="13" aVelocity="0.3828208" />
+    <Block type="RectBig" material="wood" x="-1.091999E-10" y="-3.375" rotation="5.324854E-08" id="14" aVelocity="8.686158E-08" />
+    <Block type="SquareSmall" material="wood" x="-2.5" y="-3.271116" rotation="0.008681611" id="15" aVelocity="1.020623E-05" />
+    <Block type="TriangleHole" material="wood" x="-2.500005" y="-2.622653" rotation="0.002567167" id="16" aVelocity="2.628134E-05" />
+    <Block type="TriangleHole" material="wood" x="-5.000029" y="-3.065186" rotation="0.01470564" id="17" aVelocity="1.058672E-07" />
+    <Block type="RectTiny" material="wood" x="-5.000004" y="-2.520314" rotation="0.1252772" id="18" aVelocity="4.184541E-07" />
+    <Block type="RectFat" material="wood" x="-7.5" y="-3.270187" rotation="0.00196153" id="19" aVelocity="1.558241E-07" />
+  </GameObjects>
+</Level>

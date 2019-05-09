@@ -23,7 +23,7 @@ class Selection:
         self.project_root = root
         self.game_path_tourney = path
         self.info = inf
-        self.Selection_List = [self.Random_Selection, self.Tournament_Selection]
+        self.Selection_List = [self.Roulette_Selection, self.Tournament_Selection]
         pass
     
     def Selection_Base(self, population, limit, selection):

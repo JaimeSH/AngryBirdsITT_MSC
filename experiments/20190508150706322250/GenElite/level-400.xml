@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding ="utf-8"?><Level width="3">
+<Camera x="0" y="5" minWidth="20" maxWidth="40"  />
+<Birds>
+<Bird type="BirdRed" />
+<Bird type="BirdBlack" />
+<Bird type="BirdWhite" />
+</Birds>
+<Slingshot x="-15" y="-2.5" />
+<GameObjects>
+<Block type="RectBig" material="stone" x="5.153210009481779" y="-3.375" rotation="0" id="0"/>
+<Block type="RectFat" material="wood" x="2.5" y="-3.275" rotation="0" id="1"/>
+<Block type="RectSmall" material="stone" x="2.5220098306355005" y="-2.925" rotation="0" id="2"/>
+<Block type="RectBig" material="ice" x="2.3182405494960325" y="-2.675" rotation="0" id="3"/>
+<Block type="RectBig" material="wood" x="2.564821170800863" y="-2.425" rotation="0" id="4"/>
+<Block type="SquareSmall" material="ice" x="2.4130909299684493" y="-2.075" rotation="0" id="5"/>
+<Block type="RectSmall" material="stone" x="2.8869718640513473" y="-1.725" rotation="0" id="6"/>
+<Block type="RectFat" material="ice" x="2.5" y="-1.375" rotation="0" id="7"/>
+<Block type="TriangleHole" material="wood" x="2.5" y="-0.725" rotation="0" id="8"/>
+<Block type="RectTiny" material="wood" x="2.2598009477027774" y="-0.175" rotation="0" id="9"/>
+<Block type="RectSmall" material="wood" x="2.8058757792940328" y="0.075" rotation="0" id="10"/>
+<Block type="RectTiny" material="wood" x="-0.07314187101457689" y="-3.375" rotation="0" id="11"/>
+<Block type="SquareHole" material="wood" x="-2.5" y="-3.075" rotation="0" id="12"/>
+<Block type="RectMedium" material="stone" x="-2.5" y="-2.525" rotation="0" id="13"/>
+<Block type="RectBig" material="ice" x="-5.269008463703009" y="-3.375" rotation="0" id="14"/>
+<Block type="SquareSmall" material="stone" x="-7.731936836368564" y="-3.275" rotation="0" id="15"/>
+<Block type="RectTiny" material="ice" x="-7.288394506457845" y="-2.925" rotation="0" id="16"/>
+<Block type="RectTiny" material="ice" x="-7.232151584616255" y="-2.675" rotation="0" id="17"/>
+<Block type="RectBig" material="ice" x="-7.161345359239068" y="-2.425" rotation="0" id="18"/>
+<Block type="SquareSmall" material="wood" x="-7.2077657911656035" y="-2.075" rotation="0" id="19"/>
+</GameObjects>
+
+</Level>
