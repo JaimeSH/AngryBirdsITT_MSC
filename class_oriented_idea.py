@@ -29,7 +29,7 @@ author = "Salinas Hernandez Jaime"
 copyright = "Copyright 2018, Tijuana Institute of Technology"
 credits = ["Dr. Mario García Valdez",""]
 license = "ITT"
-version = "1.4.0"
+version = "1.4.1"
 date = "May 08, 2019 18:30"
 maintainer = "Salinas Hernandez Jaime"
 email = "jaime.salinas@tectijuana.edu.mx"
@@ -619,7 +619,7 @@ def combine_pieces():
                 #temp.append(int(comp[1]))
                 #temp.append(int(comp[2]) + (prop1.Height/2)+(prop3.Height/2) + 1)
                 temp.append(shifted_points[2][0])
-                temp.append(shifted_points[2][1])
+                temp.append(shifted_points[2][1]+1)
                 temp.append(int(comp[3]))
                 temp.append(comp[4])
                 fin = tuple(temp)
@@ -672,7 +672,7 @@ def combine_pieces():
                     temp.append(comp[0])
                     #temp.append(int(comp[2]) + (prop1.Width/2))
                     temp.append(shifted_points[0][0])
-                    temp.append(shifted_points[0][1])
+                    temp.append(shifted_points[0][1]-1)
                     temp.append(90)
                     temp.append(comp[4])
                     fin = tuple(temp)
@@ -683,7 +683,7 @@ def combine_pieces():
                     temp.append(comp[0])
                     #temp.append(int(comp[1]) + (0-((prop2.Width/2))) - 1)
                     temp.append(shifted_points[1][0])
-                    temp.append(shifted_points[1][1])
+                    temp.append(shifted_points[1][1]+1)
                     #temp.append(int(comp[2]))
                     temp.append(int(comp[3]))
                     temp.append(comp[4])
@@ -739,7 +739,7 @@ def combine_pieces():
                     #temp.append(int(comp[1]))
                     #temp.append(int(comp[2]) + (prop1.Width/2))
                     temp.append(shifted_points[0][0])
-                    temp.append(shifted_points[0][1])
+                    temp.append(shifted_points[0][1]+1)
                     temp.append(int(comp[3]))
                     temp.append(comp[4])
                     fin = tuple(temp)
@@ -750,7 +750,7 @@ def combine_pieces():
                     temp.append(comp[0])
                     #temp.append(int(comp[1]) + (0-((prop2.Width/2))) - 1)
                     temp.append(shifted_points[1][0])
-                    temp.append(shifted_points[1][1])
+                    temp.append(shifted_points[1][1]-1)
                     #temp.append(int(comp[2]))
                     temp.append(90)
                     temp.append(comp[4])

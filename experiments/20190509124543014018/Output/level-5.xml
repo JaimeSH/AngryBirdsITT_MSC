@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level width="3">
+  <Camera x="0" y="5" minWidth="20" maxWidth="40" />
+  <Birds>
+    <Bird type="BirdRed" />
+    <Bird type="BirdBlack" />
+    <Bird type="BirdWhite" />
+  </Birds>
+  <Slingshot x="-15" y="-2.5" />
+  <GameObjects>
+    <Block type="RectSmall" material="wood" x="5.001769" y="-3.143094" rotation="0.08008033" id="0" aVelocity="0.0003196945" />
+    <Block type="RectMedium" material="stone" x="5.05344" y="-3.376007" rotation="0.01304567" id="1" aVelocity="0.3349694" />
+    <Block type="SquareSmall" material="wood" x="5.012564" y="-2.340733" rotation="0.7297733" id="2" aVelocity="5.712296" />
+    <Block type="SquareHole" material="wood" x="2.391966" y="-2.897674" rotation="43.90421" id="23" aVelocity="587.715" />
+    <Block type="RectBig" material="wood" x="-2.457903" y="-2.931101" rotation="-26.32345" id="32" aVelocity="3.676268" />
+    <Block type="RectMedium" material="stone" x="-4.997111" y="-2.918448" rotation="-1.2158" id="33" aVelocity="0.4978847" />
+    <Block type="TriangleHole" material="wood" x="-4.983847" y="-2.374674" rotation="-1.176887" id="34" aVelocity="21.21085" />
+    <Block type="RectTiny" material="wood" x="-7.496607" y="-3.380246" rotation="0.1048902" id="35" aVelocity="0.00231134" />
+    <Block type="RectFat" material="wood" x="-7.503066" y="-3.047436" rotation="0.07678185" id="36" aVelocity="0.2100448" />
+    <Block type="RectMedium" material="stone" x="-7.498643" y="-2.246793" rotation="0.08482031" id="37" aVelocity="0.2361332" />
+    <Block type="TriangleHole" material="wood" x="-7.500088" y="-1.700959" rotation="0.003165742" id="38" aVelocity="21.44035" />
+    <Pig type="BasicSmall" x="5" y="-2.9" rotation="0" id="39" aVelocity="0.6617904" />
+    <Pig type="BasicSmall" x="-2.5" y="-3.4" rotation="0" id="42" aVelocity="1.222325" />
+    <Pig type="BasicSmall" x="-5" y="-3.4" rotation="0" id="43" aVelocity="0.1850493" />
+    <Pig type="BasicSmall" x="-7.5" y="-2.7" rotation="0" id="44" aVelocity="0.2214871" />
+  </GameObjects>
+</Level>

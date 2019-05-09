@@ -1,5 +1,6 @@
 -------< Latest Patch notes below >-------- 
 
+<<<<<<< HEAD
 # Version 1.4 (5/08/2019 18:30)
     # Implemented
         - Modified the composites methods to obtain the top and bottom position for placement of pigs
@@ -16,6 +17,23 @@
 
     # Pending
         - Modify some individual class methods to preserve and modify the mask during generations and posibly combine it with another one
+=======
+# Version 1.3.2 (3/22/2019 13:40)
+    # Implemented
+        - Added mutation operation for the individual evolution
+        - Modification to the selection algorithm
+            - Removed random selection of parents
+            - Added Roulette Style Selection
+        - General modifications to the code
+            - The calculation for the fitness is obtained at the begining of each geneation
+            - A second calculation of fitness for the new individuals is obtained immediately after the integration to the population
+        - Modification to the fitness calculation
+    
+    # Pending
+        - Integrate the different cross-over evaluations to the individuals
+        - Implement a way to create and adapt the mask on different generations
+        - Clean the folders before beginning the algorithm
+>>>>>>> 0796b9c74fb4c9d3f28c5c351999e67b1d9b79b8
 
 
 # -------< General Information >-------- 

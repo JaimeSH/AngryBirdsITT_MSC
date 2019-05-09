@@ -1,4 +1,4 @@
-# Version 1.4 (5/08/2019 18:30)
+# Version 1.4.1 (5/09/2019 13:30)
     # Implemented
         - Modified the composites methods to obtain the top and bottom position for placement of pigs
         - Added a new method to create composites and add them to the pool of options at the beginning of the system
@@ -14,6 +14,9 @@
 
     # Pending
         - Modify some individual class methods to preserve and modify the mask during generations and posibly combine it with another one
+    
+    # Extra
+        - modified the final XY position for composites
         
 # Version 1.3.2 (3/22/2019 13:40)
     # Implemented

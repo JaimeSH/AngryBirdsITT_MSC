@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Level width="3">
+  <Camera x="0" y="5" minWidth="20" maxWidth="40" />
+  <Birds>
+    <Bird type="BirdRed" />
+    <Bird type="BirdBlack" />
+    <Bird type="BirdWhite" />
+  </Birds>
+  <Slingshot x="-15" y="-2.5" />
+  <GameObjects>
+    <Block type="TriangleHole" material="wood" x="8.14429" y="-3.245296" rotation="-118.6985" id="0" aVelocity="22.66415" />
+    <Block type="RectMedium" material="stone" x="7.823482" y="-2.687843" rotation="61.31341" id="1" aVelocity="65.62325" />
+    <Block type="SquareSmall" material="wood" x="4.976744" y="-3.269134" rotation="-0.8576691" id="12" aVelocity="0.5106081" />
+    <Block type="RectFat" material="wood" x="5.001188" y="-2.824232" rotation="-1.949198" id="13" aVelocity="1.058572" />
+    <Block type="SquareHole" material="wood" x="4.999183" y="-2.174798" rotation="-2.021" id="14" aVelocity="1.576664" />
+    <Block type="TriangleHole" material="wood" x="5.161058" y="-1.325339" rotation="-2.046217" id="15" aVelocity="2.578544" />
+    <Block type="RectMedium" material="stone" x="2.342909" y="-3.375459" rotation="180.0026" id="19" aVelocity="60.86236" />
+    <Block type="RectMedium" material="stone" x="1.326362" y="-2.641691" rotation="89.87784" id="21" aVelocity="96.43133" />
+    <Block type="RectFat" material="wood" x="0.450819" y="-3.056234" rotation="-90.02823" id="23" aVelocity="30.6283" />
+    <Block type="TriangleHole" material="wood" x="-2.833878" y="-3.246183" rotation="119.3035" id="25" aVelocity="9.389812" />
+    <Block type="RectSmall" material="wood" x="-4.983905" y="-2.914378" rotation="-1.464358" id="32" aVelocity="3.654993E-05" />
+    <Block type="RectBig" material="wood" x="-7.502665" y="-3.376587" rotation="0.00568807" id="37" aVelocity="183.195" />
+    <Block type="RectSmall" material="wood" x="-7.488507" y="-3.143901" rotation="0.02124599" id="38" aVelocity="206.5794" />
+    <Pig type="BasicSmall" x="0" y="-3.4" rotation="0" id="42" aVelocity="0.06492495" />
+    <Pig type="BasicSmall" x="-5" y="-3.4" rotation="0" id="44" aVelocity="1.863791E-05" />
+  </GameObjects>
+</Level>
