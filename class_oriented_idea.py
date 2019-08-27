@@ -39,8 +39,8 @@ t_prev = datetime.datetime.now()
 
 
 ## Values used for the genetic algorithm
-population = 10         # For now it can only be below 10
-max_gen = 5            # Max number of generations
+population = 16         # For now it can only be below 10
+max_gen = 10            # Max number of generations
 fits = [0]              # Variable to save the fitness of each generation
 gen = 0                 # Generation 1
 per_cross = 0.5         # Percentage of cross-over (cross-over operator)
@@ -50,13 +50,16 @@ sel_type = 1            # Selection (for crossover) type [ 0: Random - 1: Tourna
 cross_type = 0          # Type of cross-over [ 0: One point CO - 1: Random point CO - TBD]
 ind_pieces = 20         # Number of pieces that define an individual
 all_fit = [0]            # Average fitness for all generations
-fit_Alen = []           # Average piece length fitness for all generations
+fit_ham = []           # Average piece length fitness for all generations
 fit_Amov = []           # Average movement fitness for all generations
-max_elite = 2           # Maximum number of elite members in the generation
+max_elite = 5           # Maximum number of elite members in the generation
 elite = []
 best_gen = []
 mu = 0                  # Mean for normal distribution
 sigma = 20              # SD for normal distribution
+
+min_fit = [0]            # Average fitness for all generations
+max_fit = [0]            # Average fitness for all generations
 
 ## Data required to create the xml files
 
@@ -65,6 +68,11 @@ sigma = 20              # SD for normal distribution
 #####################################################################
 
 project_root = os.getcwd()
+json_data = {}
+json_data['all_fit'] = []
+json_data['hamming_avg'] = []
+json_data['min_fit'] = []
+json_data['max_fit'] = []
 ruleset = open("Ruleset/parameters.txt", "r")
 config_param = json.loads(open("ga_parameters.json","r").read())
 
@@ -74,6 +82,8 @@ elite_path = config_param['elite_path']
 read_path = config_param['read_path']
 log_path = config_param['log_dir']
 log_base_name = config_param['log_base_name']
+child_level = config_param['child_level']
+child_output = config_param['child_output']
 
 # For tournament
 game_path_tourney = config_param['game_path_tourney']
@@ -943,7 +953,7 @@ class Individual:
         pass
     
     def get_fitness(self, chrom_list, pos):
-        self.Fitness, self.Fit_Size, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces, self.chromosome, chrom_list, pos)
+        self.Fitness, self.Fit_Hamming, self.Fit_Pos = Eval.fitness(self.Pieces, self.Remaining_Pieces, self.chromosome, chrom_list, pos)
         return 0
     
     def combine_mask(self):
@@ -961,7 +971,7 @@ class Individual:
     
     def generate_xml_tourney(self, **kwargs):
         res_list = []
-        res_list = xml.writeXML_masked(self.Pig_Location, self.object_list, os.path.join(project_root, write_path + "/level-0"+ str(kwargs.get('individual')) +".xml"))
+        res_list = xml.writeXML_masked(self.Pig_Location, self.object_list, os.path.join(project_root, write_path_tourney + "/level-0"+ str(kwargs.get('individual')) +".xml"))
         self.ind_height_tourney = res_list[0]
         self.ind_piece_tourney = res_list[1]
         self.Pieces = res_list[2]
@@ -1016,11 +1026,11 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
         ###
                 
         # Outside IF statement
-        # Reintegrate ELITE members if there are
+        # Reintegrate the ELITE member to the population and remove the one in the last possition
         if len(elite):
             for member in elite:
-                pop.insert(0, member)
-                pop[0] = Individual(chromosome = member[1], mask = member[2])
+                pop.insert(0, deepcopy(member))
+                #pop[0] = Individual(chromosome = member[1], mask = member[2])
                 pop = pop[:population]
 
         # Check if the current number of population multiplied by the cross-over percentage
@@ -1030,29 +1040,24 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
             pass
         else:
             many = many - 1
-        
-        
-        ### Discontinued since ver. 1.3.0
-        #while pr <= many:
-        #    parents.append(sel_operator.Selection_Base(pop, sel_type))
-        #    Selection_Base(pop,1)
-        #    r = random.randint(1, population)
-        #    if r not in parents: 
-        #        parents.append(r)
-        #        pr = pr + 1
-        ###
 
         # Combine the mask of the individual before entering the simulation
         ind_c = 0
         for ind in pop:
-            ind.combine_mask()
-            ind.locate_pigs()
+            if hasattr(ind, 'Fitness'):
+                pass
+            else:
+                ind.combine_mask()
+                ind.locate_pigs()
             ind.generate_xml_masked(individual = ind_c)
             ind_c = ind_c + 1
         
         # Runs and instance of the game
         #subprocess.Popen(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
-        subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
+        if hasattr(ind, 'Fitness'):
+            pass
+        else:
+            subprocess.call(r'"' + os.path.join(project_root, game_path) + '"', startupinfo=info)  # doesn't capture output
 
         # After the simulation obtain the fitness value for the population
         # Read the xml files and get the data
@@ -1203,7 +1208,7 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
 
         # Obtain the average fitness of the generation
         gen_fit = 0
-        len_fit = 0
+        hamming_fit = 0
         mov_fit = 0
         best_ind = 0
         fit_pop = []
@@ -1212,27 +1217,51 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
             gen_fit = gen_fit + ind.Fitness
             #if c == 0:
             #    best_gen.append(ind.Fitness)
-            len_fit += ind.Fit_Size
+            hamming_fit += ind.Fit_Hamming
             mov_fit += ind.Fit_Pos
         
         fit_pop.sort(key=lambda x:x[1], reverse=True)
+        #max_fit.append(fit_pop[0][1])
+        min_fit.append(deepcopy(fit_pop[-1][1]))
         fit_pop = fit_pop[:5]
         
         # 
         best_gen.append(fit_pop[0][1])
+        
+        # Add the worst value to a history list
+        #if len(min_fit) == 1:
+        #    min_fit.append(deepcopy(fit_pop[-1][1]))
+        #elif min_fit[-1] >= fit_pop[-1][1]:
+        #    min_fit.append(deepcopy(fit_pop[-1][1]))
+        #else:
+        #    min_fit.append(deepcopy(min_fit[-1]))
 
         # Add the best value to the elite list
-        for e in fit_pop:
-            elite.append([e[1], pop[e[0]].chromosome, pop[e[0]].mask])
-            pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
-
-        elite.sort(key=lambda x:x[0], reverse=True)
+        if len(elite) == 0:
+            elite.append(deepcopy(pop[0]))
+            max_fit.append(deepcopy(elite[0].Fitness))
+        elif pop[0].Fitness >= elite[0].Fitness:
+            #elite.pop(0)
+            elite.append(deepcopy(pop[0]))
+            max_fit.append(deepcopy(elite[0].Fitness))
+        else:
+            max_fit.append(deepcopy(elite[0].Fitness))
+        
+        elite.sort(key=lambda x:x.Fitness, reverse=True)
         elite = elite[:max_elite]
+        #for e in fit_pop:
+        #    elite.append(pop[e[0]])
+        #    elite[0].generate_xml_elite(individual = e[0], gen = gen)
+            #elite.append([e[1], pop[e[0]].chromosome, pop[e[0]].mask])
+            #pop[e[0]].generate_xml_elite(individual = e[0], gen = gen)
+
+        #elite.sort(key=lambda x:x.Fitness, reverse=True)
+        #elite = elite[:max_elite]
 
         all_fit.append((gen_fit/len(pop)))
-        fit_Alen.append((len_fit/len(pop)))
+        fit_ham.append((hamming_fit/len(pop)))
         fit_Amov.append((mov_fit/len(pop)))
-
+        """
         # Check if the 2 generations before were better, if so reset the population
         if gen_alive >= 3:
             if all_fit[gen] <= all_fit[gen-1] and all_fit[gen] <= all_fit[gen-2] and all_fit[gen] <= all_fit[gen-3]:
@@ -1280,7 +1309,7 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
 
                 # Reset the generation controll
                 gen_alive = 0
-        
+        """
         # Increase value of the generation for the next cycle
         gen = gen + 1
         gen_alive += 1
@@ -1304,11 +1333,36 @@ with yaspin(text="Executing algorithm", color="cyan") as sp:
     # Stop the spinner
     sp.ok("✔")
     
-# Plot the results
+# Plot the results for Fitness
+pylab.figure(figsize=(8, 5))
 plot(all_fit, '-.b', label='General Fitness')
-#plot(fit_Alen, '-g', label='Fitness by pieces')
+plot(min_fit, '-g', label='Min fitness value')
+plot(max_fit, '*-r', label='Max fitness value')
+#plot(fit_ham, '-g', label='Average Hamming Distance')
 #plot(fit_Amov, '.r', label='Error by movement')
-pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+lgd = pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+#pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+pylab.savefig('Fitness', bbox_extra_artists=(lgd,), bbox_inches='tight')
+
+# Same for Hamming Distance
+pylab.figure(figsize=(8, 5))
+plot(fit_ham, '-g', label='Average Hamming Distance')
+lgd = pylab.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+pylab.savefig('Hamming', bbox_extra_artists=(lgd,), bbox_inches='tight')
+
+# Add the data to the json files
+json_data['all_fit'] = all_fit
+json_data['hamming_avg'] = fit_ham
+json_data['min_fit'] = min_fit
+json_data['max_fit'] = max_fit
+
+with open('results.json','w') as outfile:
+    print(outfile)
+    json.dump(json_data, outfile)
 
 # Clean the workspace
 shutil.copytree(experimentsource, experimentdestination)
+
+shutil.copyfile('results.json',os.path.join(project_root, experimentdest) + '/results.json')
+shutil.copyfile('Fitness.png',os.path.join(project_root, experimentdest) + '/Fitness.png')
+shutil.copyfile('Hamming.png',os.path.join(project_root, experimentdest) + '/Hamming.png')
