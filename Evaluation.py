@@ -26,16 +26,27 @@
 from AngryBirdsGA import *
 import math
 import hashlib
+from copy import deepcopy
 
 
 def fitness(ind_orig, ind_fin, chromosome, pop, pos):
     #print("Fitness = 100%")
     
+    criteria = 0
+    #criteria = size_dif(ind_orig, ind_fin)
+    criteria += (dif_pieces(chromosome)) # 240
+    criteria += calc_entropy(chromosome)
+    hamming_dist = deepcopy(calc_hamming(chromosome, pop, pos))
+    criteria += hamming_dist
+    #criteria = deepcopy(criteria * ((dif_pieces(chromosome))/100))
     
-    criteria = size_dif(ind_orig, ind_fin)
-    criteria += (dif_pieces(chromosome) * 10) # 240
-    criteria += calc_entropy(chromosome) * 100
-    criteria += calc_hamming(chromosome, pop, pos)
+    criteria_new = [deepcopy(criteria), deepcopy(hamming_dist)]
+    
+    #Evaluate fitness based on stability
+    tot_fitness = 0
+    tot_fitness += deepcopy(size_dif(ind_orig, ind_fin))
+    tot_fitness += deepcopy(position_error(ind_orig, ind_fin))
+    
     # total_fit = 100
     #size_pen = size_dif(ind_orig, ind_fin)
     #pos_pen = position_error(ind_orig, ind_fin)
@@ -45,14 +56,17 @@ def fitness(ind_orig, ind_fin, chromosome, pop, pos):
     #print(size_pen)
     #print(pos_pen)
     #return [total_fit, size_fit, pos_fit]
-    return [criteria, 100, 100]
+    return [tot_fitness, criteria_new, 100]
+    #return [criteria, hamming_dist, 100]
 
 def calc_hamming(chromosome, pop, pos):
-    total = 0
+    total = []
     for c, chrom in enumerate(pop):
         if c != pos:
-            total += hamming_distance(chromosome, chrom)
-    return total
+            total.append(deepcopy(hamming_distance(deepcopy(chromosome), deepcopy(chrom))))
+
+    total.sort(key=lambda x:x, reverse=True)
+    return total[0]
 
 
 def calc_entropy(ind):
@@ -94,8 +108,8 @@ def position_error(a, b):
         # 5 = id
         try:
             orig = a[int(piece[5])]
-            error_xy = 0 if 1.0 > math.hypot((float(piece[2])) - (float(orig[2])), (float(piece[3])) - (float(orig[3]))) else ((100/len(a)) * 0.5)
-            error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(a)) * 0.5)
+            error_xy = 0 if 1.0 > math.hypot((float(piece[2])) - (float(orig[2])), (float(piece[3])) - (float(orig[3]))) else ((100/len(a)) * -0.5)
+            error_z = 0 if -5 < (abs(float(orig[4])) - abs(float(piece[4]))) < 5 else ((100/len(a)) * -0.5)
             total_error = total_error + error_xy + error_z
         except IndexError:
             #error_xy

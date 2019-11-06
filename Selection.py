@@ -16,6 +16,7 @@ import random
 import subprocess
 import operator
 import os
+from copy import deepcopy
 
 class Selection:
     def __init__(self, root, path, inf):
@@ -70,6 +71,18 @@ class Selection:
         return selected_individuals
 
     def Tournament_Selection(self, population, limit):
+        best = []
+        for i in range(0, int(limit)):
+            ind_c1 = random.randint(0, len(population) - 1)
+            ind_c2 = random.randint(0, len(population) - 1)
+            ind = deepcopy(population[ind_c1])
+            ind2 = deepcopy(population[ind_c2])
+            best.append(deepcopy(ind_c2))
+            if (len(best) == 0) or (ind.Fitness > ind2.Fitness):
+                best[-1] = deepcopy(ind_c1)
+        return best
+    
+    def Tournament_Selection_old(self, population, limit):
         ind_c = 0
         tourney_members = []
         tourney_members_number = []

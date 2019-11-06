@@ -124,7 +124,8 @@ class Mutation:
     # Individual mutation
     def M_Individual(self, individual):
         M_Event = self.Individual_list[random.randint(0,1)]
-        return M_Event(individual)
+        return individual
+        #return M_Event(individual)
 
     def Add_Rand(self, individual):
         # Randmly add an element to the individual 

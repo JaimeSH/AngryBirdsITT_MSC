@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from AngryBirdsGA import *
+from copy import deepcopy
 
 def initXMLLevel():
     """ Returns a list of strings containing the structure of the XML Level definition """
@@ -80,7 +81,7 @@ def writeXML(individual, filename):
                                     ' y="' + str(y_val) + '"' +
                                     ' rotation="' + str(obj[4]) + '"' +
                                     ' id="' + str(i) + '"/>\n')
-                    final_list.append([obj[0], obj[1], str(x_val), str(y_val), str(obj[4]), str(i)])
+                    final_list.append([deepcopy(obj[0]), deepcopy(obj[1]), deepcopy(str(x_val)), deepcopy(str(y_val)), deepcopy(str(obj[4])), deepcopy(str(i))])
                     i+=1
             # End if
         el_height = el_height + el_height_cont
@@ -101,7 +102,7 @@ def readXML(filename):
     # Gets all the elements in the file that have the BLOCK tag
     item_list = xmldoc.getElementsByTagName('Block')
 
-    final_list = [[Objeto.getAttribute('type'), Objeto.getAttribute('material'), Objeto.getAttribute('x'), Objeto.getAttribute('y'), Objeto.getAttribute('rotation'), Objeto.getAttribute('id')] for Objeto in item_list]
+    final_list = [[deepcopy(Objeto.getAttribute('type')), deepcopy(Objeto.getAttribute('material')), deepcopy(Objeto.getAttribute('x')), deepcopy(Objeto.getAttribute('y')), deepcopy(Objeto.getAttribute('rotation')), deepcopy(Objeto.getAttribute('id'))] for Objeto in item_list]
     
     #final_list = [Dic.type.value, Dic.material.value, Dic.x.value, Dic.y.value, Dic.rotation.value] in Dic for Piece.__attrs  in item_list
     # Prints the lenght of the array of pieces
@@ -114,13 +115,16 @@ def readXML(filename):
 
     return final_list
 
-def calculate_mask(object_list, mask, chrom_objects):
+def calculate_mask(object_list, mask, chrom_objects, chromosome):
     # 
     # First
     temp_object_list = object_list.copy()
     height_list = []
+    width_list = []
     new_x_list = []
     composite_center = []
+    mask_control = []
+    composite_control = []
     x = 750
     el_height = -350
     el_height_cont = 0
@@ -130,38 +134,42 @@ def calculate_mask(object_list, mask, chrom_objects):
         for element in item:
             for obj in element:
                 if len(obj) <= 2:
-                    height_list.append(obj[1])
+                    height_list.append(deepcopy(obj[1]))
+                    width_list.append(deepcopy(obj[0]))
 
     #print(height_list)
     cont = 0
     for j in range(6, -1, -1):
         # Set the values for height and x position
+        composite_control = []
         pc = 1
         if mask[j] != 0:
             if chrom_objects[cont].Pig == True:
                 chrom_objects[cont].Pig = True
-        while pc <= mask[j]:
-            cumulative_height += height_list[0]/2
-            new_x_list.append(x)
-            composite_center.append([x, cumulative_height])
-            el_height += (height_list[0]/2)
-            el_height_cont = height_list[0]/2
-            cumulative_height += height_list[0]/2
-            height_list.pop(0)
-            if chrom_objects[cont].Pig == True:
-                chrom_objects[cont].Pig = False
-            pc += 1
-            cont += 1
+            while pc <= mask[j]:
+                cumulative_height += deepcopy(height_list[0]/2)
+                new_x_list.append(x)
+                composite_center.append([deepcopy(x), deepcopy(cumulative_height)])
+                el_height += deepcopy(height_list[0]/2)
+                el_height_cont = deepcopy(height_list[0]/2)
+                cumulative_height += deepcopy(height_list[0]/2)
+                height_list.pop(0)
+                if chrom_objects[cont].Pig == True:
+                    chrom_objects[cont].Pig = False
+                composite_control.append(deepcopy(chromosome[cont]))
+                pc += 1
+                cont += 1
         x += -250
+        mask_control.append(deepcopy(composite_control))
         cumulative_height = 0
         if mask[j] != 0:
             chrom_objects[cont-1].Pig = True
     
     for i in range(len(new_x_list)):
-        temp_object_list[i][0][0][0] = new_x_list[i]
+        temp_object_list[i][0][0][0] = deepcopy(new_x_list[i])
     #print(object_list)
     
-    return [temp_object_list, composite_center]
+    return [temp_object_list, composite_center, mask_control]
 
 def calculate_mask_old(individual, mask):
     # 
@@ -319,7 +327,7 @@ def writeXML_masked(pigs, individual, filename):
                                     ' y="' + str(y_val) + '"' +             # Its position on the y axis
                                     ' rotation="' + str(obj[4]) + '"' +     # It rotation
                                     ' id="' + str(i) + '"/>\n')             # An ID for identification
-                    final_list.append([obj[0], obj[1], str(x_val), str(y_val), str(obj[4]), str(i)])
+                    final_list.append([deepcopy(obj[0]), deepcopy(obj[1]), deepcopy(str(x_val)), deepcopy(str(y_val)), deepcopy(str(obj[4])), deepcopy(str(i))])
                     i+=1
                 # End if
             # End for

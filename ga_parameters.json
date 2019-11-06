@@ -18,6 +18,8 @@
   "read_path_tourney": "AngryBirdsGA\\abwin\\win_build_Data\\StreamingAssets\\Output",
   "game_path_tourney":  "AngryBirdsGA\\abwin\\win_build.exe",
   "level_files": "abwin\\win_build_Data\\StreamingAssets",
+  "child_level": "AngryBirdsGA\\abwin\\win_build_Data\\StreamingAssets\\Levels",
+  "child_output": "AngryBirdsGA\\abwin\\win_build_Data\\StreamingAssets\\Output",
   "experiment_results": "experiments",
   "generation": 1
   }
